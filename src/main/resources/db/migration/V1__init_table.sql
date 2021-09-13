@@ -196,6 +196,9 @@ create table crew_categories
         primary key (id),
     constraint crew_categories_crews_id_fk
         foreign key (crew_id) references crews (id)
+            on delete cascade,
+    constraint crew_categories_categories_id_fk
+        foreign key (category_id) references categories (id)
             on delete cascade
 );
 
