@@ -1,9 +1,6 @@
-package pl.pazurkiewicz.oldtimers_rally.models;
+package pl.pazurkiewicz.oldtimers_rally.user;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
-import org.hibernate.type.EnumType;
+import pl.pazurkiewicz.oldtimers_rally.models.Event;
 
 import javax.persistence.*;
 
@@ -60,7 +57,4 @@ public class UserGroup {
     public void setId(Integer id) {
         this.id = id;
     }
-}
-enum UserGroupEnum{
-    owner, judge, organizer, admin
 }

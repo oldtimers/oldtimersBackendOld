@@ -7,7 +7,7 @@ create table languages
 );
 
 create
-unique index languages_code_uindex
+    unique index languages_code_uindex
     on languages (code);
 
 
@@ -49,7 +49,7 @@ create table users
     login         varchar(32)            not null,
     first_name    varchar(64)            not null,
     last_name     varchar(64)            not null,
-    password      varchar(128)           not null,
+    password      varchar(60)            not null,
     phone         varchar(16)            not null,
     email         varchar(64)            not null,
     accepted_reg  boolean                not null,
@@ -61,16 +61,16 @@ create table users
 );
 
 create
-unique index users_login_uindex
+    unique index users_login_uindex
     on users (login);
 
 
 create table user_groups
 (
-    id       int auto_increment,
-    event_id int null,
-    user_id  int not null,
-    selected_group    enum ('owner','judge','organizer','admin') not null,
+    id             int auto_increment,
+    event_id       int null,
+    user_id        int not null,
+    selected_group enum ('owner','judge','organizer','admin') not null,
     constraint user_groups_pk
         primary key (id),
     constraint user_groups_events_id_fk
@@ -82,7 +82,7 @@ create table user_groups
 );
 
 create
-unique index user_groups_event_id_user_id_uindex
+    unique index user_groups_event_id_user_id_uindex
     on user_groups (event_id, user_id);
 
 create table event_schedule
@@ -100,7 +100,7 @@ create table event_schedule
 );
 
 create
-unique index event_schedule_event_id_selected_order_uindex
+    unique index event_schedule_event_id_selected_order_uindex
     on event_schedule (event_id, selected_order);
 
 
@@ -117,7 +117,7 @@ create table event_languages
 );
 
 create
-unique index event_languages_event_id_language_id_uindex
+    unique index event_languages_event_id_language_id_uindex
     on event_languages (event_id, language_id);
 
 
@@ -138,7 +138,7 @@ create table dictionaries
 );
 
 create
-unique index dictionaries_event_language_id_code_uindex
+    unique index dictionaries_event_language_id_code_uindex
     on dictionaries (event_language_id, code_id);
 
 create table categories
@@ -183,7 +183,7 @@ create table crews
 );
 
 create
-unique index crews_event_id_number_uindex
+    unique index crews_event_id_number_uindex
     on crews (event_id, number);
 
 create table crew_categories
@@ -203,7 +203,7 @@ create table crew_categories
 );
 
 create
-index crew_categories_ranking_points_index
+    index crew_categories_ranking_points_index
     on crew_categories (ranking_points);
 
 create table qr_codes
@@ -223,7 +223,7 @@ create table qr_codes
 );
 
 create
-unique index qr_codes_qr_uindex
+    unique index qr_codes_qr_uindex
     on qr_codes (qr);
 
 create table competitions
@@ -294,6 +294,6 @@ create table scores
 );
 
 create
-index scores_result_index
-	on scores (result);
+    index scores_result_index
+    on scores (result);
 

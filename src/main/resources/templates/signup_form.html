@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title th:text="#{signup.title}"></title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container text-center">
+    <div>
+        <h1 th:text="#{signup.h1}"></h1>
+    </div>
+    <form th:action="@{/process_register}" th:object="${user}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Login: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="text" th:field="*{login}" class="form-control"
+                               required minlength="2" maxlength="20"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">E-mail: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="email" th:field="*{email}" class="form-control" required/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">First Name: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="text" th:field="*{firstName}" class="form-control"
+                               required minlength="2" maxlength="20"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Last Name: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="text" th:field="*{lastName}" class="form-control"
+                               required minlength="2" maxlength="20"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Password: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="password" th:field="*{password}" class="form-control"
+                               required minlength="6" maxlength="10"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Phone: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="number" th:field="*{phone}" class="form-control"
+                               required minlength="6" maxlength="10"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Accepted regulations: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="checkbox" name="acceptedReg" th:checked="*{acceptedReg}" class="checkbox-inline"/>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Accepted RODO: </label>
+                <div class="col-8">
+                    <label>
+                        <input type="checkbox" name="acceptedRodo" th:checked="*{acceptedRodo}"
+                               class="checkbox-inline"/>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div sec:authorize="isAuthenticated()">
+    <form class="form-inline" form-method="post" th:action="@{/logout}">
+        <button class="btn" type="submit">Logout</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    </form>
+</div>
+<div sec:authorize="isAnonymous()">
+    <a th:href="@{/login}">Login</a>
+</div>
+
   <a th:text="#{validation.user.email}"></a>
 </body>
 </html>
