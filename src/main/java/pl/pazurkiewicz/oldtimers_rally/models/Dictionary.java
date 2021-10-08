@@ -1,5 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.models;
 
+import pl.pazurkiewicz.oldtimers_rally.event.EventLanguage;
+import pl.pazurkiewicz.oldtimers_rally.event.EventLanguageCode;
+
 import javax.persistence.*;
 
 @Table(name = "dictionaries", indexes = {

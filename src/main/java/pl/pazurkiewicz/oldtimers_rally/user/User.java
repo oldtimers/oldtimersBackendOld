@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.user;
 
+import pl.pazurkiewicz.oldtimers_rally.login.UserWriteModel;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Set;

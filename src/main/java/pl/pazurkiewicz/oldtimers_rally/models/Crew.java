@@ -1,8 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.models;
 
 import com.vladmihalcea.hibernate.type.basic.YearType;
-import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.TypeDef;
+import pl.pazurkiewicz.oldtimers_rally.event.Event;
 
 import javax.persistence.*;
 import java.time.Year;

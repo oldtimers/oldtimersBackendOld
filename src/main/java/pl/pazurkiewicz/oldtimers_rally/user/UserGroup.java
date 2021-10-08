@@ -1,6 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.user;
 
-import pl.pazurkiewicz.oldtimers_rally.models.Event;
+import pl.pazurkiewicz.oldtimers_rally.event.Event;
 
 import javax.persistence.*;
 

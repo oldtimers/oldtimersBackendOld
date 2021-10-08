@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.models;
+package pl.pazurkiewicz.oldtimers_rally.event;
 
 import javax.persistence.*;
 import java.time.Instant;

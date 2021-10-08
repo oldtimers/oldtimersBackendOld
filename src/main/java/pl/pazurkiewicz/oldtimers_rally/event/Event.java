@@ -1,10 +1,11 @@
-package pl.pazurkiewicz.oldtimers_rally.models;
+package pl.pazurkiewicz.oldtimers_rally.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import pl.pazurkiewicz.oldtimers_rally.language.Language;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -50,6 +51,17 @@ public class Event {
 
     @Column(name = "nr_template", length = 128)
     private String nrTemplate;
+
+    @Column(name = "url", nullable = false, length = 64)
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getNrTemplate() {
         return nrTemplate;

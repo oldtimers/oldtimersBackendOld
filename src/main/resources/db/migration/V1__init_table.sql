@@ -23,11 +23,12 @@ create table events
     id                  int auto_increment,
     name_id             int null,
     description_id      int null,
-    start_date          datetime not null,
+    url                 varchar(64) not null,
+    start_date          datetime    not null,
     end_date            datetime null,
     main_photo          varchar(128) null,
     photos              json null,
-    default_language_id int      not null,
+    default_language_id int         not null,
     qr_code_template    varchar(128) null,
     nr_template         varchar(128) null,
     constraint events_pk
@@ -42,6 +43,8 @@ create table events
         foreign key (default_language_id) references languages (id)
 );
 
+create unique index events_url_uindex
+    on events (url);
 
 create table users
 (

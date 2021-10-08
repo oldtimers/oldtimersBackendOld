@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.models;
 
+import pl.pazurkiewicz.oldtimers_rally.event.Event;
+
 import javax.persistence.*;
 
 @Table(name = "qr_codes", indexes = {

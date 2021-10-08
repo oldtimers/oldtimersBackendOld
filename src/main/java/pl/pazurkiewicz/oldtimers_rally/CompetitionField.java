@@ -1,7 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally;
 
 import pl.pazurkiewicz.oldtimers_rally.models.Competition;
-import pl.pazurkiewicz.oldtimers_rally.models.EventLanguageCode;
+import pl.pazurkiewicz.oldtimers_rally.event.EventLanguageCode;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.user;
+package pl.pazurkiewicz.oldtimers_rally.login;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class UserWriteModel {
-    @NotBlank(message = "s")
+    @NotBlank(message = "{login.notBlank}")
     @Length(min = 3, max = 32)
     private String login;
     @NotBlank(message = "s")
