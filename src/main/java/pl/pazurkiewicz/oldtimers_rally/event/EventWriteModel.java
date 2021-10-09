@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.event;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;

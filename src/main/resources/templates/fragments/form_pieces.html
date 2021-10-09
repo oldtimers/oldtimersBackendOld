@@ -7,7 +7,7 @@
                 <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
             </ul>
             <label>
-                <select th:field="*{__${fieldName}__}">
+                <select th:field="*{__${fieldName}__.defaultLanguage}">
                     <option th:each="languages: *{__${fieldName}__.possibleLanguages}"
                             th:value="${languages.id}"
                             th:text="${languages.code}"></option>
@@ -24,8 +24,67 @@
             <ul>
                 <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
             </ul>
-            <label>
+            <label >
                 <input type="text" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="number (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label >
+                <input type="number" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="password (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label >
+                <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="email (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label >
+                <input type="email" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="checkbox (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label>
+                <input type="checkbox" th:field="*{__${fieldName}__}" class="checkbox-inline"/>
             </label>
         </div>
     </div>

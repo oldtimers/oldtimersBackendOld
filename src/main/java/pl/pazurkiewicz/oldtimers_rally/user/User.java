@@ -56,7 +56,7 @@ public class User {
         login = model.getLogin();
         firstName = model.getFirstName();
         lastName = model.getLastName();
-        password = model.getPassword();
+        password = model.getNewPassword();
         phone = model.getPhone();
         email = model.getEmail();
         acceptedReg = model.getAcceptedReg();

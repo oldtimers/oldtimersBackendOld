@@ -18,7 +18,7 @@ public class UserWriteModel {
     private String lastName;
     @NotBlank(message = "s")
     @Length(min = 6, max = 40)
-    private String password;
+    private String newPassword;
     @NotBlank(message = "s")
     @Length(min = 6, max = 12)
     private String phone;
@@ -27,10 +27,10 @@ public class UserWriteModel {
     private String email;
     @NotNull
     @AssertTrue(message = "t")
-    private Boolean acceptedReg;
+    private Boolean acceptedReg = false;
     @NotNull
     @AssertTrue(message = "b")
-    private Boolean acceptedRodo;
+    private Boolean acceptedRodo = false;
 
     public String getLogin() {
         return login;
@@ -56,12 +56,12 @@ public class UserWriteModel {
         this.lastName = lastName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getPhone() {

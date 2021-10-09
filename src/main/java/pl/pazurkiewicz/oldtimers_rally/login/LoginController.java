@@ -43,8 +43,8 @@ public class LoginController {
             return "login/signup_form";
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(user.getNewPassword());
+        user.setNewPassword(encodedPassword);
         User savedUser = userRepo.save(new User(user));
         UserDetails userDetails = new MyUserDetails(savedUser);
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
