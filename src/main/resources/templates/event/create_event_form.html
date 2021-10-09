@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
+<body>
+<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.event.EventWriteModel"*/-->
+<form th:action="@{/rally/create}" th:object="${event}"
+      method="post" style="max-width: 600px; margin: 0 auto;">
+    <div class="m-3">
+        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguage', label='Default language')"></div>
+        <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+    </div>
+</form>
+</body>
+</html>

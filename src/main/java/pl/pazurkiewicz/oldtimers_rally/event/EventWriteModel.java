@@ -1,16 +1,29 @@
 package pl.pazurkiewicz.oldtimers_rally.event;
 
-import pl.pazurkiewicz.oldtimers_rally.language.Language;
+import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
+import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;
 
+import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class EventWriteModel {
+    private final LanguageService languageService;
+    private final LanguageRepository repository;
+    private final DefaultLanguageSelector defaultLanguage;
     private EventLanguageCode name = new EventLanguageCode();
     private EventLanguageCode description = new EventLanguageCode();
-    private Instant startDate;
-    private Instant endDate;
-    private Language defaultLanguage = new Language();
+    private Instant startDate = Instant.now();
+    private Instant endDate = startDate.plus(1, ChronoUnit.DAYS);
+    @NotBlank
     private String url;
+
+    public EventWriteModel(LanguageService languageService, LanguageRepository repository) {
+        this.languageService = languageService;
+        this.repository = repository;
+        this.defaultLanguage = new DefaultLanguageSelector(languageService, repository);
+    }
 
     public EventLanguageCode getName() {
         return name;
@@ -44,12 +57,8 @@ public class EventWriteModel {
         this.endDate = endDate;
     }
 
-    public Language getDefaultLanguage() {
+    public DefaultLanguageSelector getDefaultLanguage() {
         return defaultLanguage;
-    }
-
-    public void setDefaultLanguage(Language defaultLanguage) {
-        this.defaultLanguage = defaultLanguage;
     }
 
     public String getUrl() {

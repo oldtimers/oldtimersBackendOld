@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="defaultLanguageSelector (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label>
+                <select th:field="*{__${fieldName}__}">
+                    <option th:each="languages: *{__${fieldName}__.possibleLanguages}"
+                            th:value="${languages.id}"
+                            th:text="${languages.code}"></option>
+                </select>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="classic (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label class="col-4 col-form-label" th:text="${label}"></label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+            <label>
+                <input type="text" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="submitButton (title)">
+    <button type="submit" class="btn btn-primary" th:text="${title}"></button>
+</div>
