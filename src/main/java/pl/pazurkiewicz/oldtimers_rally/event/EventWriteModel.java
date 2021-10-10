@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;
+import pl.pazurkiewicz.oldtimers_rally.language.PossibleLanguageSelector;
 
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
@@ -13,6 +14,7 @@ public class EventWriteModel {
     private final LanguageService languageService;
     private final LanguageRepository repository;
     private final DefaultLanguageSelector defaultLanguage;
+    private final PossibleLanguageSelector possibleLanguageSelector;
     private EventLanguageCode name = new EventLanguageCode();
     private EventLanguageCode description = new EventLanguageCode();
     private Instant startDate = Instant.now();
@@ -24,6 +26,11 @@ public class EventWriteModel {
         this.languageService = languageService;
         this.repository = repository;
         this.defaultLanguage = new DefaultLanguageSelector(languageService, repository);
+        possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguage);
+    }
+
+    public PossibleLanguageSelector getPossibleLanguageSelector() {
+        return possibleLanguageSelector;
     }
 
     public EventLanguageCode getName() {

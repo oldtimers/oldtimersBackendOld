@@ -28,19 +28,19 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        return "login/login";
+        return "login";
     }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new UserWriteModel());
-        return "login/signup_form";
+        return "signup_form";
     }
 
     @PostMapping("/register")
     public String processRegister(@ModelAttribute("user") @Valid UserWriteModel user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "login/signup_form";
+            return "signup_form";
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getNewPassword());

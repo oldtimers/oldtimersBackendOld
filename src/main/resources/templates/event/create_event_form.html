@@ -8,6 +8,7 @@
     <div class="m-3">
         <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguage', label='Default language')"></div>
         <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+        <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
         <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
     </div>
 </form>
