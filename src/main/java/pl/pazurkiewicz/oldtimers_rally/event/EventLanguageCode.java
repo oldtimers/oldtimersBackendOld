@@ -3,6 +3,7 @@ package pl.pazurkiewicz.oldtimers_rally.event;
 import pl.pazurkiewicz.oldtimers_rally.models.Dictionary;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "event_language_codes")
@@ -14,7 +15,7 @@ public class EventLanguageCode {
     private Integer id;
 
     @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Dictionary> dictionaries;
+    private List<Dictionary> dictionaries = new ArrayList<>();
 
     public Integer getId() {
         return id;

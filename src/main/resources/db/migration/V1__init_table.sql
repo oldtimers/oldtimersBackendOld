@@ -116,7 +116,9 @@ create table event_languages
         primary key (id),
     constraint event_languages_events_id_fk
         foreign key (event_id) references events (id)
-            on delete cascade
+            on delete cascade,
+    constraint event_languages_languages_id_fk
+        foreign key (language_id) references languages (id)
 );
 
 create

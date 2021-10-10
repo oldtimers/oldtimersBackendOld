@@ -102,7 +102,9 @@
                 </thead>
                 <tbody>
                 <tr class="table" th:each="possibleLanguage, index : *{__${fieldName}__.possibleLanguages} ">
-                    <td><label th:text="${possibleLanguage.language.code}"></label></td>
+                    <td>
+                        <!--/*@thymesVar id="possibleLanguage" type="pl.pazurkiewicz.oldtimers_rally.language.LanguageSelectorElement"*/-->
+                    <label th:text="${possibleLanguage.language.code}"></label></td>
                     <td>
                         <label>
                             <input type="checkbox" th:field="*{__${fieldName}__.possibleLanguages[__${index.index}__].accept}">

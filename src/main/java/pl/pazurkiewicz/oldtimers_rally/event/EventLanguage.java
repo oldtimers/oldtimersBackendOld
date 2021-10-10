@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.event;
 
+import pl.pazurkiewicz.oldtimers_rally.language.Language;
+
 import javax.persistence.*;
 
 @Table(name = "event_languages", indexes = {
@@ -16,15 +18,16 @@ public class EventLanguage {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @Column(name = "language_id", nullable = false)
-    private Integer languageId;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "language_id", nullable = false)
+    private Language language;
 
-    public Integer getLanguageId() {
-        return languageId;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setLanguageId(Integer languageId) {
-        this.languageId = languageId;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public Event getEvent() {

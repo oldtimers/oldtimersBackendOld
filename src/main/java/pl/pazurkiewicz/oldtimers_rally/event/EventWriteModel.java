@@ -5,6 +5,7 @@ import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.language.PossibleLanguageSelector;
+import pl.pazurkiewicz.oldtimers_rally.models.Dictionary;
 
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
@@ -27,6 +28,12 @@ public class EventWriteModel {
         this.repository = repository;
         this.defaultLanguage = new DefaultLanguageSelector(languageService, repository);
         possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguage);
+        Dictionary test = new Dictionary();
+        EventLanguage eventLanguage = new EventLanguage();
+        eventLanguage.setLanguage(defaultLanguage.getDefaultLanguage());
+        test.setEventLanguage(eventLanguage);
+        test.setValue("123 dziala");
+        name.getDictionaries().add(test);
     }
 
     public PossibleLanguageSelector getPossibleLanguageSelector() {
