@@ -5,7 +5,6 @@ import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-import pl.pazurkiewicz.oldtimers_rally.language.Language;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -42,10 +41,6 @@ public class Event {
     @Column(name = "photos", columnDefinition = "json")
     private JsonNode photos;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "default_language_id", nullable = false)
-    private Language defaultLanguage;
-
     @Column(name = "qr_code_template", length = 128)
     private String qrCodeTemplate;
 
@@ -77,14 +72,6 @@ public class Event {
 
     public void setQrCodeTemplate(String qrCodeTemplate) {
         this.qrCodeTemplate = qrCodeTemplate;
-    }
-
-    public Language getDefaultLanguage() {
-        return defaultLanguage;
-    }
-
-    public void setDefaultLanguage(Language defaultLanguage) {
-        this.defaultLanguage = defaultLanguage;
     }
 
     public JsonNode getPhotos() {

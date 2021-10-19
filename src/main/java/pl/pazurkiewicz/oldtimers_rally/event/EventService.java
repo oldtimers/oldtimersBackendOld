@@ -14,7 +14,6 @@ public class EventService {
 
     public Event createNewEventForForm(){
         Event event = new Event();
-        event.setDefaultLanguage(languageService.getDefaultSystemLanguage());
         //    TODO not done
         return event;
     }

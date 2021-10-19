@@ -22,9 +22,30 @@ public class EventLanguage {
     @JoinColumn(name = "language_id", nullable = false)
     private Language language;
 
+    @Column(name = "is_default", nullable = false)
+    private Boolean isDefault = false;
+
+    public EventLanguage() {
+    }
+
+    public EventLanguage(Event event, Language language, Boolean isDefault) {
+        this.event = event;
+        this.language = language;
+        this.isDefault = isDefault;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
     public Language getLanguage() {
         return language;
     }
+
 
     public void setLanguage(Language language) {
         this.language = language;

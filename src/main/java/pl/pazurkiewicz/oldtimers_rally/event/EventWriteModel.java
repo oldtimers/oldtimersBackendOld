@@ -1,39 +1,50 @@
 package pl.pazurkiewicz.oldtimers_rally.event;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.validation.annotation.Validated;
 import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.language.PossibleLanguageSelector;
-import pl.pazurkiewicz.oldtimers_rally.models.Dictionary;
 
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
+@Validated
 public class EventWriteModel {
-    private final LanguageService languageService;
-    private final LanguageRepository repository;
-    private final DefaultLanguageSelector defaultLanguage;
     private final PossibleLanguageSelector possibleLanguageSelector;
-    private EventLanguageCode name = new EventLanguageCode();
-    private EventLanguageCode description = new EventLanguageCode();
+    private final DefaultLanguageSelector defaultLanguageSelector;
+    private EventLanguageCode name;
+    private EventLanguageCode description;
     private Instant startDate = Instant.now();
     private Instant endDate = startDate.plus(1, ChronoUnit.DAYS);
     @NotBlank
-    private String url;
+    private String url = "";
 
-    public EventWriteModel(LanguageService languageService, LanguageRepository repository) {
-        this.languageService = languageService;
-        this.repository = repository;
-        this.defaultLanguage = new DefaultLanguageSelector(languageService, repository);
-        possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguage);
-        Dictionary test = new Dictionary();
-        EventLanguage eventLanguage = new EventLanguage();
-        eventLanguage.setLanguage(defaultLanguage.getDefaultLanguage());
-        test.setEventLanguage(eventLanguage);
-        test.setValue("123 dziala");
-        name.getDictionaries().add(test);
+    public EventWriteModel(DefaultLanguageSelector defaultLanguage, PossibleLanguageSelector possibleLanguageSelector) {
+        this.defaultLanguageSelector = defaultLanguage;
+        this.possibleLanguageSelector = possibleLanguageSelector;
+    }
+
+    public static EventWriteModel generateNewEventWriteModel(LanguageService languageService, LanguageRepository repository) {
+        Event event = new Event();
+        DefaultLanguageSelector defaultLanguageSelector = new DefaultLanguageSelector(languageService, repository);
+        PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
+        EventWriteModel eventWriteModel = new EventWriteModel(defaultLanguageSelector, possibleLanguageSelector);
+        eventWriteModel.name = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
+        eventWriteModel.description = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
+        return eventWriteModel;
+    }
+
+    public void reload() {
+        List<EventLanguage> eventLanguages = possibleLanguageSelector.getEventLanguages(defaultLanguageSelector);
+        name.reload(eventLanguages);
+        description.reload(eventLanguages);
+    }
+
+    public Instant getStartDate() {
+        return startDate;
     }
 
     public PossibleLanguageSelector getPossibleLanguageSelector() {
@@ -56,10 +67,6 @@ public class EventWriteModel {
         this.description = description;
     }
 
-    public Instant getStartDate() {
-        return startDate;
-    }
-
     public void setStartDate(Instant startDate) {
         this.startDate = startDate;
     }
@@ -72,8 +79,8 @@ public class EventWriteModel {
         this.endDate = endDate;
     }
 
-    public DefaultLanguageSelector getDefaultLanguage() {
-        return defaultLanguage;
+    public DefaultLanguageSelector getDefaultLanguageSelector() {
+        return defaultLanguageSelector;
     }
 
     public String getUrl() {

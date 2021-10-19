@@ -16,6 +16,7 @@ public class LanguageService {
     private MyConfigurationProperties properties;
 
     public Language getDefaultSystemLanguage() {
+        System.out.println("chuj");
         Language result = repository.getLanguageByCode(properties.getDefaultLanguage());
         if (result == null) {
             throw new InvalidConfigurationProperties("Invalid property: custom.defaultLanguage");

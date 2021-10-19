@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.models;
+package pl.pazurkiewicz.oldtimers_rally.models.dictionary;
 
 import pl.pazurkiewicz.oldtimers_rally.event.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.event.EventLanguageCode;
@@ -24,7 +24,7 @@ public class Dictionary {
     private EventLanguageCode code;
 
     @Column(name = "value", nullable = false, length = 16777215, columnDefinition = "mediumtext")
-    private String value;
+    private String value = "";
 
     public String getValue() {
         return value;
@@ -56,5 +56,12 @@ public class Dictionary {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public static Dictionary generateNewDictionary(EventLanguage eventLanguage, EventLanguageCode code) {
+        Dictionary dictionary = new Dictionary();
+        dictionary.setCode(code);
+        dictionary.setEventLanguage(eventLanguage);
+        return dictionary;
     }
 }

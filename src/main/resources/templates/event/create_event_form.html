@@ -6,7 +6,19 @@
 <form th:action="@{/rally/create}" th:object="${event}"
       method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">
-        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguage', label='Default language')"></div>
+        <!--        <div th:object="${event.defaultLanguageSelector}" class="m-3">-->
+        <!--            <div class="form-group row">-->
+        <!--                <label>-->
+        <!--                    <b text="ahoj"></b>-->
+        <!--                    <select th:field="*{defaultLanguage}">-->
+        <!--                        <option th:each="languages: *{possibleLanguages}"-->
+        <!--                                th:value="${languages.id}"-->
+        <!--                                th:text="${languages.code}"></option>-->
+        <!--                    </select>-->
+        <!--                </label>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
         <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
         <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
 
@@ -34,7 +46,7 @@
             </div>
         </div>
 
-
+        <div th:replace="fragments/form_pieces :: requiredDescription"></div>
         <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
     </div>
 </form>

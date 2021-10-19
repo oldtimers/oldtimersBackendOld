@@ -107,7 +107,8 @@
                     <label th:text="${possibleLanguage.language.code}"></label></td>
                     <td>
                         <label>
-                            <input type="checkbox" th:field="*{__${fieldName}__.possibleLanguages[__${index.index}__].accept}">
+                            <input type="checkbox"
+                                   th:field="*{__${fieldName}__.possibleLanguages[__${index.index}__].accept}">
                         </label>
                     </td>
                 </tr>
@@ -115,6 +116,10 @@
             </table>
         </div>
     </div>
+</div>
+
+<div th:fragment="requiredDescription">
+    <b th:text="#{form.required}"></b>
 </div>
 
 <div th:fragment="submitButton (title)">

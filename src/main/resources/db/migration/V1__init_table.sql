@@ -28,7 +28,6 @@ create table events
     end_date            datetime null,
     main_photo          varchar(128) null,
     photos              json null,
-    default_language_id int         not null,
     qr_code_template    varchar(128) null,
     nr_template         varchar(128) null,
     constraint events_pk
@@ -38,9 +37,7 @@ create table events
             on delete cascade,
     constraint events_event_language_codes_id_fk2
         foreign key (description_id) references event_language_codes (id)
-            on delete cascade,
-    constraint events_languages_id_fk
-        foreign key (default_language_id) references languages (id)
+            on delete cascade
 );
 
 create unique index events_url_uindex
@@ -110,8 +107,9 @@ create
 create table event_languages
 (
     id          int auto_increment,
-    event_id    int not null,
-    language_id int not null,
+    event_id    int     not null,
+    language_id int     not null,
+    is_default  boolean not null default false,
     constraint event_languages_pk
         primary key (id),
     constraint event_languages_events_id_fk

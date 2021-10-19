@@ -3,11 +3,8 @@ package pl.pazurkiewicz.oldtimers_rally.event;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import pl.pazurkiewicz.oldtimers_rally.language.DefaultLanguageSelector;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.language.LanguageService;
 
@@ -15,6 +12,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/rally")
+@SessionAttributes("event")
 public class EventController {
     private final LanguageService languageService;
     private final LanguageRepository languageRepository;
@@ -34,7 +32,9 @@ public class EventController {
 
     //    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
-    String createEvent(@ModelAttribute("event") @Valid EventWriteModel event, BindingResult bindingResult) {
+    String createEvent(@ModelAttribute("event") @Valid EventWriteModel event, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+        event.reload();
+        attributes.addFlashAttribute("event", event);
         if (bindingResult.hasErrors()) {
             return "event/create_event_form";
         }
@@ -43,15 +43,9 @@ public class EventController {
 
     @ModelAttribute("event")
     EventWriteModel getEvent() {
-        return new EventWriteModel(languageService, languageRepository);
+        System.out.println("chuj2");
+        return EventWriteModel.generateNewEventWriteModel(languageService, languageRepository);
     }
 
-    @GetMapping("/test")
-    String test(Model model) {
-        model.addAttribute("defaultLanguage", new DefaultLanguageSelector(languageService, languageRepository));
-        model.addAttribute("name", "defaultLanguage");
-
-        return "fragments/form_pieces";
-    }
-
+// TODO dopisać do usera language
 }
