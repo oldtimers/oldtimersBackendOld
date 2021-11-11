@@ -75,6 +75,19 @@
     </div>
 </div>
 
+<div th:fragment="datetimeField (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label>
+                <b th:text="${label}"></b>
+                <input type="datetime-local" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div th:fragment="email (fieldName, label)">
     <div class="m-3">

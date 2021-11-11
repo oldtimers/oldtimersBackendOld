@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = IsUrlAvailableValidator.class)
+@Constraint(validatedBy = IsUrlAvailable.IsUrlAvailableValidator.class)
 @Documented
 public @interface IsUrlAvailable {
     String message() default "{event.invalidUrl}";
@@ -25,19 +25,19 @@ public @interface IsUrlAvailable {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-}
 
-class IsUrlAvailableValidator implements ConstraintValidator<IsUrlAvailable, String> {
-    @Autowired
-    EventRepository repository;
+    class IsUrlAvailableValidator implements ConstraintValidator<IsUrlAvailable, String> {
+        @Autowired
+        EventRepository repository;
 
-    @Override
-    public void initialize(IsUrlAvailable constraintAnnotation) {
-        ConstraintValidator.super.initialize(constraintAnnotation);
-    }
+        @Override
+        public void initialize(IsUrlAvailable constraintAnnotation) {
+            ConstraintValidator.super.initialize(constraintAnnotation);
+        }
 
-    @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !repository.existsEventByUrl(value);
+        @Override
+        public boolean isValid(String value, ConstraintValidatorContext context) {
+            return !repository.existsEventByUrl(value);
+        }
     }
 }

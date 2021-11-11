@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = IsFieldRequiredValidator.class)
+@Constraint(validatedBy = IsFieldRequired.IsFieldRequiredValidator.class)
 public @interface IsFieldRequired {
     String message() default "{dictionary.required}";
 
@@ -26,32 +26,33 @@ public @interface IsFieldRequired {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-}
 
-class IsFieldRequiredValidator implements ConstraintValidator<IsFieldRequired, Object> {
-    private String field;
-    private String isRequired;
+    class IsFieldRequiredValidator implements ConstraintValidator<IsFieldRequired, Object> {
+        private String field;
+        private String isRequired;
 
-    @Override
-    public void initialize(IsFieldRequired constraintAnnotation) {
-        this.field = constraintAnnotation.field();
-        this.isRequired = constraintAnnotation.isRequired();
-    }
+        @Override
+        public void initialize(IsFieldRequired constraintAnnotation) {
+            this.field = constraintAnnotation.field();
+            this.isRequired = constraintAnnotation.isRequired();
+        }
 
-    @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        String fieldValue = (String) new BeanWrapperImpl(value)
-                .getPropertyValue(field);
-        Boolean isRequiredValue = (Boolean) new BeanWrapperImpl(value)
-                .getPropertyValue(isRequired);
+        @Override
+        public boolean isValid(Object value, ConstraintValidatorContext context) {
+            String fieldValue = (String) new BeanWrapperImpl(value)
+                    .getPropertyValue(field);
+            Boolean isRequiredValue = (Boolean) new BeanWrapperImpl(value)
+                    .getPropertyValue(isRequired);
 
-        if (Boolean.TRUE.equals(isRequiredValue) && (fieldValue == null || fieldValue.isBlank())) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode(field).addConstraintViolation();
-            return false;
-        } else {
-            return true;
+            if (Boolean.TRUE.equals(isRequiredValue) && (fieldValue == null || fieldValue.isBlank())) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                        .addPropertyNode(field).addConstraintViolation();
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }
+

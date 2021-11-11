@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model.projection;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import pl.pazurkiewicz.oldtimers_rally.model.Dictionary;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
@@ -15,31 +17,57 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+// This "validator" reload object before real validation
+@Target({TYPE})
+@Retention(RUNTIME)
+@Constraint(validatedBy = Reload.IsReloaded.class)
+@interface Reload {
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    class IsReloaded implements ConstraintValidator<Reload, EventWriteModel> {
+
+        @Override
+        public boolean isValid(EventWriteModel value, ConstraintValidatorContext context) {
+            value.reload();
+            return true;
+        }
+    }
+}
+
 @Reload
-@IsEndDateValid(starDate = "startdate", endDate = "endDate")
+@IsEndDateValid(startDate = "startDate", endDate = "endDate")
 public class EventWriteModel {
     private final PossibleLanguageSelector possibleLanguageSelector;
     private final DefaultLanguageSelector defaultLanguageSelector;
+    Event event;
     @Valid
     private EventLanguageCode name;
     @Valid
     private EventLanguageCode description;
     @NotNull
-    private Instant startDate = Instant.now();
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime startDate = LocalDateTime.now();
     @NotNull
-    private Instant endDate = startDate.plus(1, ChronoUnit.DAYS);
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime endDate = startDate.plus(1, ChronoUnit.DAYS);
     @NotBlank
     @IsUrlAvailable
     private String url;
 
-    public EventWriteModel(DefaultLanguageSelector defaultLanguage, PossibleLanguageSelector possibleLanguageSelector) {
+    private EventWriteModel(Event event, DefaultLanguageSelector defaultLanguage, PossibleLanguageSelector possibleLanguageSelector) {
+        this.event = event;
         this.defaultLanguageSelector = defaultLanguage;
         this.possibleLanguageSelector = possibleLanguageSelector;
     }
@@ -48,7 +76,7 @@ public class EventWriteModel {
         Event event = new Event();
         DefaultLanguageSelector defaultLanguageSelector = new DefaultLanguageSelector(languageService, repository);
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
-        EventWriteModel eventWriteModel = new EventWriteModel(defaultLanguageSelector, possibleLanguageSelector);
+        EventWriteModel eventWriteModel = new EventWriteModel(event, defaultLanguageSelector, possibleLanguageSelector);
         eventWriteModel.name = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
         eventWriteModel.description = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
         return eventWriteModel;
@@ -60,8 +88,12 @@ public class EventWriteModel {
         description.reload(eventLanguages);
     }
 
-    public Instant getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     public PossibleLanguageSelector getPossibleLanguageSelector() {
@@ -84,15 +116,11 @@ public class EventWriteModel {
         this.description = description;
     }
 
-    public void setStartDate(Instant startDate) {
-        this.startDate = startDate;
-    }
-
-    public Instant getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -108,25 +136,13 @@ public class EventWriteModel {
         this.url = url;
     }
 
-    public void generateEvent(){
-
-    }
-}
-
-// This "validator" reload object before real validation
-@Target({TYPE})
-@Retention(RUNTIME)
-@Constraint(validatedBy = Reload.IsReloaded.class)
-@interface Reload{
-    String message() default "";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
-    class IsReloaded implements ConstraintValidator<Reload, EventWriteModel> {
-
-        @Override
-        public boolean isValid(EventWriteModel value, ConstraintValidatorContext context) {
-            value.reload();
-            return true;
-        }
+    public Event generateEvent() {
+        event.setName(name);
+        event.setDescription(description);
+        event.setUrl(url);
+        event.setStartDate(startDate);
+        event.setEndDate(endDate);
+        event.setEventLanguages(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
+        return event;
     }
 }

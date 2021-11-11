@@ -11,7 +11,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = FieldsValueMatchValidator.class)
+@Constraint(validatedBy = FieldsValueMatch.FieldsValueMatchValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldsValueMatch {
@@ -31,35 +31,36 @@ public @interface FieldsValueMatch {
     @interface List {
         FieldsValueMatch[] value();
     }
-}
 
-class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch, Object> {
 
-    private String field;
-    private String fieldMatch;
+    class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch, Object> {
 
-    public void initialize(FieldsValueMatch constraintAnnotation) {
-        this.field = constraintAnnotation.field();
-        this.fieldMatch = constraintAnnotation.fieldMatch();
-    }
+        private String field;
+        private String fieldMatch;
 
-    public boolean isValid(Object value,
-                           ConstraintValidatorContext context) {
-        Object fieldValue = new BeanWrapperImpl(value)
-                .getPropertyValue(field);
-        Object fieldMatchValue = new BeanWrapperImpl(value)
-                .getPropertyValue(fieldMatch);
-        boolean result;
-        if (fieldValue != null) {
-            result = fieldValue.equals(fieldMatchValue);
-        } else {
-            result = fieldMatchValue == null;
+        public void initialize(FieldsValueMatch constraintAnnotation) {
+            this.field = constraintAnnotation.field();
+            this.fieldMatch = constraintAnnotation.fieldMatch();
         }
-        if (!result) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                    .addPropertyNode(fieldMatch).addConstraintViolation();
+
+        public boolean isValid(Object value,
+                               ConstraintValidatorContext context) {
+            Object fieldValue = new BeanWrapperImpl(value)
+                    .getPropertyValue(field);
+            Object fieldMatchValue = new BeanWrapperImpl(value)
+                    .getPropertyValue(fieldMatch);
+            boolean result;
+            if (fieldValue != null) {
+                result = fieldValue.equals(fieldMatchValue);
+            } else {
+                result = fieldMatchValue == null;
+            }
+            if (!result) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                        .addPropertyNode(fieldMatch).addConstraintViolation();
+            }
+            return result;
         }
-        return result;
     }
 }

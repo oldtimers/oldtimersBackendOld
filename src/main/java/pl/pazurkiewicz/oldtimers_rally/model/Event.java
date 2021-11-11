@@ -7,7 +7,10 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "events")
 @Entity
@@ -20,19 +23,31 @@ public class Event {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "name_id", nullable = false)
+    public List<EventLanguage> getEventLanguages() {
+        return eventLanguages;
+    }
+
+    public void setEventLanguages(List<EventLanguage> eventLanguages) {
+        this.eventLanguages = eventLanguages;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
+    private List<EventLanguage> eventLanguages;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "name_id")
     private EventLanguageCode name;
 
-    @ManyToOne
-    @JoinColumn(name = "description_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "description_id")
     private EventLanguageCode description;
 
     @Column(name = "start_date", nullable = false)
-    private Instant startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private Instant endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "main_photo", length = 128)
     private String mainPhoto;
@@ -90,19 +105,19 @@ public class Event {
         this.mainPhoto = mainPhoto;
     }
 
-    public Instant getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
-    public Instant getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
