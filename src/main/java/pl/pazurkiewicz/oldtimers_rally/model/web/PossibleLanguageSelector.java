@@ -24,10 +24,17 @@ public class PossibleLanguageSelector {
     }
 
     public List<EventLanguage> getEventLanguages(DefaultLanguageSelector defaultLanguageSelector) {
+        reload(defaultLanguageSelector);
         return possibleLanguages.stream()
                 .filter(LanguageSelectorElement::getAccept)
                 .map(LanguageSelectorElement::getEventLanguage)
                 .peek(eventLanguage -> eventLanguage.setIsDefault(Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(), eventLanguage.getLanguage().getId())))
                 .collect(Collectors.toList());
+    }
+
+    public void reload(DefaultLanguageSelector defaultLanguageSelector){
+        possibleLanguages.stream()
+                .filter(languageSelectorElement -> Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(),languageSelectorElement.getLanguage().getId()))
+                .forEach(languageSelectorElement -> languageSelectorElement.setAccept(true));
     }
 }

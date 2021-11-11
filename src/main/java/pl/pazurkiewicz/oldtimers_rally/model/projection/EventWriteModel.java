@@ -1,20 +1,29 @@
 package pl.pazurkiewicz.oldtimers_rally.model.projection;
 
-import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
+import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
+import pl.pazurkiewicz.oldtimers_rally.model.web.PossibleLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
-import pl.pazurkiewicz.oldtimers_rally.model.web.PossibleLanguageSelector;
+import pl.pazurkiewicz.oldtimers_rally.validator.IsEndDateValid;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
 
-import javax.validation.Valid;
+import javax.validation.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Reload
+@IsEndDateValid(starDate = "startdate", endDate = "endDate")
 public class EventWriteModel {
     private final PossibleLanguageSelector possibleLanguageSelector;
     private final DefaultLanguageSelector defaultLanguageSelector;
@@ -22,7 +31,9 @@ public class EventWriteModel {
     private EventLanguageCode name;
     @Valid
     private EventLanguageCode description;
+    @NotNull
     private Instant startDate = Instant.now();
+    @NotNull
     private Instant endDate = startDate.plus(1, ChronoUnit.DAYS);
     @NotBlank
     @IsUrlAvailable
@@ -43,7 +54,7 @@ public class EventWriteModel {
         return eventWriteModel;
     }
 
-    public void reload() {
+    void reload() {
         List<EventLanguage> eventLanguages = possibleLanguageSelector.getEventLanguages(defaultLanguageSelector);
         name.reload(eventLanguages);
         description.reload(eventLanguages);
@@ -99,5 +110,23 @@ public class EventWriteModel {
 
     public void generateEvent(){
 
+    }
+}
+
+// This "validator" reload object before real validation
+@Target({TYPE})
+@Retention(RUNTIME)
+@Constraint(validatedBy = Reload.IsReloaded.class)
+@interface Reload{
+    String message() default "";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+    class IsReloaded implements ConstraintValidator<Reload, EventWriteModel> {
+
+        @Override
+        public boolean isValid(EventWriteModel value, ConstraintValidatorContext context) {
+            value.reload();
+            return true;
+        }
     }
 }

@@ -35,8 +35,6 @@ public class EventController {
     //    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     String createEvent(@ModelAttribute("event") @Valid EventWriteModel event, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
-        event.reload();
-        attributes.addFlashAttribute("event", event);
         if (bindingResult.hasErrors()) {
             return "event/create_event_form";
         }
