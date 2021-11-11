@@ -1,11 +1,10 @@
 package pl.pazurkiewicz.oldtimers_rally.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.pazurkiewicz.oldtimers_rally.user.User;
-import pl.pazurkiewicz.oldtimers_rally.user.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.model.User;
+import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 

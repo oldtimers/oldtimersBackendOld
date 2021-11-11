@@ -20,7 +20,7 @@
 <div th:fragment="classic (fieldName, label)">
     <div class="m-3">
         <div class="form-group row">
-            <label >
+            <label>
                 <b th:text="${label}"></b>
                 <input type="text" th:field="*{__${fieldName}__}" class="form-control"/>
             </label>
@@ -34,7 +34,7 @@
 <div th:fragment="number (fieldName, label)">
     <div class="m-3">
         <div class="form-group row">
-            <label >
+            <label>
                 <b th:text="${label}"></b>
                 <input type="number" th:field="*{__${fieldName}__}" class="form-control"/>
             </label>
@@ -49,7 +49,22 @@
 <div th:fragment="password (fieldName, label)">
     <div class="m-3">
         <div class="form-group row">
-            <label >
+            <label>
+                <b th:text="${label}"></b>
+                <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
+            </label>
+            <ul>
+                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="passwordConfirmation (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <label>
                 <b th:text="${label}"></b>
                 <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
             </label>
@@ -64,7 +79,7 @@
 <div th:fragment="email (fieldName, label)">
     <div class="m-3">
         <div class="form-group row">
-            <label >
+            <label>
                 <b th:text="${label}"></b>
                 <input type="email" th:field="*{__${fieldName}__}" class="form-control"/>
             </label>
@@ -103,8 +118,8 @@
                 <tbody>
                 <tr class="table" th:each="possibleLanguage, index : *{__${fieldName}__.possibleLanguages} ">
                     <td>
-                        <!--/*@thymesVar id="possibleLanguage" type="pl.pazurkiewicz.oldtimers_rally.language.LanguageSelectorElement"*/-->
-                    <label th:text="${possibleLanguage.language.code}"></label></td>
+                        <!--/*@thymesVar id="possibleLanguage" type="pl.pazurkiewicz.oldtimers_rally.model.web.LanguageSelectorElement"*/-->
+                        <label th:text="${possibleLanguage.language.code}"></label></td>
                     <td>
                         <label>
                             <input type="checkbox"
@@ -118,6 +133,44 @@
     </div>
 </div>
 
+<div th:fragment="defaultMessage (fieldName, label)">
+    <div class="m-3">
+        <div class="form-group row">
+            <table>
+                <thead>
+                <tr>
+                    <th> Language</th>
+                    <th> Message</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="dictionaryEntry, index : *{__${fieldName}__.dictionaries}">
+                    <tr class="table">
+                        <td>
+                            <!--/*@thymesVar id="dictionaryEntry" type="pl.pazurkiewicz.oldtimers_rally.model.Dictionary"*/-->
+                            <label th:text="${dictionaryEntry.eventLanguage.language.code}"></label></td>
+                        <td>
+                            <label>
+                                <input type="text"
+                                       th:field="*{__${fieldName}__.dictionaries[__${index.index}__].value}">
+                            </label>
+                            <ul>
+                                <li th:each="err : ${#fields.errors(fieldName)}"
+                                    th:text="${err}" class="text-danger"></li>
+                            </ul>
+                    </tr>
+                    <tr class="table">
+                        <td th:if="${#fields.hasAnyErrors()}"
+                            th:errors="*{__${fieldName}__.dictionaries[__${index.index}__].value}"
+                            class="text-danger">
+                        </td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <div th:fragment="requiredDescription">
     <b th:text="#{form.required}"></b>
 </div>

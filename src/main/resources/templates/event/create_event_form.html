@@ -2,49 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
 <body>
-<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.event.EventWriteModel"*/-->
+<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.projection.EventWriteModel"*/-->
 <form th:action="@{/rally/create}" th:object="${event}"
       method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">
-        <!--        <div th:object="${event.defaultLanguageSelector}" class="m-3">-->
-        <!--            <div class="form-group row">-->
-        <!--                <label>-->
-        <!--                    <b text="ahoj"></b>-->
-        <!--                    <select th:field="*{defaultLanguage}">-->
-        <!--                        <option th:each="languages: *{possibleLanguages}"-->
-        <!--                                th:value="${languages.id}"-->
-        <!--                                th:text="${languages.code}"></option>-->
-        <!--                    </select>-->
-        <!--                </label>-->
-        <!--            </div>-->
-        <!--        </div>-->
         <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
         <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
         <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
 
-        <div class="m-3">
-            <div class="form-group row">
-                <table>
-                    <thead>
-                    <tr>
-                        <th> Language</th>
-                        <th> Message</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="table" th:each="dictionaryEntry, index : *{name.dictionaries} ">
-                        <td>
-                            <label th:text="${dictionaryEntry.eventLanguage.language.code}"></label></td>
-                        <td>
-                            <label>
-                                <input type="text" th:field="*{name.dictionaries[__${index.index}__].value}">
-                            </label>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<!--        <div class="m-3">-->
+<!--            <div class="form-group row">-->
+<!--                <table>-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                        <th> Language</th>-->
+<!--                        <th> Message</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr class="table" th:each="dictionaryEntry, index : *{name.dictionaries} ">-->
+<!--                        <td>-->
+<!--                            <label th:text="${dictionaryEntry.eventLanguage.language.code}"></label></td>-->
+<!--                        <td>-->
+<!--                            <label>-->
+<!--                                <input type="text" th:field="*{name.dictionaries[__${index.index}__].value}">-->
+<!--                            </label>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='name', label='Type name')"></div>
 
         <div th:replace="fragments/form_pieces :: requiredDescription"></div>
         <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>

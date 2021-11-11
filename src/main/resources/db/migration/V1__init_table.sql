@@ -20,16 +20,16 @@ create table event_language_codes
 
 create table events
 (
-    id                  int auto_increment,
-    name_id             int null,
-    description_id      int null,
-    url                 varchar(64) not null,
-    start_date          datetime    not null,
-    end_date            datetime null,
-    main_photo          varchar(128) null,
-    photos              json null,
-    qr_code_template    varchar(128) null,
-    nr_template         varchar(128) null,
+    id               int auto_increment,
+    name_id          int null,
+    description_id   int null,
+    url              varchar(64) not null,
+    start_date       datetime    not null,
+    end_date         datetime    not null,
+    main_photo       varchar(128) null,
+    photos           json null,
+    qr_code_template varchar(128) null,
+    nr_template      varchar(128) null,
     constraint events_pk
         primary key (id),
     constraint events_event_language_codes_id_fk1
@@ -148,8 +148,8 @@ create table categories
 (
     id             int auto_increment,
     event_id       int not null,
-    name_id        int null,
-    description_id int null,
+    name_id        int not null,
+    description_id int not null,
     mode           enum ('year', 'open', 'other') default 'open' not null,
     min_year       int null,
     max_year       int null,
@@ -172,9 +172,9 @@ create table crews
     number        int null,
     car           varchar(64) not null,
     photo         varchar(128) null,
-    description   mediumtext null,
+    description   int         not null,
     year_of_production year not null,
-    driver_name   varchar(64) null,
+    driver_name   varchar(64) not null,
     phone         varchar(16) not null,
     accepted_reg  boolean     not null,
     accepted_rodo boolean     not null,
@@ -182,7 +182,9 @@ create table crews
         primary key (id),
     constraint crews_events_id_fk
         foreign key (event_id) references events (id)
-            on delete cascade
+            on delete cascade,
+    constraint crews_event_language_codes_id_fk
+        foreign key (description) references event_language_codes (id)
 );
 
 create
@@ -243,7 +245,7 @@ create table competitions
     column_8           int null,
     number_of_subsets  int null,
     might_be_invalid   boolean not null,
-    additiona1         float null,
+    additional1         float null,
     additional2        float null,
     additional3        float null,
     constraint competitions_pk
@@ -279,7 +281,7 @@ create table scores
     competition_id int                   not null,
     crew_id        int                   not null,
     invalid_result boolean default false not null,
-    error_occured  boolean default false not null,
+    error_occurred  boolean default false not null,
     additional1    float null,
     additional2    float null,
     additional3    float null,
