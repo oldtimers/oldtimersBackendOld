@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model.projection;
 
 import org.hibernate.validator.constraints.Length;
+import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.validator.FieldsValueMatch;
 
 import javax.validation.constraints.AssertTrue;
@@ -41,6 +42,23 @@ public class UserWriteModel {
     @NotNull
     @AssertTrue(message = "b")
     private Boolean acceptedRodo = false;
+    @NotNull
+    private DefaultLanguageSelector languageSelector;
+
+    public UserWriteModel() {
+    }
+
+    public UserWriteModel(DefaultLanguageSelector languageSelector) {
+        this.languageSelector = languageSelector;
+    }
+
+    public DefaultLanguageSelector getLanguageSelector() {
+        return languageSelector;
+    }
+
+    public void setLanguageSelector(DefaultLanguageSelector languageSelector) {
+        this.languageSelector = languageSelector;
+    }
 
     public String getLogin() {
         return login;

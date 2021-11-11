@@ -18,7 +18,7 @@ public class CompetitionField {
     @JoinColumn(name = "label_id", nullable = false)
     private EventLanguageCode label;
 
-    @Enumerated(javax.persistence.EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, columnDefinition = "enum")
     private CompetitionFieldTypeEnum type;
 

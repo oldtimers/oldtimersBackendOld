@@ -15,6 +15,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.validation.Valid;
 
@@ -22,9 +23,11 @@ import javax.validation.Valid;
 @Controller
 public class LoginController {
     private final UserRepository userRepo;
+    private final LanguageService languageService;
 
-    public LoginController(UserRepository userRepo) {
+    public LoginController(UserRepository userRepo, LanguageService languageService) {
         this.userRepo = userRepo;
+        this.languageService = languageService;
     }
 
     @GetMapping("/login")
@@ -34,7 +37,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new UserWriteModel());
+        model.addAttribute("user", new UserWriteModel(languageService.generateDefaultLanguageSelector()));
         return "signup_form";
     }
 

@@ -45,19 +45,23 @@ create unique index events_url_uindex
 
 create table users
 (
-    id            int auto_increment,
-    login         varchar(32)            not null,
-    first_name    varchar(64)            not null,
-    last_name     varchar(64)            not null,
-    password      varchar(60)            not null,
-    phone         varchar(16)            not null,
-    email         varchar(64)            not null,
-    accepted_reg  boolean                not null,
-    accepted_rodo boolean                not null,
-    create_time   datetime default now() not null,
-    last_login    datetime null,
+    id               int auto_increment,
+    login            varchar(32)            not null,
+    first_name       varchar(64)            not null,
+    last_name        varchar(64)            not null,
+    password         varchar(60)            not null,
+    phone            varchar(16)            not null,
+    email            varchar(64)            not null,
+    accepted_reg     boolean                not null,
+    accepted_rodo    boolean                not null,
+    create_time      datetime default now() not null,
+    default_language int                    not null,
+    last_login       datetime null,
     constraint users_pk
-        primary key (id)
+        primary key (id),
+    constraint users_languages_id_fk
+        foreign key (default_language) references languages (id)
+            on delete cascade
 );
 
 create
@@ -70,7 +74,7 @@ create table user_groups
     id             int auto_increment,
     event_id       int null,
     user_id        int not null,
-    selected_group enum ('owner','judge','organizer','admin') not null,
+    selected_group enum ('ROLE_OWNER','ROLE_JUDGE','ROLE_ORGANIZER','ROLE_ADMIN') not null,
     constraint user_groups_pk
         primary key (id),
     constraint user_groups_events_id_fk
@@ -245,7 +249,7 @@ create table competitions
     column_8           int null,
     number_of_subsets  int null,
     might_be_invalid   boolean not null,
-    additional1         float null,
+    additional1        float null,
     additional2        float null,
     additional3        float null,
     constraint competitions_pk
@@ -281,7 +285,7 @@ create table scores
     competition_id int                   not null,
     crew_id        int                   not null,
     invalid_result boolean default false not null,
-    error_occurred  boolean default false not null,
+    error_occurred boolean default false not null,
     additional1    float null,
     additional2    float null,
     additional3    float null,

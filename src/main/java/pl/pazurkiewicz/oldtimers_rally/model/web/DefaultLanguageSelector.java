@@ -8,12 +8,15 @@ import java.util.List;
 
 
 public class DefaultLanguageSelector {
-    private final List<Language> possibleLanguages;
+    private List<Language> possibleLanguages;
     private Language defaultLanguage;
 
-    public DefaultLanguageSelector(LanguageService languageService, LanguageRepository repository) {
-        this.defaultLanguage = languageService.getDefaultSystemLanguage();
-        this.possibleLanguages = repository.findAll();
+    public DefaultLanguageSelector(List<Language> possibleLanguages, Language defaultLanguage) {
+        this.possibleLanguages = possibleLanguages;
+        this.defaultLanguage = defaultLanguage;
+    }
+
+    public DefaultLanguageSelector() {
     }
 
     public List<Language> getPossibleLanguages() {

@@ -4,21 +4,35 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
+import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
     private final User user;
 
-    public MyUserDetails(User user){
+    public MyUserDetails(User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_ADMIN");
-        return List.of(authority);
+        ArrayList<GrantedAuthority> authorities = user.getUserGroups().stream().filter(userGroup -> userGroup.getEvent() == null)
+                .map(group -> new SimpleGrantedAuthority(group.getSelectedGroup().toString())).collect(Collectors.toCollection(ArrayList::new));
+        for (UserGroup userGroup : user.getUserGroups()) {
+            if (userGroup.getEvent() == null) {
+                authorities.add(new SimpleGrantedAuthority(userGroup.getSelectedGroup().toString()));
+            } else {
+                authorities.add(new SimpleGrantedAuthority(userGroup.getSelectedGroup().toString() + "__" + userGroup.getEvent().getId()));
+            }
+        }
+        return authorities;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override

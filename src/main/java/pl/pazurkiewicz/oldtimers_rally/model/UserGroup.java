@@ -20,9 +20,12 @@ public class UserGroup {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Enumerated(javax.persistence.EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "selected_group", nullable = false, columnDefinition = "enum")
     private UserGroupEnum selectedGroup;
+
+    public UserGroup() {
+    }
 
     public UserGroupEnum getSelectedGroup() {
         return selectedGroup;
@@ -54,5 +57,11 @@ public class UserGroup {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public UserGroup(Event event, User user, UserGroupEnum selectedGroup) {
+        this.event = event;
+        this.user = user;
+        this.selectedGroup = selectedGroup;
     }
 }

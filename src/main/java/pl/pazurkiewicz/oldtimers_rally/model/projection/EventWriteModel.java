@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model.projection;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.pazurkiewicz.oldtimers_rally.model.Dictionary;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
@@ -20,7 +19,6 @@ import java.lang.annotation.Target;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -74,7 +72,7 @@ public class EventWriteModel {
 
     public static EventWriteModel generateNewEventWriteModel(LanguageService languageService, LanguageRepository repository) {
         Event event = new Event();
-        DefaultLanguageSelector defaultLanguageSelector = new DefaultLanguageSelector(languageService, repository);
+        DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelector();
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
         EventWriteModel eventWriteModel = new EventWriteModel(event, defaultLanguageSelector, possibleLanguageSelector);
         eventWriteModel.name = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));

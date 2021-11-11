@@ -6,6 +6,7 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.error.InvalidConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
+import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 
 @Service
@@ -23,5 +24,9 @@ public class LanguageService {
             throw new InvalidConfigurationProperties("Invalid property: custom.defaultLanguage");
         }
         return result;
+    }
+
+    public DefaultLanguageSelector generateDefaultLanguageSelector(){
+        return new DefaultLanguageSelector(repository.findAll(),getDefaultSystemLanguage());
     }
 }

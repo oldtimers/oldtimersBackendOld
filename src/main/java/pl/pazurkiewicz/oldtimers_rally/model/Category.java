@@ -22,7 +22,7 @@ public class Category {
     @JoinColumn(name = "description_id", nullable = false)
     private EventLanguageCode description;
 
-    @Enumerated(javax.persistence.EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "mode", nullable = false, columnDefinition = "enum")
     private CategoryEnum mode;
 

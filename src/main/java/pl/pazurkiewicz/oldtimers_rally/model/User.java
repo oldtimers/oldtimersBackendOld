@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.springframework.context.annotation.Lazy;
 import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
 
 import javax.persistence.*;
@@ -46,8 +47,20 @@ public class User {
     @Column(name = "last_login")
     private Instant lastLogin;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserGroup> userGroups;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "default_language", nullable = false)
+    private Language defaultLanguage;
+
+    public Language getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(Language defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
 
     public User() {
     }
@@ -63,6 +76,7 @@ public class User {
         acceptedRodo = model.getAcceptedRodo();
         createTime = Instant.now();
         lastLogin = Instant.now();
+        defaultLanguage = model.getLanguageSelector().getDefaultLanguage();
     }
 
     public Set<UserGroup> getUserGroups() {

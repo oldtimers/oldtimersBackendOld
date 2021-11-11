@@ -22,7 +22,7 @@ public class Competition {
     @JoinColumn(name = "description_id", nullable = false)
     private EventLanguageCode description;
 
-    @Enumerated(javax.persistence.EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, columnDefinition = "enum")
     private CompetitionTypeEnum type;
 
@@ -35,7 +35,7 @@ public class Competition {
     @Column(name = "max_ranking_points", nullable = false)
     private Integer maxRankingPoints;
 
-    @Enumerated(javax.persistence.EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "current_state", nullable = false, columnDefinition = "enum")
     private CompetitionCurrentStateEnum currentState;
 
