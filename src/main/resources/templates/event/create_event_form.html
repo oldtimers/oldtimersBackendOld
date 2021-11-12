@@ -3,7 +3,7 @@
 <head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
 <body>
 <!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.projection.EventWriteModel"*/-->
-<form th:action="@{/rally/create}" th:object="${event}"
+<form th:action="@{/rally/create}" th:object="${newEvent}"
       method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">
         <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>

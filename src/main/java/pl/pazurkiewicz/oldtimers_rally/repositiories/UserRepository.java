@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     User getUserByLogin(String login);

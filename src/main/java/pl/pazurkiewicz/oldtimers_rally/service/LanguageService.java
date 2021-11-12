@@ -26,7 +26,7 @@ public class LanguageService {
         return result;
     }
 
-    public DefaultLanguageSelector generateDefaultLanguageSelector(){
-        return new DefaultLanguageSelector(repository.findAll(),getDefaultSystemLanguage());
+    public DefaultLanguageSelector generateDefaultLanguageSelector() {
+        return new DefaultLanguageSelector(repository.findAll(), getDefaultSystemLanguage());
     }
 }

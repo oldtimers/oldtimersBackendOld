@@ -1,8 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
-import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 
 import java.util.List;
 

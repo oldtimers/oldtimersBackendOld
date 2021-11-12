@@ -32,9 +32,9 @@ public class PossibleLanguageSelector {
                 .collect(Collectors.toList());
     }
 
-    public void reload(DefaultLanguageSelector defaultLanguageSelector){
+    public void reload(DefaultLanguageSelector defaultLanguageSelector) {
         possibleLanguages.stream()
-                .filter(languageSelectorElement -> Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(),languageSelectorElement.getLanguage().getId()))
+                .filter(languageSelectorElement -> Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(), languageSelectorElement.getLanguage().getId()))
                 .forEach(languageSelectorElement -> languageSelectorElement.setAccept(true));
     }
 }

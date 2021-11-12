@@ -1,8 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
-import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
+import pl.pazurkiewicz.oldtimers_rally.model.Language;
 
 public class LanguageSelectorElement {
     private Language language;

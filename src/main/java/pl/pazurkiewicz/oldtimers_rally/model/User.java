@@ -1,6 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import org.springframework.context.annotation.Lazy;
 import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
 
 import javax.persistence.*;

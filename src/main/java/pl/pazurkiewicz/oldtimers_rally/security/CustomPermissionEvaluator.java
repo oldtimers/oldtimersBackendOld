@@ -9,8 +9,8 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final Logger logger = LoggerFactory.getLogger(CustomPermissionEvaluator.class);
@@ -21,7 +21,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         this.eventRepository = eventRepository;
     }
 
-    private static void addPermission(List<String> permissions, Integer eventId, String permission) {
+    private static void addPermission(Set<String> permissions, Integer eventId, String permission) {
         permissions.add(permission);
         if (eventId != null) {
             permissions.add(generateEventPermission(eventId, permission));
@@ -69,7 +69,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean hasPrivilege(Authentication auth, Integer eventId, String permission) {
-        ArrayList<String> possible_permissions = new ArrayList<>();
+        Set<String> possible_permissions = new HashSet<>();
 
         switch (permission) {
             case UserGroupEnum.Constants.JUDGE_VALUE:

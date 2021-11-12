@@ -7,8 +7,6 @@ import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 

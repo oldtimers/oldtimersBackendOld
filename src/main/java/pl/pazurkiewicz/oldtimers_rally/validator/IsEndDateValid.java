@@ -32,6 +32,7 @@ public @interface IsEndDateValid {
 
         private String startDate;
         private String endDate;
+
         @Override
         public void initialize(IsEndDateValid constraintAnnotation) {
             this.startDate = constraintAnnotation.startDate();
@@ -44,7 +45,7 @@ public @interface IsEndDateValid {
                     .getPropertyValue(startDate);
             LocalDateTime endDateValue = (LocalDateTime) new BeanWrapperImpl(value)
                     .getPropertyValue(endDate);
-            if (startDateValue != null && endDateValue != null && startDateValue.isBefore(endDateValue)){
+            if (startDateValue != null && endDateValue != null && startDateValue.isBefore(endDateValue)) {
                 return true;
             } else {
                 context.disableDefaultConstraintViolation();
