@@ -27,7 +27,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/rally")
+@RequestMapping
 @SessionAttributes("event")
 public class EventController {
     private final LanguageService languageService;
@@ -42,14 +42,14 @@ public class EventController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/create")
+    @GetMapping("/rally/create")
     String showCreationForm(Model model) {
         model.addAttribute("event",EventWriteModel.generateNewEventWriteModel(languageService, languageRepository));
         return "event/create_event_form";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/create")
+    @PostMapping("/rally/create")
     @Transactional
     String createEvent(@ModelAttribute("event") @Valid EventWriteModel event, BindingResult bindingResult,@AuthenticationPrincipal MyUserDetails principal) {
         if (bindingResult.hasErrors()) {
@@ -66,9 +66,9 @@ public class EventController {
         return EventWriteModel.generateNewEventWriteModel(languageService, languageRepository);
     }
 
-    @PreAuthorize("hasPermission('OWNER__6')")
-    @GetMapping("/test")
-    String test(){
+    @PreAuthorize("hasPermission(#url,'Event','"+ UserGroupEnum.Constants.ADMIN_VALUE +"')")
+    @GetMapping("/{url}/edit")
+    String test(@PathVariable String url){
         return "index";
     }
 }

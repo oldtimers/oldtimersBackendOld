@@ -8,7 +8,6 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
     private final User user;
@@ -19,13 +18,14 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> authorities = user.getUserGroups().stream().filter(userGroup -> userGroup.getEvent() == null)
-                .map(group -> new SimpleGrantedAuthority(group.getSelectedGroup().toString())).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         for (UserGroup userGroup : user.getUserGroups()) {
             if (userGroup.getEvent() == null) {
                 authorities.add(new SimpleGrantedAuthority(userGroup.getSelectedGroup().toString()));
             } else {
-                authorities.add(new SimpleGrantedAuthority(userGroup.getSelectedGroup().toString() + "__" + userGroup.getEvent().getId()));
+                authorities.add(new SimpleGrantedAuthority(
+                        CustomPermissionEvaluator.generateEventPermission(userGroup.getEvent().getId(), userGroup.getSelectedGroup().toString())
+                ));
             }
         }
         return authorities;
