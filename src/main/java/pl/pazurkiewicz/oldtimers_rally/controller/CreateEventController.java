@@ -1,19 +1,19 @@
 package pl.pazurkiewicz.oldtimers_rally.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.projection.EventWriteModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserGroupRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
+import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.transaction.Transactional;
@@ -25,14 +25,13 @@ import javax.validation.Valid;
 public class CreateEventController {
     private final LanguageService languageService;
     private final LanguageRepository languageRepository;
-    private final EventRepository eventRepository;
-    private final UserGroupRepository userGroupRepository;
+    private final EventService eventService;
+    private final Logger logger = LoggerFactory.getLogger(CreateEventController.class);
 
-    CreateEventController(LanguageService languageService, LanguageRepository languageRepository, EventRepository eventRepository, UserGroupRepository userGroupRepository) {
+    CreateEventController(LanguageService languageService, LanguageRepository languageRepository, EventService eventService) {
         this.languageService = languageService;
         this.languageRepository = languageRepository;
-        this.eventRepository = eventRepository;
-        this.userGroupRepository = userGroupRepository;
+        this.eventService = eventService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -45,24 +44,29 @@ public class CreateEventController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     @Transactional
-    String createEvent(@ModelAttribute("newEvent") @Valid EventWriteModel event, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails principal) {
+    String createEvent
+            (@ModelAttribute("newEvent") @Valid EventWriteModel event,
+             BindingResult bindingResult,
+             @AuthenticationPrincipal MyUserDetails principal,
+             RedirectAttributes redirectAttributes
+            ) {
         if (bindingResult.hasErrors()) {
             return "event/create_event_form";
         }
-        Event saved = eventRepository.save(event.generateEvent());
-        userGroupRepository.save(new UserGroup(saved, principal.getUser(), UserGroupEnum.ROLE_OWNER));
+        Event saved = eventService.saveFirstTime(event, principal);
+        redirectAttributes.addAttribute("url", saved.getUrl());
+        return "redirect:/{url}/edit";
+    }
 
-        return "index";
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(path = "/create", params = "reload")
+    String reloadEvent(@ModelAttribute("newEvent") @Valid EventWriteModel event, BindingResult bindingResult) {
+//        Reload is done during object validation
+        return "event/create_event_form";
     }
 
     @ModelAttribute("newEvent")
     EventWriteModel getEvent() {
         return EventWriteModel.generateNewEventWriteModel(languageService, languageRepository);
-    }
-
-    @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ADMIN_VALUE + "')")
-    @GetMapping("/{url}/edit")
-    String test(@PathVariable String url) {
-        return "index";
     }
 }

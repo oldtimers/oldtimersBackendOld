@@ -194,3 +194,7 @@
 <div th:fragment="submitButton (title)">
     <button type="submit" class="btn btn-primary" th:text="${title}"></button>
 </div>
+
+<div th:fragment="reloadButton (title)">
+    <button class="btn btn-primary" name="reload" th:text="${title}" type="submit"></button>
+</div>

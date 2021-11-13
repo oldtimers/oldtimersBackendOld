@@ -9,9 +9,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
 
@@ -21,17 +24,17 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final SessionRegistry SESSION_REGISTRY = new SessionRegistryImpl();
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private AuthenticationSuccessHandlerImpl successHandler;
-
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private CustomPermissionEvaluator permissionEvaluator;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -48,7 +51,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder);
-
         return authProvider;
     }
 
@@ -64,9 +66,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
+        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+        handler.setPermissionEvaluator(permissionEvaluator);
         web.ignoring()
-                .antMatchers("/resources/**");
+                .antMatchers("/resources/**")
+                .and()
+                .expressionHandler(handler)
+        ;
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

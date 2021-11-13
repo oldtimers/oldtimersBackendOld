@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title=${event.name.getDictionary(#locale)})"></head>
+<body>
+<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.Event"*/-->
+<h1>Event name:</h1>
+<h2 th:text="${event.name.getDictionary(#locale)}"></h2>
+<h1>Description:</h1>
+<h2 th:text="${event.description.getDictionary(#locale)}"></h2>
+</body>
+</html>

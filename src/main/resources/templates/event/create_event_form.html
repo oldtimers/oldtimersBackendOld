@@ -13,9 +13,8 @@
         <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='description', label='Type description')"></div>
         <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='Type start date')"></div>
         <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
-
-
         <div th:replace="fragments/form_pieces :: requiredDescription"></div>
+        <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
         <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
     </div>
 </form>

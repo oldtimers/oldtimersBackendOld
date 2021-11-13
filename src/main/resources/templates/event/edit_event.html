@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:text="${T(pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum).ROLE_ORGANIZER}"></p>
+
+<p th:text="${event.id}"></p>
+<div sec:authorize="hasPermission(#vars.event,'ROLE_ORGANIZER')">
+    <p>test</p>
+</div>
+<!--<div sec:authorize="hasPermission(${event},T(pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum).ROLE_ORGANIZER)">TEST</div>-->
+
+</body>
+</html>

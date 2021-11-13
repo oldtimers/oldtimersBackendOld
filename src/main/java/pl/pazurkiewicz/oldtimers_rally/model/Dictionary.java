@@ -10,15 +10,12 @@ import javax.persistence.*;
 @Entity
 @IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault")
 public class Dictionary {
-    @Transient
-    private Boolean xd = true;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "event_language_id", nullable = false)
     private EventLanguage eventLanguage;
 
@@ -34,14 +31,6 @@ public class Dictionary {
         dictionary.setCode(code);
         dictionary.setEventLanguage(eventLanguage);
         return dictionary;
-    }
-
-    public Boolean getXd() {
-        return xd;
-    }
-
-    public void setXd(Boolean xd) {
-        this.xd = xd;
     }
 
     public String getValue() {

@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.User;
+import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
 
@@ -12,6 +15,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Component
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final Logger logger = LoggerFactory.getLogger(CustomPermissionEvaluator.class);
 
@@ -31,6 +35,15 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     public static String generateEventPermission(Integer eventId, String permission) {
         return permission + "__" + eventId;
     }
+
+    public static String generateEventPermission(UserGroup userGroup) {
+        if (userGroup.getEvent() == null) {
+            return userGroup.getSelectedGroup().toString();
+        } else {
+            return generateEventPermission(userGroup.getEvent().getId(), userGroup.getSelectedGroup().toString());
+        }
+    }
+
 
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -59,28 +72,34 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         Integer eventId = null;
         if (target instanceof String) {
             eventId = eventRepository.getIdByUrl((String) target);
+
         } else if (target instanceof Integer) {
             eventId = (Integer) target;
         }
         if (target != null && eventId == null) {
-            logger.error("Unknown or unreachable target: " + target);
+            logger.info("Unknown or unreachable target: " + target);
+            return true;
         }
         return hasPrivilege(authentication, eventId, permission.toString().toUpperCase());
     }
 
     private boolean hasPrivilege(Authentication auth, Integer eventId, String permission) {
-        Set<String> possible_permissions = new HashSet<>();
-
+        Set<String> possiblePermissions = new HashSet<>();
         switch (permission) {
             case UserGroupEnum.Constants.JUDGE_VALUE:
-                addPermission(possible_permissions, eventId, UserGroupEnum.Constants.JUDGE_VALUE);
+                addPermission(possiblePermissions, eventId, UserGroupEnum.Constants.JUDGE_VALUE);
             case UserGroupEnum.Constants.ORGANIZER_VALUE:
-                addPermission(possible_permissions, eventId, UserGroupEnum.Constants.ORGANIZER_VALUE);
+                addPermission(possiblePermissions, eventId, UserGroupEnum.Constants.ORGANIZER_VALUE);
             case UserGroupEnum.Constants.OWNER_VALUE:
-                addPermission(possible_permissions, eventId, UserGroupEnum.Constants.OWNER_VALUE);
+                addPermission(possiblePermissions, eventId, UserGroupEnum.Constants.OWNER_VALUE);
             default:
-                addPermission(possible_permissions, eventId, UserGroupEnum.Constants.ADMIN_VALUE);
+                addPermission(possiblePermissions, eventId, UserGroupEnum.Constants.ADMIN_VALUE);
         }
-        return auth.getAuthorities().stream().anyMatch(authority -> possible_permissions.contains(authority.getAuthority()));
+        Object myUserDetails = auth.getPrincipal();
+        if (!(myUserDetails instanceof MyUserDetails)) {
+            return false;
+        }
+        User user = ((MyUserDetails) auth.getPrincipal()).getUser();
+        return user.getUserGroups().stream().map(CustomPermissionEvaluator::generateEventPermission).anyMatch(possiblePermissions::contains);
     }
 }

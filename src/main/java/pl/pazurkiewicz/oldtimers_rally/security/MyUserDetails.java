@@ -10,26 +10,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class MyUserDetails implements UserDetails {
-    private final User user;
+    private User user;
 
     public MyUserDetails(User user) {
         this.user = user;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
         for (UserGroup userGroup : user.getUserGroups()) {
             if (userGroup.getEvent() == null) {
                 authorities.add(new SimpleGrantedAuthority(userGroup.getSelectedGroup().toString()));
-            } else {
-                authorities.add(new SimpleGrantedAuthority(
-                        CustomPermissionEvaluator.generateEventPermission(userGroup.getEvent().getId(), userGroup.getSelectedGroup().toString())
-                ));
             }
+//            Else it will be taken from user object
         }
         return authorities;
     }
+
 
     public User getUser() {
         return user;

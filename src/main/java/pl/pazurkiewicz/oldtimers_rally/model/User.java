@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
 
 import javax.persistence.*;
@@ -46,10 +48,11 @@ public class User {
     @Column(name = "last_login")
     private Instant lastLogin;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
     private Set<UserGroup> userGroups;
 
-    @ManyToOne(optional = false)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "default_language", nullable = false)
     private Language defaultLanguage;
 
@@ -168,5 +171,9 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setUserGroups(Set<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 }

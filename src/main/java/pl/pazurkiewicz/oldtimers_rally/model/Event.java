@@ -33,11 +33,11 @@ public class Event {
     @JoinColumn(name = "event_id")
     private List<EventLanguage> eventLanguages;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "name_id")
     private EventLanguageCode name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "description_id")
     private EventLanguageCode description;
 

@@ -13,13 +13,13 @@ import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 @ApplicationScope
 public class LanguageService {
     @Autowired
-    private LanguageRepository repository;
+    private LanguageRepository languageRepository;
 
     @Autowired
     private MyConfigurationProperties properties;
 
     public Language getDefaultSystemLanguage() {
-        Language result = repository.getLanguageByCode(properties.getDefaultLanguage());
+        Language result = languageRepository.getLanguageByCode(properties.getDefaultLanguage());
         if (result == null) {
             throw new InvalidConfigurationProperties("Invalid property: custom.defaultLanguage");
         }
@@ -27,6 +27,6 @@ public class LanguageService {
     }
 
     public DefaultLanguageSelector generateDefaultLanguageSelector() {
-        return new DefaultLanguageSelector(repository.findAll(), getDefaultSystemLanguage());
+        return new DefaultLanguageSelector(languageRepository.findAll(), getDefaultSystemLanguage());
     }
 }

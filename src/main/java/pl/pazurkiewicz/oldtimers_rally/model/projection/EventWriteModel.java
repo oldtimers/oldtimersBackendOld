@@ -10,6 +10,7 @@ import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsEndDateValid;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
+import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlPossible;
 
 import javax.validation.*;
 import javax.validation.constraints.NotBlank;
@@ -62,6 +63,7 @@ public class EventWriteModel {
     private LocalDateTime endDate = startDate.plus(1, ChronoUnit.DAYS);
     @NotBlank
     @IsUrlAvailable
+    @IsUrlPossible
     private String url;
 
     private EventWriteModel(Event event, DefaultLanguageSelector defaultLanguage, PossibleLanguageSelector possibleLanguageSelector) {
@@ -80,10 +82,15 @@ public class EventWriteModel {
         return eventWriteModel;
     }
 
+    public static String generateURL(String url) {
+        return url.replace(' ', '_');
+    }
+
     void reload() {
         List<EventLanguage> eventLanguages = possibleLanguageSelector.getEventLanguages(defaultLanguageSelector);
         name.reload(eventLanguages);
         description.reload(eventLanguages);
+        url = generateURL(url);
     }
 
     public LocalDateTime getStartDate() {
