@@ -65,6 +65,8 @@ public class EventLanguageCode {
 
     public String getDictionary(Locale locale) {
         for (Dictionary dictionary : dictionaries) {
+            EventLanguage d = dictionary.getEventLanguage();
+
             if (Objects.equals(dictionary.getEventLanguage().getLanguage().getCode(), locale.getLanguage())) {
                 return dictionary.getValue();
             }

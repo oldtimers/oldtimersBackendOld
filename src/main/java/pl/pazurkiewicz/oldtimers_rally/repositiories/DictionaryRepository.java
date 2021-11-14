@@ -1,6 +1,9 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import pl.pazurkiewicz.oldtimers_rally.model.Dictionary;
 
-public interface DictionaryRepository extends CustomRepository<Dictionary, Integer> {
+@Repository
+public interface DictionaryRepository extends JpaRepository<Dictionary, Integer> {
 }

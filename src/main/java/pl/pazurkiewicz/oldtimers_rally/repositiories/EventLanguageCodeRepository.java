@@ -1,6 +1,9 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
 
-public interface EventLanguageCodeRepository extends CustomRepository<EventLanguageCode, Integer> {
+@Repository
+public interface EventLanguageCodeRepository extends JpaRepository<EventLanguageCode, Integer> {
 }
