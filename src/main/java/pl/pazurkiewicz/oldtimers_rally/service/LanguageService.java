@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.error.InvalidConfigurationProperties;
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
@@ -28,5 +29,9 @@ public class LanguageService {
 
     public DefaultLanguageSelector generateDefaultLanguageSelector() {
         return new DefaultLanguageSelector(languageRepository.findAll(), getDefaultSystemLanguage());
+    }
+
+    public DefaultLanguageSelector generateDefaultLanguageSelectorByEvent(Event event) {
+        return new DefaultLanguageSelector(languageRepository.findAll(), event.getDefaultLanguage().getLanguage());
     }
 }

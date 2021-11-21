@@ -1,20 +1,18 @@
 package pl.pazurkiewicz.oldtimers_rally.controller;
 
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
 
 import java.util.Locale;
 
 @Controller
-@RequestMapping()
+@RequestMapping
 public class EventController {
     private final EventRepository eventRepository;
 
@@ -33,16 +31,6 @@ public class EventController {
         return "event/show_event";
     }
 
-    @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    @GetMapping("/{url}/edit")
-    String test(@PathVariable String url, Model model) {
-        Event event = eventRepository.getByUrl(url);
-        if (event == null) {
-            throw new ResourceNotFoundException();
-        }
-        model.addAttribute("event", event);
-        return "event/edit_event";
-    }
 
 
 }

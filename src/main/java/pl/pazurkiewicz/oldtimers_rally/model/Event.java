@@ -2,12 +2,15 @@ package pl.pazurkiewicz.oldtimers_rally.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.*;
+import pl.pazurkiewicz.oldtimers_rally.error.InvalidEventConfiguration;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "events")
@@ -30,8 +33,9 @@ public class Event {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "event_id")
-    private List<EventLanguage> eventLanguages;
+    private List<EventLanguage> eventLanguages = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "name_id")
@@ -61,7 +65,7 @@ public class Event {
     private String nrTemplate;
 
     @Column(name = "url", nullable = false, length = 64)
-    private String url;
+    private String url = "";
 
     public String getUrl() {
         return url;
@@ -141,5 +145,9 @@ public class Event {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public EventLanguage getDefaultLanguage() {
+        return eventLanguages.stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
     }
 }

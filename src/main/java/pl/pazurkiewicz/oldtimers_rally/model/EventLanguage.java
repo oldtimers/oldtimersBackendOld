@@ -12,7 +12,7 @@ public class EventLanguage {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
@@ -36,8 +36,8 @@ public class EventLanguage {
         return isDefault;
     }
 
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
+    public void setIsDefault(Boolean aDefault) {
+        isDefault = aDefault;
     }
 
     public Language getLanguage() {

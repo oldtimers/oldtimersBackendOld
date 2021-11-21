@@ -9,7 +9,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    Boolean existsEventByUrl(String url);
+Boolean existsByUrlAndUrlNot(String url, String oldUrl);
 
     @Cacheable(value = "eventsExists")
     @Query("select e.id from Event e where e.url = :url")

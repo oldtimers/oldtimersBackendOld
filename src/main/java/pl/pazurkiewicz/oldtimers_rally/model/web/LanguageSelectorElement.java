@@ -10,7 +10,9 @@ public class LanguageSelectorElement {
     private Boolean accept;
 
     LanguageSelectorElement(Event event, Language language, Boolean accept) {
-        eventLanguage = new EventLanguage(event, language, false);
+        this.eventLanguage = event.getEventLanguages().stream()
+                .filter(el -> el.getLanguage().getId().equals(language.getId())).findFirst()
+                .orElseGet(() -> new EventLanguage(event, language, false));
         this.language = language;
         this.accept = accept;
     }
@@ -20,10 +22,6 @@ public class LanguageSelectorElement {
 
     public EventLanguage getEventLanguage() {
         return eventLanguage;
-    }
-
-    public void setEventLanguage(EventLanguage eventLanguage) {
-        this.eventLanguage = eventLanguage;
     }
 
     public Language getLanguage() {

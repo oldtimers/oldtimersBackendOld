@@ -65,7 +65,6 @@ public class EventLanguageCode {
 
     public String getDictionary(Locale locale) {
         for (Dictionary dictionary : dictionaries) {
-            EventLanguage d = dictionary.getEventLanguage();
 
             if (Objects.equals(dictionary.getEventLanguage().getLanguage().getCode(), locale.getLanguage())) {
                 return dictionary.getValue();
@@ -73,8 +72,7 @@ public class EventLanguageCode {
         }
         return dictionaries.stream().filter(dictionary -> dictionary.getEventLanguage().getIsDefault())
                 .findFirst()
-                .map(Dictionary::getValue)
-                .orElse(getAnyDictionary());
+                .map(Dictionary::getValue).orElseGet(this::getAnyDictionary);
     }
 
     private String getAnyDictionary() {

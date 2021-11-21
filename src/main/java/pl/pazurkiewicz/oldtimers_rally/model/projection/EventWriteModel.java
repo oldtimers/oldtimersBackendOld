@@ -6,7 +6,6 @@ import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
 import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.model.web.PossibleLanguageSelector;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsEndDateValid;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
@@ -46,41 +45,72 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 }
 
 @Reload
+@IsUrlAvailable(url = "url", old = "event.url")
 @IsEndDateValid(startDate = "startDate", endDate = "endDate")
 public class EventWriteModel {
+    private final Event event;
     private final PossibleLanguageSelector possibleLanguageSelector;
     private final DefaultLanguageSelector defaultLanguageSelector;
-    Event event;
     @Valid
-    private EventLanguageCode name;
+    private final EventLanguageCode name;
     @Valid
-    private EventLanguageCode description;
+    private final EventLanguageCode description;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime startDate = LocalDateTime.now();
+    private LocalDateTime startDate;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime endDate = startDate.plus(1, ChronoUnit.DAYS);
+    private LocalDateTime endDate;
     @NotBlank
-    @IsUrlAvailable
     @IsUrlPossible
     private String url;
 
-    private EventWriteModel(Event event, DefaultLanguageSelector defaultLanguage, PossibleLanguageSelector possibleLanguageSelector) {
+    public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector, EventLanguageCode name, EventLanguageCode description, LocalDateTime startDate, LocalDateTime endDate, String url) {
         this.event = event;
-        this.defaultLanguageSelector = defaultLanguage;
         this.possibleLanguageSelector = possibleLanguageSelector;
+        this.defaultLanguageSelector = defaultLanguageSelector;
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.url = url;
     }
 
-    public static EventWriteModel generateNewEventWriteModel(LanguageService languageService, LanguageRepository repository) {
+    public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector) {
+        this.event = event;
+        this.possibleLanguageSelector = possibleLanguageSelector;
+        this.defaultLanguageSelector = defaultLanguageSelector;
+        this.name = event.getName();
+        this.description = event.getDescription();
+        this.startDate = event.getStartDate();
+        this.endDate = event.getEndDate();
+        this.url = event.getUrl();
+    }
+
+    public static EventWriteModel generateNewEventWriteModel(LanguageService languageService) {
         Event event = new Event();
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelector();
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
-        EventWriteModel eventWriteModel = new EventWriteModel(event, defaultLanguageSelector, possibleLanguageSelector);
-        eventWriteModel.name = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
-        eventWriteModel.description = EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
-        return eventWriteModel;
+        return new EventWriteModel(
+                event,
+                possibleLanguageSelector,
+                defaultLanguageSelector,
+                EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector)),
+                EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector)),
+                LocalDateTime.now(),
+                LocalDateTime.now().plus(1, ChronoUnit.DAYS),
+                null
+        );
+
+
     }
+
+    public static EventWriteModel generateByEvent(Event event, LanguageService languageService) {
+        DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelectorByEvent(event);
+        PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
+        return new EventWriteModel(event, possibleLanguageSelector, defaultLanguageSelector);
+    }
+
 
     public static String generateURL(String url) {
         return url.replace(' ', '_');
@@ -109,16 +139,9 @@ public class EventWriteModel {
         return name;
     }
 
-    public void setName(EventLanguageCode name) {
-        this.name = name;
-    }
 
     public EventLanguageCode getDescription() {
         return description;
-    }
-
-    public void setDescription(EventLanguageCode description) {
-        this.description = description;
     }
 
     public LocalDateTime getEndDate() {
@@ -139,6 +162,10 @@ public class EventWriteModel {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Event getEvent() {
+        return event;
     }
 
     public Event generateEvent() {

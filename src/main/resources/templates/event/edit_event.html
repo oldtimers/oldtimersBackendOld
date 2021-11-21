@@ -4,14 +4,31 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
+<a th:href="@{edit/user}">Users</a>
+<a th:href="@{edit/group}">User Groups</a>
+<a th:href="@{edit/competition}">Competitions</a>
+
 <body>
 <p th:text="${T(pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum).ROLE_ORGANIZER}"></p>
 
-<p th:text="${event.id}"></p>
-<div sec:authorize="hasPermission(#vars.event,'ROLE_ORGANIZER')">
-    <p>test</p>
-</div>
-<!--<div sec:authorize="hasPermission(${event},T(pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum).ROLE_ORGANIZER)">TEST</div>-->
+<form method="post" style="max-width: 600px; margin: 0 auto;"
+      th:action="@{${action}}" th:object="${editEvent}">
+    <div class="m-3">
+        <div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">
+            <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+            <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
+            <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='name', label='Type name')"></div>
+        </div>
+        <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='description', label='Type description')"></div>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='Type start date')"></div>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
+        <div th:replace="fragments/form_pieces :: requiredDescription"></div>
+        <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+    </div>
+</form>
 
 </body>
 </html>

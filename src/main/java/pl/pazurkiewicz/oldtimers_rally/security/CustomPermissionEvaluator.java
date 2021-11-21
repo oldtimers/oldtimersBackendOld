@@ -10,6 +10,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiories.UserGroupRepository;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,9 +21,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final Logger logger = LoggerFactory.getLogger(CustomPermissionEvaluator.class);
 
     private final EventRepository eventRepository;
+    private final UserGroupRepository userGroupRepository;
 
-    public CustomPermissionEvaluator(EventRepository eventRepository) {
+    public CustomPermissionEvaluator(EventRepository eventRepository, UserGroupRepository userGroupRepository) {
         this.eventRepository = eventRepository;
+        this.userGroupRepository = userGroupRepository;
     }
 
     private static void addPermission(Set<String> permissions, Integer eventId, String permission) {
@@ -100,6 +103,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return false;
         }
         User user = ((MyUserDetails) auth.getPrincipal()).getUser();
-        return user.getUserGroups().stream().map(CustomPermissionEvaluator::generateEventPermission).anyMatch(possiblePermissions::contains);
+        return userGroupRepository.getByUser_Id(user.getId()).stream().map(CustomPermissionEvaluator::generateEventPermission).anyMatch(possiblePermissions::contains);
     }
 }

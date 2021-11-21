@@ -37,7 +37,7 @@ public class CreateEventController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     String showCreationForm(Model model) {
-        model.addAttribute("newEvent", EventWriteModel.generateNewEventWriteModel(languageService, languageRepository));
+        model.addAttribute("newEvent", EventWriteModel.generateNewEventWriteModel(languageService));
         return "event/create_event_form";
     }
 
@@ -67,6 +67,6 @@ public class CreateEventController {
 
     @ModelAttribute("newEvent")
     EventWriteModel getEvent() {
-        return EventWriteModel.generateNewEventWriteModel(languageService, languageRepository);
+        return EventWriteModel.generateNewEventWriteModel(languageService);
     }
 }
