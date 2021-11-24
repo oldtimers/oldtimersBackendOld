@@ -32,9 +32,8 @@ public class Event implements DatabaseModel {
         this.eventLanguages = eventLanguages;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "event_id")
     private List<EventLanguage> eventLanguages = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

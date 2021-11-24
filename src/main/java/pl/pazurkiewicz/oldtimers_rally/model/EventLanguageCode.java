@@ -52,7 +52,11 @@ public class EventLanguageCode implements DatabaseModel {
 
     //    used for reload during Event creation
     public void reload(List<EventLanguage> eventLanguages) {
-        dictionaries.removeIf(dictionary -> !eventLanguages.contains(dictionary.getEventLanguage()));
+        List<Dictionary> toRemove = dictionaries.stream()
+                .filter(dictionary -> !eventLanguages.contains(dictionary.getEventLanguage()))
+                .peek(dictionary -> dictionary.setEventLanguage(null))
+                .collect(Collectors.toList());
+        dictionaries.removeAll(toRemove);
         for (EventLanguage eventLanguage : eventLanguages) {
             if (dictionaries.stream().filter(dictionary -> dictionary.getEventLanguage().equals(eventLanguage)).findFirst().isEmpty()) {
                 dictionaries.add(Dictionary.generateNewDictionary(eventLanguage, this));
