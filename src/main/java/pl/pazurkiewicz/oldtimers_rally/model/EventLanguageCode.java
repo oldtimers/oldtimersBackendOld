@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Table(name = "event_language_codes")
 @Entity
-public class EventLanguageCode {
+public class EventLanguageCode implements DatabaseModel {
     private final static Logger logger = LoggerFactory.getLogger(EventLanguageCode.class);
 
     @Id

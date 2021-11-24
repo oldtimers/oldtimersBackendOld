@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
 
+import java.util.Optional;
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -16,11 +18,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userRepository.getUserByLogin(login);
-        if (user == null) {
+        Optional<User> user = userRepository.getUserByLoginForLogging(login);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("Could not find user");
         }
 
-        return new MyUserDetails(user);
+        return new MyUserDetails(user.get());
     }
 }

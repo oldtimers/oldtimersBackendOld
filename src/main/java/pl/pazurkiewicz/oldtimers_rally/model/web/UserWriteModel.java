@@ -1,7 +1,6 @@
-package pl.pazurkiewicz.oldtimers_rally.model.projection;
+package pl.pazurkiewicz.oldtimers_rally.model.web;
 
 import org.hibernate.validator.constraints.Length;
-import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.validator.FieldsValueMatch;
 
 import javax.validation.constraints.AssertTrue;

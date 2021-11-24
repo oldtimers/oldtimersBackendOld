@@ -2,17 +2,18 @@ package pl.pazurkiewicz.oldtimers_rally.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Table(name = "users", indexes = {
         @Index(name = "users_login_uindex", columnList = "login", unique = true)
 })
 @Entity
-public class User {
+public class User implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -50,9 +51,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
-    private Set<UserGroup> userGroups;
+    private Set<UserGroup> userGroups = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "default_language", nullable = false)
     private Language defaultLanguage;
 

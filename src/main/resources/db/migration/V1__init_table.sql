@@ -154,7 +154,7 @@ create table categories
     event_id       int not null,
     name_id        int not null,
     description_id int not null,
-    mode           enum ('year', 'open', 'other') default 'open' not null,
+    mode           enum ('year', 'other') default 'other' not null,
     min_year       int null,
     max_year       int null,
     constraint categories_pk

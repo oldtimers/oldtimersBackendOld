@@ -9,7 +9,7 @@ import javax.persistence.*;
 })
 @Entity
 @IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault")
-public class Dictionary {
+public class Dictionary implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

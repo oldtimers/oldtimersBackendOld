@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
 <head>
     <meta charset="UTF-8">
@@ -24,6 +24,12 @@
 </div>
 <div>
     <a th:text="#{validation.user.email}"></a>
+</div>
+
+<div th:each="event : ${events}">
+    <div>
+        <a th:href="@{__${event.url}__}" th:text="${event.name.getDictionary(#locale)}"></a>
+    </div>
 </div>
 </body>
 </html>

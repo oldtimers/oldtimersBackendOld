@@ -11,8 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
-import pl.pazurkiewicz.oldtimers_rally.model.projection.UserWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 
 
 @Controller
+@SessionAttributes("user")
 public class LoginController {
     private final UserRepository userRepo;
     private final LanguageService languageService;
@@ -42,7 +44,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String processRegister(@ModelAttribute("user") @Valid UserWriteModel user, BindingResult bindingResult) {
+    public String processRegister(@ModelAttribute("user") @Valid UserWriteModel user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
@@ -53,6 +55,7 @@ public class LoginController {
         UserDetails userDetails = new MyUserDetails(savedUser);
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
+        model.addAttribute("user", null);
         return "index";
     }
 }

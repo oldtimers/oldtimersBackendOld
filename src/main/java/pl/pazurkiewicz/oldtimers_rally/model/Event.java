@@ -18,7 +18,7 @@ import java.util.List;
 @TypeDefs({
         @TypeDef(name = "json", typeClass = JsonType.class)
 })
-public class Event {
+public class Event implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

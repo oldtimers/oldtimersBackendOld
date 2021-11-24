@@ -6,7 +6,7 @@ import javax.persistence.*;
         @Index(name = "scores_result_index", columnList = "result")
 })
 @Entity
-public class Score {
+public class Score implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -1,11 +1,9 @@
-package pl.pazurkiewicz.oldtimers_rally.model.projection;
+package pl.pazurkiewicz.oldtimers_rally.model.web;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
-import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
-import pl.pazurkiewicz.oldtimers_rally.model.web.PossibleLanguageSelector;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsEndDateValid;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
@@ -104,7 +102,6 @@ public class EventWriteModel {
 
 
     }
-
     public static EventWriteModel generateByEvent(Event event, LanguageService languageService) {
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelectorByEvent(event);
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);

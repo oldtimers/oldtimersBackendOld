@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.controller;
+package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.projection.EventWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;

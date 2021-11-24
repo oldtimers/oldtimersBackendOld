@@ -6,7 +6,7 @@ import javax.persistence.*;
         @Index(name = "qr_codes_qr_uindex", columnList = "qr", unique = true)
 })
 @Entity
-public class QrCode {
+public class QrCode implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

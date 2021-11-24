@@ -6,7 +6,7 @@ import javax.persistence.*;
         @Index(name = "user_groups_event_id_user_id_uindex", columnList = "event_id, user_id", unique = true)
 })
 @Entity
-public class UserGroup {
+public class UserGroup implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

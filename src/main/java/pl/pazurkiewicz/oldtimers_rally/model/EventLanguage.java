@@ -6,7 +6,7 @@ import javax.persistence.*;
         @Index(name = "event_languages_event_id_language_id_uindex", columnList = "event_id, language_id", unique = true)
 })
 @Entity
-public class EventLanguage {
+public class EventLanguage implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -16,7 +16,7 @@ public class EventLanguage {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @JoinColumn(name = "language_id", nullable = false)
     private Language language;
 

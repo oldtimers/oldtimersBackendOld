@@ -6,7 +6,7 @@ import javax.persistence.*;
         @Index(name = "languages_code_uindex", columnList = "code", unique = true)
 })
 @Entity
-public class Language {
+public class Language implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -7,7 +7,7 @@ import java.time.Instant;
         @Index(name = "event_schedule_event_id_selected_order_uindex", columnList = "event_id, selected_order", unique = true)
 })
 @Entity
-public class EventSchedule {
+public class EventSchedule implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

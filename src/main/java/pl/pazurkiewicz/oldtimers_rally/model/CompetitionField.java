@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Table(name = "competition_fields")
 @Entity
-public class CompetitionField {
+public class CompetitionField implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

@@ -15,7 +15,7 @@ import java.time.Year;
         typeClass = YearType.class,
         defaultForType = Year.class
 )
-public class Crew {
+public class Crew implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
