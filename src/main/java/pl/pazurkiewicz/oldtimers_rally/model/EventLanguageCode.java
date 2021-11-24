@@ -21,7 +21,7 @@ public class EventLanguageCode implements DatabaseModel {
     private Integer id;
 
     @Valid
-    @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
     @Fetch(value = FetchMode.JOIN)
     private List<Dictionary> dictionaries = new ArrayList<>();
 
@@ -81,8 +81,8 @@ public class EventLanguageCode implements DatabaseModel {
         }
     }
 
-    @PreUpdate
-    private void prepareForSave(){
+
+    public void prepareForSave(){
         dictionaries.removeIf(dictionary -> dictionary.getValue().isBlank());
     }
 
@@ -97,10 +97,5 @@ public class EventLanguageCode implements DatabaseModel {
             }
         }
         dictionaries.sort(Comparator.comparingInt(Dictionary::getPriority));
-    }
-
-    @PreRemove
-    private void preRemove(){
-        this.dictionaries.clear();
     }
 }

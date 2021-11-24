@@ -168,6 +168,8 @@ public class EventWriteModel {
     }
 
     public Event generateEvent() {
+        name.prepareForSave();
+        description.prepareForSave();
         event.setName(name);
         event.setDescription(description);
         event.setUrl(url);

@@ -32,7 +32,7 @@ public class Event implements DatabaseModel {
         this.eventLanguages = eventLanguages;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "event_id")
     private List<EventLanguage> eventLanguages = new ArrayList<>();
@@ -150,4 +150,10 @@ public class Event implements DatabaseModel {
     public EventLanguage getDefaultLanguage() {
         return eventLanguages.stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
     }
+
+//    @PreUpdate
+//    private void prepareForSave(){
+//        System.out.println(1);
+////        dictionaries.removeIf(dictionary -> dictionary.getValue().isBlank());
+//    }
 }

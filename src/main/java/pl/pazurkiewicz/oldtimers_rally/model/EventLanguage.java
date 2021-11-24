@@ -12,12 +12,12 @@ public class EventLanguage implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "language_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "language_id", nullable = false, updatable = false)
     private Language language;
 
     @Column(name = "is_default", nullable = false)

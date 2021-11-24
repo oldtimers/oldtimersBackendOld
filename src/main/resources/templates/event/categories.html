@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Edit privileges')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='Edit categories')"></head>
 <body>
 <div class="card card-bord">
+    <form method="post" th:action="@{__${action}__/categories}" th:object="${categories}">
+        <div class="card card-bord" th:each="category, info : ${categories.differentCategories}">
+            <h2>Year categories</h2>
+            <table class="table">
+                <tr>
+                    <th>Language</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+                <tr th:each="eventLanguage : ${event.eventLanguages}">
+                    <td th:text="${eventLanguage.language.code}"></td>
+                    <td th:field="${category.}"
+                </tr>
+            </table>
+        </div>
 
+
+        <button class="btn btn-primary" name="reload" th:text="Reset" type="submit"></button>
+        <button class="btn btn-primary" th:text="Save" type="submit"></button>
+    </form>
 </div>
 <div class="card card-bord">
     <a class="btn btn-primary" th:href="@{__${action}__}">Back</a>
