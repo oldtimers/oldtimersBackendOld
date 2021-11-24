@@ -64,4 +64,15 @@ public class Dictionary implements DatabaseModel {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public int getPriority() {
+        if (this.getEventLanguage().getIsDefault()) {
+            return Integer.MIN_VALUE;
+        } else if (this.id == null) {
+            return Integer.MAX_VALUE;
+        } else {
+            return this.getEventLanguage().getLanguage().getId();
+        }
+    }
+
 }

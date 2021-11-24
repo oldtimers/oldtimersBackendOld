@@ -37,11 +37,11 @@ public class Event implements DatabaseModel {
     @JoinColumn(name = "event_id")
     private List<EventLanguage> eventLanguages = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "name_id")
     private EventLanguageCode name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "description_id")
     private EventLanguageCode description;
 

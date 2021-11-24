@@ -105,6 +105,8 @@ public class EventWriteModel {
     public static EventWriteModel generateByEvent(Event event, LanguageService languageService) {
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelectorByEvent(event);
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
+        event.getName().prepareForLoad(event.getEventLanguages());
+        event.getDescription().prepareForLoad(event.getEventLanguages());
         return new EventWriteModel(event, possibleLanguageSelector, defaultLanguageSelector);
     }
 

@@ -2,6 +2,7 @@ package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
@@ -20,7 +21,10 @@ public abstract class AbstractEventController {
         return "/" + url + "/edit";
     }
 
-    @CacheEvict(value = "eventsUrl", key = "#event.url")
+//    @Caching(evict = {
+//            @CacheEvict(value = "eventsUrl", key = "#event.url"),
+//            @CacheEvict(value = "eventsExists", key = "event.url")
+//    })
     public void invalidateEvent(Event event) {
     }
 

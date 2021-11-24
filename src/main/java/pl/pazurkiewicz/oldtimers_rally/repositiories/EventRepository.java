@@ -17,7 +17,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query("select e.id from Event e where e.url = :url")
     Integer getIdByUrl(@Param("url") String url);
 
-    @Cacheable(value = "eventsUrl")
+//    @Cacheable(value = "eventsUrl")
     @Query("select distinct e from Event e join fetch e.name join fetch e.description where e.url = :url")
     Event getByUrl(String url);
 

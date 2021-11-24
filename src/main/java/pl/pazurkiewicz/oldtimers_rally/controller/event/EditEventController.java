@@ -3,6 +3,7 @@ package pl.pazurkiewicz.oldtimers_rally.controller.event;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.validation.Valid;
@@ -19,11 +21,13 @@ import javax.validation.Valid;
 @SessionAttributes({"editEvent"})
 public class EditEventController extends AbstractEventController {
     private final LanguageService languageService;
+    private final EventService eventService;
 
 
-    public EditEventController(EventRepository eventRepository, LanguageService languageService) {
+    public EditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService) {
         super(eventRepository);
         this.languageService = languageService;
+        this.eventService = eventService;
     }
 
     @GetMapping
@@ -50,7 +54,8 @@ public class EditEventController extends AbstractEventController {
         if (bindingResult.hasErrors()) {
             return "event/edit_event";
         }
-        Event saved = eventRepository.save(event.generateEvent());
+        Event saved = eventService.saveNextTime(event.generateEvent());
+        invalidateEvent(saved);
         model.addAttribute("event", saved);
         return showEditPage(model, saved);
     }
