@@ -8,28 +8,25 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
-import pl.pazurkiewicz.oldtimers_rally.model.Category;
-import pl.pazurkiewicz.oldtimers_rally.model.Dictionary;
-import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.EventPrivilegesModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/{url}/edit/categories")
 @SessionAttributes({"categories"})
 public class EditCategoriesController extends AbstractEventController {
-    private final SmartValidator validator;
     private final CategoryRepository categoryRepository;
 
-    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, CacheManager cacheManager, SmartValidator validator) {
+    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, CacheManager cacheManager) {
         super(eventRepository, cacheManager);
         this.categoryRepository = categoryRepository;
-        this.validator = validator;
     }
 
 
@@ -44,7 +41,36 @@ public class EditCategoriesController extends AbstractEventController {
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveCategories(@ModelAttribute("categories") @Valid CategoriesModel categories, BindingResult result, Event event) {
-        validator.validate(categories.getNewOtherCategory(), result);
+        return "event/categories";
+    }
+
+    @PostMapping(params = "reset")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String resetCategories(Model model, Event event) {
+        return showCategoriesPage(event,model);
+    }
+
+    @PostMapping(params = "delete2")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String deleteYearCategory(@ModelAttribute("categories") CategoriesModel categories, Event event, @RequestParam(value = "delete2") Integer deleteId) {
+        categories.deleteYearCategory(deleteId);
+        return "event/categories";
+    }
+
+    @PostMapping(params = "delete1")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String deleteOtherCategory(@ModelAttribute("categories") CategoriesModel categories, Event event, @RequestParam(value = "delete1") Integer deleteId) {
+        categories.deleteOtherCategory(deleteId);
+        return "event/categories";
+    }
+
+    @PostMapping(params = "add")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String addCategory(@ModelAttribute("categories") @Valid CategoriesModel categories, BindingResult bindingResult, Event event) {
+        if (bindingResult.hasErrors() || categories.getNewCategory() == null) {
+            return "event/categories";
+        }
+        categories.acceptNewModel(event);
         return "event/categories";
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
         @Index(name = "dictionaries_event_language_id_code_uindex", columnList = "event_language_id, code_id", unique = true)
 })
 @Entity
-@IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault", groups = Dictionary.test.class)
+@IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault")
 public class Dictionary implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,6 +67,4 @@ public class Dictionary implements DatabaseModel {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public interface test{}
 }

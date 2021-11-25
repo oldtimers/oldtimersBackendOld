@@ -5,7 +5,6 @@ import pl.pazurkiewicz.oldtimers_rally.model.CategoryEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 public class CategoriesModel implements ListWebModel<Category> {
@@ -18,8 +17,8 @@ public class CategoriesModel implements ListWebModel<Category> {
     @Valid
     private final List<Category> otherCategories = new ArrayList<>();
     private final Set<Integer> deletedCategories = new HashSet<>();
-    private Category newOtherCategory;
-    private Category newYearCategory;
+    @Valid
+    private Category newCategory;
 
     public CategoriesModel(List<Category> categories, Event event) {
         for (Category category : categories) {
@@ -31,8 +30,18 @@ public class CategoriesModel implements ListWebModel<Category> {
             category.getName().prepareForLoad(event.getEventLanguages());
             category.getDescription().prepareForLoad(event.getEventLanguages());
         }
-        newOtherCategory = new Category(CategoryEnum.other, event.getEventLanguages());
-        newYearCategory = new Category(CategoryEnum.year, event.getEventLanguages());
+        newCategory = new Category(CategoryEnum.other, event);
+    }
+
+    public void acceptNewModel(Event event) {
+        if (newCategory.getMode() == CategoryEnum.year) {
+            yearCategories.add(newCategory);
+        } else {
+            newCategory.setMaxYear(null);
+            newCategory.setMinYear(null);
+            otherCategories.add(newCategory);
+        }
+        newCategory = new Category(newCategory.getMode(), event);
     }
 
     public List<Category> getYearCategories() {
@@ -51,20 +60,12 @@ public class CategoriesModel implements ListWebModel<Category> {
         return deletedCategories;
     }
 
-    public Category getNewOtherCategory() {
-        return newOtherCategory;
+    public Category getNewCategory() {
+        return newCategory;
     }
 
-    public void setNewOtherCategory(Category newOtherCategory) {
-        this.newOtherCategory = newOtherCategory;
-    }
-
-    public Category getNewYearCategory() {
-        return newYearCategory;
-    }
-
-    public void setNewYearCategory(Category newYearCategory) {
-        this.newYearCategory = newYearCategory;
+    public void setNewCategory(Category newCategory) {
+        this.newCategory = newCategory;
     }
 
     public void removeYearCategory(Integer removeId) {
@@ -75,4 +76,11 @@ public class CategoriesModel implements ListWebModel<Category> {
         removeFromList(removeId, otherCategories, deletedCategories);
     }
 
+    public void deleteYearCategory(Integer removeId) {
+        removeFromList(removeId, yearCategories, deletedCategories);
+    }
+
+    public void deleteOtherCategory(Integer removeId) {
+        removeFromList(removeId, otherCategories, deletedCategories);
+    }
 }

@@ -39,10 +39,13 @@ public class Category implements DatabaseModel {
     public Category() {
     }
 
-    public Category(CategoryEnum mode, List<EventLanguage> languages) {
+
+
+    public Category(CategoryEnum mode, Event event) {
         this.mode = mode;
-        this.setDescription(EventLanguageCode.generateNewEventLanguageCode(languages));
-        this.setName(EventLanguageCode.generateNewEventLanguageCode(languages));
+        this.event = event;
+        this.setDescription(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
+        this.setName(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
     }
 
     public Integer getMaxYear() {
