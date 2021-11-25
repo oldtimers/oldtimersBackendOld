@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
 
 import javax.sql.DataSource;
 

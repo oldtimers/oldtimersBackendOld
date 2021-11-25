@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 

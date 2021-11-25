@@ -8,7 +8,7 @@ import pl.pazurkiewicz.oldtimers_rally.error.InvalidConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
 
 @Service
 @ApplicationScope

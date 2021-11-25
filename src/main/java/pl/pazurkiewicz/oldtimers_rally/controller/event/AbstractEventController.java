@@ -1,18 +1,21 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+
+import java.util.Objects;
 
 public abstract class AbstractEventController {
     protected final EventRepository eventRepository;
+    protected final CacheManager cacheManager;
 
-    public AbstractEventController(EventRepository eventRepository) {
+    public AbstractEventController(EventRepository eventRepository, CacheManager cacheManager) {
         this.eventRepository = eventRepository;
+        this.cacheManager = cacheManager;
     }
 
 
@@ -21,11 +24,9 @@ public abstract class AbstractEventController {
         return "/" + url + "/edit";
     }
 
-//    @Caching(evict = {
-//            @CacheEvict(value = "eventsUrl", key = "#event.url"),
-//            @CacheEvict(value = "eventsExists", key = "event.url")
-//    })
-    public void invalidateEvent(Event event) {
+    public void invalidateEventByUrl(String url) {
+        Objects.requireNonNull(cacheManager.getCache("eventsUrl")).evictIfPresent(url);
+        Objects.requireNonNull(cacheManager.getCache("eventsExists")).evictIfPresent(url);
     }
 
     @ModelAttribute("event")

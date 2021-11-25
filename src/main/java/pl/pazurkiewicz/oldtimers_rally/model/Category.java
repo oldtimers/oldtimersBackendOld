@@ -1,6 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import java.util.List;
 
 @Table(name = "categories")
 @Entity
@@ -10,16 +12,18 @@ public class Category implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     @ManyToOne
     @JoinColumn(name = "name_id", nullable = false)
+    @Valid
     private EventLanguageCode name;
 
     @ManyToOne
     @JoinColumn(name = "description_id", nullable = false)
+    @Valid
     private EventLanguageCode description;
 
     @Enumerated(EnumType.STRING)
@@ -31,6 +35,15 @@ public class Category implements DatabaseModel {
 
     @Column(name = "max_year")
     private Integer maxYear;
+
+    public Category() {
+    }
+
+    public Category(CategoryEnum mode, List<EventLanguage> languages) {
+        this.mode = mode;
+        this.setDescription(EventLanguageCode.generateNewEventLanguageCode(languages));
+        this.setName(EventLanguageCode.generateNewEventLanguageCode(languages));
+    }
 
     public Integer getMaxYear() {
         return maxYear;

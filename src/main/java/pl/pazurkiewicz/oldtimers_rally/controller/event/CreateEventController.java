@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;

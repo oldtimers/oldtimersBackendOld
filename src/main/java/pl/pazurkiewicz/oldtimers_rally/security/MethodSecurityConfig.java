@@ -5,8 +5,8 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserGroupRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.UserGroupRepository;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)

@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.repositiories;
+package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.CacheEvict;

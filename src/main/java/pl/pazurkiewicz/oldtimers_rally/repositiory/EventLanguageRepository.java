@@ -1,11 +1,10 @@
-package pl.pazurkiewicz.oldtimers_rally.repositiories;
+package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 
-import java.util.List;
 import java.util.Set;
 
 @Repository

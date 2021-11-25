@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

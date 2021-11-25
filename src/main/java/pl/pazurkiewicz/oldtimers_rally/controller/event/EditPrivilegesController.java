@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventPrivilegesModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.UserGroupRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.UserGroupRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.UserGroupService;
 
 import javax.validation.Valid;
@@ -21,8 +22,8 @@ public class EditPrivilegesController extends AbstractEventController {
     private final UserGroupRepository userGroupRepository;
     private final UserGroupService userGroupService;
 
-    public EditPrivilegesController(UserGroupRepository userGroupRepository, UserGroupService userGroupService, EventRepository eventRepository) {
-        super(eventRepository);
+    public EditPrivilegesController(UserGroupRepository userGroupRepository, UserGroupService userGroupService, EventRepository eventRepository, CacheManager cacheManager) {
+        super(eventRepository, cacheManager);
         this.userGroupRepository = userGroupRepository;
         this.userGroupService = userGroupService;
     }

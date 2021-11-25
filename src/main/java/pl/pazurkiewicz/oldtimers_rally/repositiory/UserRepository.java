@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.repositiories;
+package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -4,6 +4,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pazurkiewicz.oldtimers_rally.model.comparator.DictionaryComparator;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class EventLanguageCode implements DatabaseModel {
     private Integer id;
 
     @Valid
-    @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(value = FetchMode.JOIN)
     private List<Dictionary> dictionaries = new ArrayList<>();
 
@@ -85,21 +86,21 @@ public class EventLanguageCode implements DatabaseModel {
         }
     }
 
-
-    public void prepareForSave(){
+    @PreUpdate
+    @PrePersist
+    public void prepareForSave() {
         dictionaries.removeIf(dictionary -> dictionary.getValue().isBlank());
     }
 
 
-
-    public void prepareForLoad(List<EventLanguage> possibleLanguages){
-        for (EventLanguage possible : possibleLanguages){
+    public void prepareForLoad(List<EventLanguage> possibleLanguages) {
+        for (EventLanguage possible : possibleLanguages) {
             if (dictionaries.stream()
                     .map(dictionary -> dictionary.getEventLanguage().getId())
-                    .noneMatch(integer -> Objects.equals(integer, possible.getId()))){
-                dictionaries.add(Dictionary.generateNewDictionary(possible,this));
+                    .noneMatch(integer -> Objects.equals(integer, possible.getId()))) {
+                dictionaries.add(Dictionary.generateNewDictionary(possible, this));
             }
         }
-        dictionaries.sort(Comparator.comparingInt(Dictionary::getPriority));
+        dictionaries.sort(new DictionaryComparator());
     }
 }

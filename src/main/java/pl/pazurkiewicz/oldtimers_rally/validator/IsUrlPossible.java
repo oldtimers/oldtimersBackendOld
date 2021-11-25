@@ -2,7 +2,7 @@ package pl.pazurkiewicz.oldtimers_rally.validator;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;

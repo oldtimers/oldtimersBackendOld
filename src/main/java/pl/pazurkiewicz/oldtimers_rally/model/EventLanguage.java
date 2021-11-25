@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Table(name = "event_languages", indexes = {
         @Index(name = "event_languages_event_id_language_id_uindex", columnList = "event_id, language_id", unique = true)
@@ -22,6 +23,13 @@ public class EventLanguage implements DatabaseModel {
 
     @Column(name = "is_default", nullable = false)
     private Boolean isDefault = false;
+
+    @OneToMany(mappedBy = "eventLanguage", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Dictionary> dictionaries;
+
+    public Set<Dictionary> getDictionaries() {
+        return dictionaries;
+    }
 
     public EventLanguage() {
     }
@@ -63,5 +71,16 @@ public class EventLanguage implements DatabaseModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public Integer getPriority() {
+        if (this.getIsDefault()) {
+            return Integer.MIN_VALUE;
+        } else if (this.id == null) {
+            return Integer.MAX_VALUE;
+        } else {
+            return this.getLanguage().getId();
+        }
     }
 }

@@ -1,16 +1,16 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiories.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
@@ -24,8 +24,8 @@ public class EditEventController extends AbstractEventController {
     private final EventService eventService;
 
 
-    public EditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService) {
-        super(eventRepository);
+    public EditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager) {
+        super(eventRepository, cacheManager);
         this.languageService = languageService;
         this.eventService = eventService;
     }
@@ -36,7 +36,7 @@ public class EditEventController extends AbstractEventController {
         if (event == null) {
             throw new ResourceNotFoundException();
         }
-        invalidateEvent(event);
+        invalidateEventByUrl(event.getUrl());
         model.addAttribute("editEvent", EventWriteModel.generateByEvent(event, languageService));
         return "event/edit_event";
     }
@@ -55,7 +55,8 @@ public class EditEventController extends AbstractEventController {
             return "event/edit_event";
         }
         Event saved = eventService.saveNextTime(event.generateEvent());
-        invalidateEvent(saved);
+        invalidateEventByUrl(saved.getUrl());
+        invalidateEventByUrl(url);
         model.addAttribute("event", saved);
         return showEditPage(model, saved);
     }

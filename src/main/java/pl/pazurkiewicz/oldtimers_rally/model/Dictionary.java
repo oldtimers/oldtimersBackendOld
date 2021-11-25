@@ -1,21 +1,24 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsFieldRequired;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Table(name = "dictionaries", indexes = {
         @Index(name = "dictionaries_event_language_id_code_uindex", columnList = "event_language_id, code_id", unique = true)
 })
 @Entity
-@IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault")
+@IsFieldRequired(field = "value", isRequired = "eventLanguage.isDefault", groups = Dictionary.test.class)
 public class Dictionary implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "event_language_id", nullable = false)
     private EventLanguage eventLanguage;
 
@@ -65,14 +68,5 @@ public class Dictionary implements DatabaseModel {
         this.id = id;
     }
 
-    public int getPriority() {
-        if (this.getEventLanguage().getIsDefault()) {
-            return Integer.MIN_VALUE;
-        } else if (this.id == null) {
-            return Integer.MAX_VALUE;
-        } else {
-            return this.getEventLanguage().getLanguage().getId();
-        }
-    }
-
+    public interface test{}
 }
