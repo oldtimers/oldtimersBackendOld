@@ -22,7 +22,7 @@ public class CachingConfig {
         cacheManager.setCaches(Arrays.asList(
                 new ConcurrentMapCache("eventsExists"),
                 new ConcurrentMapCache("eventsUrl"),
-//                new ConcurrentMapCache("getUser"),
+                new ConcurrentMapCache("languages"),
                 new ConcurrentMapCache("userPrivileges")
         ));
         return cacheManager;

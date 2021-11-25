@@ -1,11 +1,18 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsTyped;
+import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsValid;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 import java.util.List;
 
 @Table(name = "categories")
 @Entity
+@AreYearsValid
+@AreYearsTyped
 public class Category implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +23,14 @@ public class Category implements DatabaseModel {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "name_id", nullable = false)
     @Valid
     private EventLanguageCode name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "description_id", nullable = false)
     @Valid
     private EventLanguageCode description;

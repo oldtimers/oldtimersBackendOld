@@ -198,3 +198,37 @@
 <div th:fragment="reloadButton (title)">
     <button class="btn btn-primary" name="reload" th:text="${title}" type="submit"></button>
 </div>
+
+
+<!--<div th:fragment="tableLanguageCode (field,titles, datas)" >-->
+<!--    <div class="card card-bord" th:each="category, info : *{__${field}__}">-->
+<!--        <table class="table">-->
+<!--            <tr>-->
+<!--                <th th:each="title : ${titles}" th:text="${title}"></th>-->
+<!--                &lt;!&ndash;        <th>Language</th>&ndash;&gt;-->
+<!--                &lt;!&ndash;        <th>Name</th>&ndash;&gt;-->
+<!--                &lt;!&ndash;        <th>Description</th>&ndash;&gt;-->
+<!--            </tr>-->
+<!--            &lt;!&ndash;/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.Event"*/&ndash;&gt;-->
+<!--            <tr th:each="eventLanguage, info2 : ${event.eventLanguages}">-->
+<!--                <td th:text="${eventLanguage.language.code}"></td>-->
+<!--                <td>-->
+<!--                    <label>-->
+<!--                        <input th:field="*{__${field}__[__${info.index}__].name.dictionaries[__${info2.index}__].value}"-->
+<!--                               type="text">-->
+<!--                    </label>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <label>-->
+<!--                        <input th:field="${categories.otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value}"-->
+<!--                               type="text">-->
+<!--                    </label>-->
+<!--                    &lt;!&ndash;            <ul th:if="${#fields.hasErrors('otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}">&ndash;&gt;-->
+<!--                    &lt;!&ndash;                <li th:each="err : ${#fields.errors('otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}"&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    th:text="${err}" class="text-danger"></li>&ndash;&gt;-->
+<!--                    &lt;!&ndash;            </ul>&ndash;&gt;-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->

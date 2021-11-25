@@ -4,29 +4,35 @@ package pl.pazurkiewicz.oldtimers_rally.controller.event;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
-import pl.pazurkiewicz.oldtimers_rally.model.*;
+import pl.pazurkiewicz.oldtimers_rally.model.Category;
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
-import pl.pazurkiewicz.oldtimers_rally.model.web.EventPrivilegesModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/{url}/edit/categories")
 @SessionAttributes({"categories"})
 public class EditCategoriesController extends AbstractEventController {
     private final CategoryRepository categoryRepository;
+    private final SmartValidator validator;
+    private final CategoriesService categoriesService;
 
-    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, CacheManager cacheManager) {
+    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, CacheManager cacheManager, SmartValidator validator, CategoriesService categoriesService) {
         super(eventRepository, cacheManager);
         this.categoryRepository = categoryRepository;
+        this.validator = validator;
+        this.categoriesService = categoriesService;
     }
 
 
@@ -40,14 +46,23 @@ public class EditCategoriesController extends AbstractEventController {
 
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String saveCategories(@ModelAttribute("categories") @Valid CategoriesModel categories, BindingResult result, Event event) {
-        return "event/categories";
+    @Transactional
+    String saveCategories(@ModelAttribute("categories") CategoriesModel categories, BindingResult result, Event event, Model model) {
+        Category temp = categories.getNewCategory();
+        categories.setNewCategory(null);
+        validator.validate(categories, result);
+        if (result.hasErrors()) {
+            categories.setNewCategory(temp);
+            return "event/categories";
+        }
+        categoriesService.saveCategoriesModel(categories);
+        return showCategoriesPage(event, model);
     }
 
-    @PostMapping(params = "reset")
+    @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String resetCategories(Model model, Event event) {
-        return showCategoriesPage(event,model);
+        return showCategoriesPage(event, model);
     }
 
     @PostMapping(params = "delete2")

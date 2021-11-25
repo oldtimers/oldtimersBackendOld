@@ -21,7 +21,12 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query("select distinct e from Event e join fetch e.name join fetch e.description where e.url = :url")
     Event getByUrl(String url);
 
-
+//    @Query("select distinct e from Event e " +
+//            "left join fetch e.name n  " +
+//            "left join fetch n.dictionaries n1 " +
+//            "left join fetch n1.eventLanguage n2 " +
+//            "left join fetch n2.language " +
+//            "where e.url = :url")
     @Query("select distinct e from Event e join fetch e.name n join fetch e.description order by e.url")
     List<Event> findAllSorted();
 }

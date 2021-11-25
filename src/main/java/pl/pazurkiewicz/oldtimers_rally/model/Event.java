@@ -7,7 +7,6 @@ import pl.pazurkiewicz.oldtimers_rally.error.InvalidEventConfiguration;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,28 +23,38 @@ public class Event implements DatabaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<EventLanguage> eventLanguages = new ArrayList<>();
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "name_id")
     private EventLanguageCode name;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "description_id")
     private EventLanguageCode description;
+
     @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
+
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
+
     @Column(name = "main_photo", length = 128)
     private String mainPhoto;
+
     @Type(type = "json")
     @Column(name = "photos", columnDefinition = "json")
     private JsonNode photos;
+
     @Column(name = "qr_code_template", length = 128)
     private String qrCodeTemplate;
+
     @Column(name = "nr_template", length = 128)
     private String nrTemplate;
+
     @Column(name = "url", nullable = false, length = 64)
     private String url = "";
 

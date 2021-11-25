@@ -50,7 +50,6 @@ public class User implements DatabaseModel {
     private Instant lastLogin;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
     private Set<UserGroup> userGroups = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)

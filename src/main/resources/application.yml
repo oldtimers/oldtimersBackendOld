@@ -5,5 +5,17 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    properties:
+      javax:
+        persistence:
+          sharedCache:
+            #required - enable selective caching mode - only entities with @Cacheable annotation will use L2 cache.
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        cache:
+          #required - turn on L2 cache.
+          use_second_level_cache: true
+          region:
+            factory_class=org.hibernate.cache.ehcache.JCacheRegionFactory
 custom:
   defaultLanguage: pl

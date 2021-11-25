@@ -1,11 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsFieldRequired;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Table(name = "dictionaries", indexes = {
         @Index(name = "dictionaries_event_language_id_code_uindex", columnList = "event_language_id, code_id", unique = true)
@@ -18,8 +15,8 @@ public class Dictionary implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "event_language_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "event_language_id", nullable = false, updatable = false)
     private EventLanguage eventLanguage;
 
     @ManyToOne(optional = false)

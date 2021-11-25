@@ -1,5 +1,9 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -7,6 +11,8 @@ import java.util.Set;
         @Index(name = "event_languages_event_id_language_id_uindex", columnList = "event_id, language_id", unique = true)
 })
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EventLanguage implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +25,7 @@ public class EventLanguage implements DatabaseModel {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "language_id", nullable = false, updatable = false)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Language language;
 
     @Column(name = "is_default", nullable = false)
@@ -27,10 +34,6 @@ public class EventLanguage implements DatabaseModel {
     @OneToMany(mappedBy = "eventLanguage", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Dictionary> dictionaries;
 
-    public Set<Dictionary> getDictionaries() {
-        return dictionaries;
-    }
-
     public EventLanguage() {
     }
 
@@ -38,6 +41,10 @@ public class EventLanguage implements DatabaseModel {
         this.event = event;
         this.language = language;
         this.isDefault = isDefault;
+    }
+
+    public Set<Dictionary> getDictionaries() {
+        return dictionaries;
     }
 
     public Boolean getIsDefault() {

@@ -25,6 +25,10 @@
                                         <input th:field="${categories.otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value}"
                                                type="text">
                                     </label>
+                                    <ul th:if="${#fields.hasErrors('otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}">
+                                        <li th:each="err : ${#fields.errors('otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}"
+                                            th:text="${err}" class="text-danger"></li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <label>
@@ -59,12 +63,20 @@
                                         <input th:field="${categories.yearCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value}"
                                                type="text">
                                     </label>
+                                    <ul th:if="${#fields.hasErrors('yearCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}">
+                                        <li th:each="err : ${#fields.errors('yearCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}"
+                                            th:text="${err}" class="text-danger"></li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <label>
                                         <input th:field="${categories.yearCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value}"
                                                type="text">
                                     </label>
+                                    <ul th:if="${#fields.hasErrors('yearCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}">
+                                        <li th:each="err : ${#fields.errors('yearCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}"
+                                            th:text="${err}" class="text-danger"></li>
+                                    </ul>
                                 </td>
                             </tr>
                         </table>
@@ -90,12 +102,20 @@
                                     <input th:field="*{newCategory.name.dictionaries[__${info2.index}__].value}"
                                            type="text">
                                 </label>
+                                <ul th:if="${#fields.hasErrors('newCategory.name.dictionaries[__${info2.index}__].value')}">
+                                    <li th:each="err : ${#fields.errors('newCategory.name.dictionaries[__${info2.index}__].value')}"
+                                        th:text="${err}" class="text-danger"></li>
+                                </ul>
                             </td>
                             <td>
                                 <label>
                                     <input th:field="*{newCategory.description.dictionaries[__${info2.index}__].value}"
                                            type="text">
                                 </label>
+                                <ul th:if="${#fields.hasErrors('newCategory.description.dictionaries[__${info2.index}__].value')}">
+                                    <li th:each="err : ${#fields.errors('newCategory.description.dictionaries[__${info2.index}__].value')}"
+                                        th:text="${err}" class="text-danger"></li>
+                                </ul>
                             </td>
                         </tr>
                     </table>
@@ -123,6 +143,10 @@
                         <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='From')"></div>
                         <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='To')"></div>
                     </div>
+                    <ul th:if="${#fields.hasErrors('newCategory')}">
+                        <li th:each="err : ${#fields.errors('newCategory')}"
+                            th:text="${err}" class="text-danger"></li>
+                    </ul>
                     <button class="btn btn-primary row-link links" name="add"
                             type="submit">Add
                     </button>
