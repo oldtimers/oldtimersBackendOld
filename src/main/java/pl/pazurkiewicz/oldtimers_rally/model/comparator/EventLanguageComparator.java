@@ -10,7 +10,7 @@ public class EventLanguageComparator implements Comparator<EventLanguage> {
 
     @Override
     public int compare(EventLanguage o1, EventLanguage o2) {
-        log.info("comparing");
+//        log.info("comparing");
         return o1.getPriority().compareTo(o2.getPriority());
     }
 }

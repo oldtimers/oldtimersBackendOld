@@ -53,6 +53,14 @@ public class Crew implements DatabaseModel {
     @Column(name = "accepted_rodo", nullable = false)
     private Boolean acceptedRodo = false;
 
+    public Crew() {
+    }
+
+    public Crew(Event event) {
+        this.event = event;
+        this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+    }
+
     public Boolean getAcceptedRodo() {
         return acceptedRodo;
     }

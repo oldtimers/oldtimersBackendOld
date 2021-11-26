@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-
-<a th:href="@{edit/privileges}">User Privileges</a>
-<a th:href="@{edit/user}">Users</a>
-<a th:href="@{edit/competition}">Competitions</a>
+<div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">
+    <a th:href="@{edit/privileges}">User Privileges</a>
+</div>
+<a th:href="@{edit/crews}">Crews</a>
+<a th:href="@{edit/competitions}">Competitions</a>
 <a th:href="@{edit/categories}">Categories</a>
 
 <body>
@@ -27,7 +28,7 @@
         <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
         <div th:replace="fragments/form_pieces :: requiredDescription"></div>
         <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
-        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
     </div>
 </form>
 

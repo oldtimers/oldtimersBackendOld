@@ -1,0 +1,45 @@
+<config
+        xmlns="http://www.ehcache.org/v3"
+        xmlns:jcache="http://www.ehcache.org/v3/jsr107">
+
+    <cache alias="userPrivileges">
+        <expiry>
+            <ttl unit="minutes">10</ttl>
+        </expiry>
+        <resources>
+            <heap>100</heap>
+        </resources>
+
+    </cache>
+
+    <cache alias="eventsId">
+        <key-type>java.lang.String</key-type>
+        <value-type>java.lang.Integer</value-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
+        <resources>
+            <heap>1000</heap>
+        </resources>
+    </cache>
+
+    <cache alias="eventsByUrl">
+        <key-type>java.lang.String</key-type>
+        <expiry>
+            <ttl unit="days">1</ttl>
+        </expiry>
+        <resources>
+            <heap>20</heap>
+        </resources>
+    </cache>
+
+    <cache alias="pl.pazurkiewicz.oldtimers_rally.model.Language">
+        <heap>5</heap>
+    </cache>
+
+    <cache alias="pl.pazurkiewicz.oldtimers_rally.model.EventLanguage">
+        <heap unit="MB">50</heap>
+    </cache>
+
+
+</config>

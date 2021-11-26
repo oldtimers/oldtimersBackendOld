@@ -9,7 +9,7 @@ import javax.persistence.*;
 })
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Language implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

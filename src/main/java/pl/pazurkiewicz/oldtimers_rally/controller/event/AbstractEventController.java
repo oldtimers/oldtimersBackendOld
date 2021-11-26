@@ -25,8 +25,8 @@ public abstract class AbstractEventController {
     }
 
     public void invalidateEventByUrl(String url) {
-        Objects.requireNonNull(cacheManager.getCache("eventsUrl")).evictIfPresent(url);
-        Objects.requireNonNull(cacheManager.getCache("eventsExists")).evictIfPresent(url);
+        Objects.requireNonNull(cacheManager.getCache("eventsByUrl")).evictIfPresent(url);
+        Objects.requireNonNull(cacheManager.getCache("eventsId")).evictIfPresent(url);
     }
 
     @ModelAttribute("event")
