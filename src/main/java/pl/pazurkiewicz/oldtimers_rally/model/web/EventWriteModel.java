@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
+import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsEndDateValid;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
@@ -63,6 +64,16 @@ public class EventWriteModel {
     @IsUrlPossible
     private String url;
 
+    private List<EventLanguage> languages;
+
+    public List<EventLanguage> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<EventLanguage> languages) {
+        this.languages = languages;
+    }
+
     public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector, EventLanguageCode name, EventLanguageCode description, LocalDateTime startDate, LocalDateTime endDate, String url) {
         this.event = event;
         this.possibleLanguageSelector = possibleLanguageSelector;
@@ -83,6 +94,7 @@ public class EventWriteModel {
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.url = event.getUrl();
+        reload();
     }
 
     public static EventWriteModel generateNewEventWriteModel(LanguageService languageService) {
@@ -117,6 +129,8 @@ public class EventWriteModel {
 
     void reload() {
         List<EventLanguage> eventLanguages = possibleLanguageSelector.getEventLanguages(defaultLanguageSelector);
+        eventLanguages.sort(new EventLanguageComparator());
+        this.languages = eventLanguages;
         name.reload(eventLanguages);
         description.reload(eventLanguages);
         url = generateURL(url);

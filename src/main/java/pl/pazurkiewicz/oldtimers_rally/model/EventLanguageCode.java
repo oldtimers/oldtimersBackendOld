@@ -63,6 +63,7 @@ public class EventLanguageCode implements DatabaseModel {
                 dictionaries.add(Dictionary.generateNewDictionary(eventLanguage, this));
             }
         }
+        dictionaries.sort(new DictionaryComparator());
     }
 
     public String getDictionary(Locale locale) {
