@@ -204,7 +204,7 @@
         <th th:each="l : ${labels}" th:text="${l}"></th>
     </tr>
     <tr th:each="la, info2 : ${__${languages}__}">
-        <td th:text="${la.language.code}"></td>
+        <td th:text="${la.isDefault} ? ${la.language.code}+'*' : ${la.language.code}"></td>
         <td th:each="fieldName : ${fieldNames}">
             <label>
                 <input th:field="*{__${fieldName}__.dictionaries[__${info2.index}__].value}"

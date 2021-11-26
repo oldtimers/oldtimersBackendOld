@@ -5,118 +5,41 @@
 
 <form method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
 
-<!--    <div class="container-fluid">-->
-<!--        <br>-->
-<!--        <div class="row">-->
-<!--            <div class="col-md">-->
-<!--                <div class="card card-bord" th:if="${categories.otherCategories.size()} > 0">-->
-<!--                    <h2>Crews</h2>-->
-<!--                    <div class="card card-bord" th:each="category, info : ${categories.otherCategories}">-->
-<!--                        <table class="table">-->
-<!--                            <tr>-->
-<!--                                <th>Language</th>-->
-<!--                                <th>Name</th>-->
-<!--                                <th>Description</th>-->
-<!--                            </tr>-->
-<!--                            <tr th:each="eventLanguage, info2 : ${event.eventLanguages}">-->
-<!--                                <td th:text="${eventLanguage.language.code}"></td>-->
-<!--                                <td>-->
-<!--                                    <label>-->
-<!--                                        <input th:field="${categories.otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value}"-->
-<!--                                               type="text">-->
-<!--                                    </label>-->
-<!--                                    <ul th:if="${#fields.hasErrors('otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}">-->
-<!--                                        <li th:each="err : ${#fields.errors('otherCategories[__${info.index}__].name.dictionaries[__${info2.index}__].value')}"-->
-<!--                                            th:text="${err}" class="text-danger"></li>-->
-<!--                                    </ul>-->
-<!--                                </td>-->
-<!--                                <td>-->
-<!--                                    <label>-->
-<!--                                        <input th:field="${categories.otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value}"-->
-<!--                                               type="text">-->
-<!--                                    </label>-->
-<!--                                    <ul th:if="${#fields.hasErrors('otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}">-->
-<!--                                        <li th:each="err : ${#fields.errors('otherCategories[__${info.index}__].description.dictionaries[__${info2.index}__].value')}"-->
-<!--                                            th:text="${err}" class="text-danger"></li>-->
-<!--                                    </ul>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-<!--                        </table>-->
-<!--                        <button class="btn btn-primary row-link links" name="delete1" th:value="${info.index}"-->
-<!--                                type="submit">Delete-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="card card-bord">-->
-<!--                    <h3>Add new crew</h3>-->
-<!--                    <table class="table">-->
-<!--                        <tr>-->
-<!--                            <th>Language</th>-->
-<!--                            <th>Name</th>-->
-<!--                            <th>Description</th>-->
-<!--                        </tr>-->
-<!--                        <tr th:each="eventLanguage, info2 : ${event.eventLanguages}">-->
-<!--                            <td th:text="${eventLanguage.language.code}"></td>-->
-<!--                            <td>-->
-<!--                                <label>-->
-<!--                                    <input th:field="*{newCategory.name.dictionaries[__${info2.index}__].value}"-->
-<!--                                           type="text">-->
-<!--                                </label>-->
-<!--                                <ul th:if="${#fields.hasErrors('newCategory.name.dictionaries[__${info2.index}__].value')}">-->
-<!--                                    <li th:each="err : ${#fields.errors('newCategory.name.dictionaries[__${info2.index}__].value')}"-->
-<!--                                        th:text="${err}" class="text-danger"></li>-->
-<!--                                </ul>-->
-<!--                            </td>-->
-<!--                            <td>-->
-<!--                                <label>-->
-<!--                                    <input th:field="*{newCategory.description.dictionaries[__${info2.index}__].value}"-->
-<!--                                           type="text">-->
-<!--                                </label>-->
-<!--                                <ul th:if="${#fields.hasErrors('newCategory.description.dictionaries[__${info2.index}__].value')}">-->
-<!--                                    <li th:each="err : ${#fields.errors('newCategory.description.dictionaries[__${info2.index}__].value')}"-->
-<!--                                        th:text="${err}" class="text-danger"></li>-->
-<!--                                </ul>-->
-<!--                            </td>-->
-<!--                        </tr>-->
-<!--                    </table>-->
-<!--                    <label>-->
-<!--                        <select th:field="*{newCategory.mode}" id="newSelector">-->
-<!--                            <option th:each="p : ${categories.categoriesEnum}"-->
-<!--                                    th:text="${p.key}"-->
-<!--                                    th:value="${p.value}">-->
-<!--                            </option>-->
-<!--                        </select>-->
-<!--                    </label>-->
-<!--                    <script>-->
-<!--                        function start(){-->
-<!--                            setupAdditional();-->
-<!--                            document.getElementById("newSelector").addEventListener("change", setupAdditional, false);-->
-<!--                        }-->
-
-<!--                        function setupAdditional(){-->
-<!--                            document.getElementById("additional").hidden = document.getElementById("newSelector").value !== "year";-->
-<!--                        }-->
-
-<!--                        window.addEventListener("load", start, false);-->
-<!--                    </script>-->
-<!--                    <div id="additional">-->
-<!--                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='From')"></div>-->
-<!--                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='To')"></div>-->
-<!--                    </div>-->
-<!--                    <ul th:if="${#fields.hasErrors('newCategory')}">-->
-<!--                        <li th:each="err : ${#fields.errors('newCategory')}"-->
-<!--                            th:text="${err}" class="text-danger"></li>-->
-<!--                    </ul>-->
-<!--                    <button class="btn btn-primary row-link links" name="add"-->
-<!--                            type="submit">Add-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'newCrew.description'} }, languages='event.eventLanguages')"></table>
-
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-md">
+                <div class="card card-bord" th:if="*{crews.size()} > 0">
+                    <h2>Crews</h2>
+                    <div class="card card-bord" th:each="crew, info : *{crews}">
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].description'} }, languages='event.eventLanguages')"></table>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].car', label='Car')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].yearOfProduction', label='Year of production')"></div>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].driverName', label='Driver name')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].phone', label='Phone number')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].acceptedReg', label='Accepted regulations:')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].acceptedRodo', label='Accepted RODO:')"></div>
+                        <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
+                                type="submit">Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="card card-bord">
+                    <h3>Add new crew</h3>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.description'} }, languages='event.eventLanguages')"></table>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.car', label='Car')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.yearOfProduction', label='Year of production')"></div>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.driverName', label='Driver name')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.phone', label='Phone number')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedReg', label='Accepted regulations:')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedRodo', label='Accepted RODO:')"></div>
+                    <button class="btn btn-primary row-link links" name="add"
+                            type="submit">Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <button class="btn btn-primary" name="reload" th:text="Reset" type="submit"></button>

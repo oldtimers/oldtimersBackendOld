@@ -1,9 +1,15 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import com.vladmihalcea.hibernate.type.basic.YearType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.Year;
 
 @Table(name = "crews", indexes = {
@@ -21,7 +27,7 @@ public class Crew implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
@@ -29,28 +35,38 @@ public class Crew implements DatabaseModel {
     private Integer number;
 
     @Column(name = "car", nullable = false, length = 64)
+    @NotBlank
     private String car;
 
     @Column(name = "photo", length = 128)
     private String photo;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false,cascade = CascadeType.ALL)
     @JoinColumn(name = "description", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Valid
     private EventLanguageCode description;
 
     @Column(name = "year_of_production", nullable = false, columnDefinition = "year")
+    @NotNull
     private Year yearOfProduction;
 
     @Column(name = "driver_name", nullable = false, length = 64)
+    @NotBlank
     private String driverName;
 
     @Column(name = "phone", nullable = false, length = 16)
+    @NotBlank
     private String phone;
 
     @Column(name = "accepted_reg", nullable = false)
+    @NotNull
+    @AssertTrue
     private Boolean acceptedReg = false;
 
     @Column(name = "accepted_rodo", nullable = false)
+    @NotNull
+    @AssertTrue
     private Boolean acceptedRodo = false;
 
     public Crew() {

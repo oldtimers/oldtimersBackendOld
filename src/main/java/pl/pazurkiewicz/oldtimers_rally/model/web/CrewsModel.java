@@ -27,7 +27,7 @@ public class CrewsModel implements ListWebModel<Crew> {
         return crews;
     }
 
-    public Set<Integer> getDeletedPrivileges() {
+    public Set<Integer> getDeletedCrews() {
         return deletedPrivileges;
     }
 
