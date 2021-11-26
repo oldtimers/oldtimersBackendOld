@@ -68,7 +68,6 @@ public class EventLanguageCode implements DatabaseModel {
 
     public String getDictionary(Locale locale) {
         for (Dictionary dictionary : dictionaries) {
-
             if (Objects.equals(dictionary.getEventLanguage().getLanguage().getCode(), locale.getLanguage())) {
                 return dictionary.getValue();
             }

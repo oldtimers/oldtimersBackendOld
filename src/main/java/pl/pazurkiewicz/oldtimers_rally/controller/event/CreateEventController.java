@@ -24,13 +24,10 @@ import javax.validation.Valid;
 @SessionAttributes("newEvent")
 public class CreateEventController {
     private final LanguageService languageService;
-    private final LanguageRepository languageRepository;
     private final EventService eventService;
-    private final Logger logger = LoggerFactory.getLogger(CreateEventController.class);
 
-    CreateEventController(LanguageService languageService, LanguageRepository languageRepository, EventService eventService) {
+    CreateEventController(LanguageService languageService, EventService eventService) {
         this.languageService = languageService;
-        this.languageRepository = languageRepository;
         this.eventService = eventService;
     }
 

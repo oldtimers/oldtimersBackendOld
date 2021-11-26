@@ -15,9 +15,6 @@
     <cache alias="eventsId">
         <key-type>java.lang.String</key-type>
         <value-type>java.lang.Integer</value-type>
-        <expiry>
-            <ttl unit="days">1</ttl>
-        </expiry>
         <resources>
             <heap>1000</heap>
         </resources>
@@ -28,17 +25,46 @@
         <expiry>
             <ttl unit="days">1</ttl>
         </expiry>
+        <listeners>
+            <listener>
+                <class>pl.pazurkiewicz.oldtimers_rally.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+            </listener>
+        </listeners>
         <resources>
             <heap>20</heap>
         </resources>
+
     </cache>
 
     <cache alias="pl.pazurkiewicz.oldtimers_rally.model.Language">
-        <heap>5</heap>
+        <listeners>
+            <listener>
+                <class>pl.pazurkiewicz.oldtimers_rally.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+            </listener>
+        </listeners>
+        <heap>100</heap>
     </cache>
 
     <cache alias="pl.pazurkiewicz.oldtimers_rally.model.EventLanguage">
-        <heap unit="MB">50</heap>
+        <listeners>
+            <listener>
+                <class>pl.pazurkiewicz.oldtimers_rally.CacheEventLogger</class>
+                <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
+                <event-ordering-mode>UNORDERED</event-ordering-mode>
+                <events-to-fire-on>CREATED</events-to-fire-on>
+                <events-to-fire-on>EXPIRED</events-to-fire-on>
+            </listener>
+        </listeners>
+
+        <heap>100</heap>
     </cache>
 
 

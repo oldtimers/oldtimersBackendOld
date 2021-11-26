@@ -94,10 +94,15 @@
 			<artifactId>hibernate-jcache</artifactId>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>org.hibernate</groupId>-->
+<!--			<artifactId>hibernate-ehcache</artifactId>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<scope>runtime</scope>
+			<version>3.9.5</version>
 		</dependency>
 
         <dependency>
@@ -110,7 +115,7 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>

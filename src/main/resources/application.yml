@@ -10,13 +10,20 @@ spring:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
+        cache:
+          config: ehcache.xml
       hibernate:
+        javax.cache:
+          provider: org.ehcache.jsr107.EhcacheCachingProvider
+          uri: ehcache.xml
         cache:
           use_second_level_cache: true
+#          use_query_cache: true
           region:
-            factory_class=org.hibernate.cache.ehcache.JCacheRegionFactory
+            factory_class= org.hibernate.cache.jcache.JCacheRegionFactory
   cache:
     jcache:
       config: ehcache.xml
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
 custom:
   defaultLanguage: pl

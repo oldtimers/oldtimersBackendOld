@@ -18,7 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class UserGroupService {
     @Autowired
     private UserGroupRepository userGroupRepository;

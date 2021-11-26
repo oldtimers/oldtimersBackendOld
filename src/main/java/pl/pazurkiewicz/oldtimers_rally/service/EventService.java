@@ -12,7 +12,7 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class EventService {
     @Autowired
     private EventRepository eventRepository;

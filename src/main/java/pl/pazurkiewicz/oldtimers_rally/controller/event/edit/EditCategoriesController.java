@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event;
+package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
 
 
 import org.springframework.cache.CacheManager;
@@ -23,16 +23,17 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/{url}/edit/categories")
 @SessionAttributes({"categories"})
-public class EditCategoriesController extends AbstractEventController {
+public class EditCategoriesController {
     private final CategoryRepository categoryRepository;
     private final SmartValidator validator;
     private final CategoriesService categoriesService;
+    private final EventRepository eventRepository;
 
-    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, CacheManager cacheManager, SmartValidator validator, CategoriesService categoriesService) {
-        super(eventRepository, cacheManager);
+    public EditCategoriesController(EventRepository eventRepository, CategoryRepository categoryRepository, SmartValidator validator, CategoriesService categoriesService) {
         this.categoryRepository = categoryRepository;
         this.validator = validator;
         this.categoriesService = categoriesService;
+        this.eventRepository = eventRepository;
     }
 
 
@@ -87,5 +88,15 @@ public class EditCategoriesController extends AbstractEventController {
         }
         categories.acceptNewModel(event);
         return "event/categories";
+    }
+
+    @ModelAttribute("event")
+    Event getEvent(@PathVariable("url") String url) {
+        return eventRepository.getByUrl(url);
+    }
+
+    @ModelAttribute("action")
+    String getAction(@PathVariable("url") String url) {
+        return "/" + url + "/edit";
     }
 }

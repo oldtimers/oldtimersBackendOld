@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event;
+package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,14 +18,15 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/{url}/edit/privileges")
 @SessionAttributes({"privileges"})
-public class EditPrivilegesController extends AbstractEventController {
+public class EditPrivilegesController {
     private final UserGroupRepository userGroupRepository;
     private final UserGroupService userGroupService;
+    private final EventRepository eventRepository;
 
     public EditPrivilegesController(UserGroupRepository userGroupRepository, UserGroupService userGroupService, EventRepository eventRepository, CacheManager cacheManager) {
-        super(eventRepository, cacheManager);
         this.userGroupRepository = userGroupRepository;
         this.userGroupService = userGroupService;
+        this.eventRepository = eventRepository;
     }
 
     @GetMapping
@@ -64,5 +65,15 @@ public class EditPrivilegesController extends AbstractEventController {
     String reloadUserPermission(Model model, Event event) {
         model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event)));
         return "event/privileges";
+    }
+
+    @ModelAttribute("event")
+    Event getEvent(@PathVariable("url") String url) {
+        return eventRepository.getByUrl(url);
+    }
+
+    @ModelAttribute("action")
+    String getAction(@PathVariable("url") String url) {
+        return "/" + url + "/edit";
     }
 }

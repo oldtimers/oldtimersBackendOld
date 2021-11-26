@@ -8,7 +8,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class CrewService {
     @Autowired
     CrewRepository crewRepository;

@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event;
+package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,16 +22,17 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/{url}/edit/crews")
 @SessionAttributes({"crews"})
-public class EditCrewsController extends AbstractEventController{
+public class EditCrewsController{
     private final CrewRepository crewRepository;
     private final SmartValidator validator;
     private final CrewService crewService;
+    private final EventRepository eventRepository;
 
-    public EditCrewsController(EventRepository eventRepository, CacheManager cacheManager, CrewRepository crewRepository, SmartValidator validator, CrewService crewService) {
-        super(eventRepository, cacheManager);
+    public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService) {
         this.crewRepository = crewRepository;
         this.validator = validator;
         this.crewService = crewService;
+        this.eventRepository = eventRepository;
     }
 
     @GetMapping
@@ -77,5 +78,15 @@ public class EditCrewsController extends AbstractEventController{
         }
         crewService.saveCrewsModel(crews);
         return "event/crews";
+    }
+
+    @ModelAttribute("event")
+    Event getEvent(@PathVariable("url") String url) {
+        return eventRepository.getByUrl(url);
+    }
+
+    @ModelAttribute("action")
+    String getAction(@PathVariable("url") String url) {
+        return "/" + url + "/edit";
     }
 }

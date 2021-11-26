@@ -4,6 +4,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
@@ -12,9 +14,11 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping("/{url}")
-public class EventController extends AbstractEventController {
-    public EventController(EventRepository eventRepository, CacheManager cacheManager) {
-        super(eventRepository, cacheManager);
+public class EventController {
+    private final EventRepository eventRepository;
+
+    public EventController(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
     }
 
     @GetMapping
@@ -24,6 +28,11 @@ public class EventController extends AbstractEventController {
         }
         System.out.println("Locale >>> " + locale);
         return "event/show_event";
+    }
+
+    @ModelAttribute("event")
+    Event getEvent(@PathVariable("url") String url) {
+        return eventRepository.getByUrl(url);
     }
 
 }

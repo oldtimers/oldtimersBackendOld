@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.converter;
+package pl.pazurkiewicz.oldtimers_rally.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -1,5 +1,7 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event;
+package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
 
+import org.ehcache.core.EhcacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,19 +17,24 @@ import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.validation.Valid;
+import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/{url}/edit")
 @SessionAttributes({"editEvent"})
-public class EditEventController extends AbstractEventController {
+public class EditEventController {
     private final LanguageService languageService;
     private final EventService eventService;
+    private final EventRepository eventRepository;
+    private final CacheManager cacheManager;
 
 
     public EditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager) {
-        super(eventRepository, cacheManager);
         this.languageService = languageService;
         this.eventService = eventService;
+        this.eventRepository = eventRepository;
+        this.cacheManager = cacheManager;
     }
 
     @GetMapping
@@ -61,5 +68,18 @@ public class EditEventController extends AbstractEventController {
         return showEditPage(model, saved);
     }
 
+    public void invalidateEventByUrl(String url) {
+        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
+        cacheManager.getCache("eventsId").evictIfPresent(url);
+    }
 
+    @ModelAttribute("event")
+    Event getEvent(@PathVariable("url") String url) {
+        return eventRepository.getByUrl(url);
+    }
+
+    @ModelAttribute("action")
+    String getAction(@PathVariable("url") String url) {
+        return "/" + url + "/edit";
+    }
 }

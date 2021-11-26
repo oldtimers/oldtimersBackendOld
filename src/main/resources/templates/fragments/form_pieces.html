@@ -160,7 +160,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <div th:each="dictionaryEntry, index : *{__${fieldName}__.dictionaries}">
+                <th:block th:each="dictionaryEntry, index : *{__${fieldName}__.dictionaries}">
                     <tr class="table">
                         <td>
                             <!--/*@thymesVar id="dictionaryEntry" type="pl.pazurkiewicz.oldtimers_rally.model.Dictionary"*/-->
@@ -181,7 +181,7 @@
                             class="text-danger">
                         </td>
                     </tr>
-                </div>
+                </th:block>
                 </tbody>
             </table>
         </div>
