@@ -1,6 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.crew;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +26,6 @@ public class EditCrewsController {
     private final SmartValidator validator;
     private final CrewService crewService;
     private final EventRepository eventRepository;
-    @Value("${custom.resourceLocation}")
-    String resourceLocation;
 
     public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService) {
         this.crewRepository = crewRepository;

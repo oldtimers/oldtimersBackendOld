@@ -6,12 +6,13 @@
 <div class="card card-bord" th:if="*{crewsWrapper.crews.size()} > 0">
     <h2>Crews</h2>
     <div class="card card-bord" th:each="crew, info : ${crewsWrapper.crews}">
-        <form method="post" th:action="@{__${url}__/edit}" th:object="${crewsWrapper}">
-            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].description'} }, languages='event.eventLanguages')"></table>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].car', label='Car')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].yearOfProduction', label='Year of production')"></div>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].driverName', label='Driver name')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].phone', label='Phone number')"></div>
+        <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
+              th:object="${crewsWrapper.crews[__${info.index}__]}">
+            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'description'} }, languages='event.eventLanguages')"></table>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='car', label='Car')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='yearOfProduction', label='Year of production')"></div>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='driverName', label='Driver name')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='Phone number')"></div>
             <div th:if="${crew.photo==null}">
                 <div>
                     <label>Photo: </label>
@@ -20,9 +21,12 @@
             </div>
             <div th:if="${crew.photo!=null}">
                 <img alt="No photo" th:src="${crew.photo}">
-                <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].removePhoto', label='Remove Photo:')"></div>
+                <label>
+                    <b>Remove photo:</b>
+                    <input class="checkbox-inline" name="removePhoto" style="margin: auto" type="checkbox"/>
+                </label>
             </div>
-            <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
+            <button class="btn btn-primary" name="crew" th:text="Save" th:value="${info.index}" type="submit"></button>
         </form>
     </div>
 </div>

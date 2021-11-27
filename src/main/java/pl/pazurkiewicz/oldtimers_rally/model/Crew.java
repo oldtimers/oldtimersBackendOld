@@ -62,8 +62,6 @@ public class Crew implements DatabaseModel {
     private Boolean acceptedRodo = false;
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CrewCategory> categories = new HashSet<>();
-    @Transient
-    private Boolean removePhoto = false;
 
     public Crew() {
     }
@@ -71,14 +69,6 @@ public class Crew implements DatabaseModel {
     public Crew(Event event) {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
-    }
-
-    public Boolean getRemovePhoto() {
-        return removePhoto;
-    }
-
-    public void setRemovePhoto(Boolean removePhoto) {
-        this.removePhoto = removePhoto;
     }
 
     public Boolean getAcceptedRodo() {
