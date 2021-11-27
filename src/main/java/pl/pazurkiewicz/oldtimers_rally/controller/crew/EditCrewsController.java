@@ -58,14 +58,6 @@ public class EditCrewsController {
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event) {
-//                  ) throws IOException {
-//        if (!multipartFile.isEmpty()) {
-//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            crewsWrapper.getNewCrew().setPhoto(fileName);
-//            String uploadDir = resourceLocation + "/" + event.getId() + "/1";
-//            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-//        }
-
         if (bindingResult.hasErrors()) {
             return "event/crews";
         }

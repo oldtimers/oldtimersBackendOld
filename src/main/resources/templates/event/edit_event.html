@@ -13,11 +13,9 @@
             <div th:replace="fragments/form_pieces :: number (fieldName='yearOfProduction', label='Year of production')"></div>
             <div th:replace="fragments/form_pieces :: classic (fieldName='driverName', label='Driver name')"></div>
             <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='Phone number')"></div>
-            <div th:if="${crew.photo==null}">
-                <div>
-                    <label>Photo: </label>
-                    <input accept="image/*" name="photo" type="file"/>
-                </div>
+            <div>
+                <label>Photo: </label>
+                <input accept="image/*" name="photo" type="file"/>
             </div>
             <div th:if="${crew.photo!=null}">
                 <img alt="No photo" th:src="${crew.photo}">

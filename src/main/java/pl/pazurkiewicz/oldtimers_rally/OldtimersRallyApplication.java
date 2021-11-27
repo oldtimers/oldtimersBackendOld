@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadUtil;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +26,9 @@ import java.util.Locale;
 @EnableCaching
 @EnableScheduling
 public class OldtimersRallyApplication implements WebMvcConfigurer {
+
+    @Value("${custom.resourceLocation}")
+    String resourceLocation;
 
     public static void main(String[] args) {
         SpringApplication.run(OldtimersRallyApplication.class, args);
@@ -60,11 +65,13 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
         return messageSource;
     }
 
-    @Value("${custom.resourceLocation}")
-    String resourceLocation;
+    @Bean
+    public FileUploadUtil getFileUploadUtil() {
+        return new FileUploadUtil(resourceLocation);
+    }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
         exposeDirectory(resourceLocation, registry);
     }
 

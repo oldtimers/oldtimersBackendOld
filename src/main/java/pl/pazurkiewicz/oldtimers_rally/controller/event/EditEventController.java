@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -31,14 +30,14 @@ public class EditEventController {
     private final CrewRepository crewRepository;
     private final CompetitionRepository competitionRepository;
     private final SmartValidator smartValidator;
-    @Value("${custom.resourceLocation}")
-    String resourceLocation;
+    private final FileUploadUtil fileUploadUtil;
 
-    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator) {
+    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadUtil fileUploadUtil) {
         this.eventRepository = eventRepository;
         this.crewRepository = crewRepository;
         this.competitionRepository = competitionRepository;
         this.smartValidator = smartValidator;
+        this.fileUploadUtil = fileUploadUtil;
     }
 
     @GetMapping
@@ -68,13 +67,14 @@ public class EditEventController {
         return event;
     }
 
+
     @PostMapping(params = "crew")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveSpecificCrew(@ModelAttribute("event") Event event,
                             @ModelAttribute("crewsWrapper") CrewsWrapper crewsWrapper,
                             @RequestParam("crew") Integer index,
                             @RequestParam(value = "photo") MultipartFile photo,
-                            @RequestParam(value = "removePhoto", required = false) boolean removePhoto,
+                            @RequestParam(value = "removePhoto", required = false, defaultValue = "false") boolean removePhoto,
                             BindingResult bindingResult) throws IOException {
         Crew crew = crewsWrapper.getCrews().get(index);
         try {
@@ -87,9 +87,12 @@ public class EditEventController {
             return "event/edit_event";
         }
         if (!photo.isEmpty()) {
-            FileUploadUtil.savePhotoForCrew(crew, photo, resourceLocation);
+            crew.setPhoto(fileUploadUtil.savePhotoForCrew(crew, photo));
+        } else if (removePhoto) {
+            fileUploadUtil.deleteForCrew(crew);
+            crew.setPhoto(null);
         }
-
+        crewsWrapper.getCrews().set(index, crewRepository.save(crew));
         return showEditPage(event);
     }
 
