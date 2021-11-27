@@ -27,6 +27,12 @@ public class UserGroup implements DatabaseModel {
     public UserGroup() {
     }
 
+    public UserGroup(Event event, User user, UserGroupEnum selectedGroup) {
+        this.event = event;
+        this.user = user;
+        this.selectedGroup = selectedGroup;
+    }
+
     public UserGroupEnum getSelectedGroup() {
         return selectedGroup;
     }
@@ -57,11 +63,5 @@ public class UserGroup implements DatabaseModel {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public UserGroup(Event event, User user, UserGroupEnum selectedGroup) {
-        this.event = event;
-        this.user = user;
-        this.selectedGroup = selectedGroup;
     }
 }

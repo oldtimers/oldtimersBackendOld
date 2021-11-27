@@ -27,7 +27,7 @@ public @interface AreYearsValid {
 
         @Override
         public boolean isValid(Category value, ConstraintValidatorContext context) {
-            if (value.getMode() == CategoryEnum.year){
+            if (value.getMode() == CategoryEnum.year) {
                 return value.getMinYear() == null || value.getMaxYear() == null || value.getMinYear() <= value.getMaxYear();
             }
             return true;

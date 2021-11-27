@@ -13,7 +13,7 @@ public class CategoriesService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void saveCategoriesModel(CategoriesModel categories){
+    public void saveCategoriesModel(CategoriesModel categories) {
         categoryRepository.deleteAllById(categories.getDeletedCategories());
         categoryRepository.saveAll(categories.getOtherCategories());
         categoryRepository.saveAll(categories.getYearCategories());

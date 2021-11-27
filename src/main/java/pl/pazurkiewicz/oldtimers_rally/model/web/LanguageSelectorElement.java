@@ -14,7 +14,7 @@ public class LanguageSelectorElement {
                 .filter(el -> el.getLanguage().getId().equals(language.getId())).findFirst()
                 .orElseGet(() -> new EventLanguage(event, language, false));
         this.language = language;
-        if (eventLanguage.getId() == null){
+        if (eventLanguage.getId() == null) {
             this.accept = accept;
         } else {
             this.accept = true;

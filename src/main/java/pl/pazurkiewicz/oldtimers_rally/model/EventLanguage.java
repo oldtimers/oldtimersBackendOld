@@ -23,7 +23,7 @@ public class EventLanguage implements DatabaseModel {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "language_id", nullable = false, updatable = false)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     @Fetch(FetchMode.SELECT)

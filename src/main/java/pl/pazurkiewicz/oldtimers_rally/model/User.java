@@ -1,7 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
 
 import javax.persistence.*;
@@ -56,14 +54,6 @@ public class User implements DatabaseModel {
     @JoinColumn(name = "default_language", nullable = false)
     private Language defaultLanguage;
 
-    public Language getDefaultLanguage() {
-        return defaultLanguage;
-    }
-
-    public void setDefaultLanguage(Language defaultLanguage) {
-        this.defaultLanguage = defaultLanguage;
-    }
-
     public User() {
     }
 
@@ -81,8 +71,20 @@ public class User implements DatabaseModel {
         defaultLanguage = model.getLanguageSelector().getDefaultLanguage();
     }
 
+    public Language getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(Language defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
+
     public Set<UserGroup> getUserGroups() {
         return userGroups;
+    }
+
+    public void setUserGroups(Set<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 
     public Instant getLastLogin() {
@@ -171,9 +173,5 @@ public class User implements DatabaseModel {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setUserGroups(Set<UserGroup> userGroups) {
-        this.userGroups = userGroups;
     }
 }

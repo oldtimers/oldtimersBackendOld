@@ -7,7 +7,6 @@ import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsValid;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import java.util.List;
 
 @Table(name = "categories")
 @Entity
@@ -47,7 +46,6 @@ public class Category implements DatabaseModel {
 
     public Category() {
     }
-
 
 
     public Category(CategoryEnum mode, Event event) {

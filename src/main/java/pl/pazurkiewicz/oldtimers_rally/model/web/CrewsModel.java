@@ -11,11 +11,9 @@ import java.util.Set;
 public class CrewsModel implements ListWebModel<Crew> {
     @Valid
     private final List<Crew> crews;
-
+    private final Set<Integer> deletedPrivileges = new HashSet<>();
     @Valid
     private Crew newCrew;
-
-    private final Set<Integer> deletedPrivileges = new HashSet<>();
 
 
     public CrewsModel(List<Crew> crews, Event event) {
@@ -35,10 +33,10 @@ public class CrewsModel implements ListWebModel<Crew> {
         removeFromList(removeId, crews, deletedPrivileges);
     }
 
-    public void acceptNewCrew(Event event){
+    public void acceptNewCrew(Event event) {
         crews.add(newCrew);
         newCrew = new Crew(event);
-    };
+    }
 
     public Crew getNewCrew() {
         return newCrew;

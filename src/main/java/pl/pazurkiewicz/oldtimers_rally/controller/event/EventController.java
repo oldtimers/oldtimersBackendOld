@@ -1,6 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
-import org.springframework.cache.CacheManager;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

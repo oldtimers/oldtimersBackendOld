@@ -66,14 +66,6 @@ public class EventWriteModel {
 
     private List<EventLanguage> languages;
 
-    public List<EventLanguage> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<EventLanguage> languages) {
-        this.languages = languages;
-    }
-
     public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector, EventLanguageCode name, EventLanguageCode description, LocalDateTime startDate, LocalDateTime endDate, String url) {
         this.event = event;
         this.possibleLanguageSelector = possibleLanguageSelector;
@@ -114,6 +106,7 @@ public class EventWriteModel {
 
 
     }
+
     public static EventWriteModel generateByEvent(Event event, LanguageService languageService) {
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelectorByEvent(event);
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
@@ -122,9 +115,16 @@ public class EventWriteModel {
         return new EventWriteModel(event, possibleLanguageSelector, defaultLanguageSelector);
     }
 
-
     public static String generateURL(String url) {
         return url.replace(' ', '_').replace("/", "");
+    }
+
+    public List<EventLanguage> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(List<EventLanguage> languages) {
+        this.languages = languages;
     }
 
     void reload() {
