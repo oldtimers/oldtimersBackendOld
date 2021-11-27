@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsFieldRequired;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Dictionary implements DatabaseModel {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "event_language_id", nullable = false, updatable = false)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private EventLanguage eventLanguage;
 
     @ManyToOne(optional = false)

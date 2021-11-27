@@ -10,5 +10,7 @@ public interface CrewRepository extends JpaRepository<Crew, Integer> {
     @Query("select c from Crew c left join fetch c.description d left join fetch d.dictionaries " +
             "where c.event.id=:eventId " +
             "order by c.yearOfProduction")
-    List<Crew> getByEvent_Id(Integer eventId);
+    List<Crew> getSortedByEventId(Integer eventId);
+
+    <T> List<T> getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(String url, Class<T> type);
 }

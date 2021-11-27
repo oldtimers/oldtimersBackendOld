@@ -124,7 +124,7 @@ public class EventWriteModel {
 
 
     public static String generateURL(String url) {
-        return url.replace(' ', '_');
+        return url.replace(' ', '_').replace("/", "");
     }
 
     void reload() {

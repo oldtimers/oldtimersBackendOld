@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("custom")
 public class MyConfigurationProperties {
     private String defaultLanguage = "en";
+    private String resourceLocation = "photos";
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -14,5 +15,13 @@ public class MyConfigurationProperties {
 
     public void setDefaultLanguage(String defaultLanguage) {
         this.defaultLanguage = defaultLanguage;
+    }
+
+    public String getResourceLocation() {
+        return resourceLocation;
+    }
+
+    public void setResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
     }
 }

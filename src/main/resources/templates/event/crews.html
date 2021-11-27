@@ -3,7 +3,7 @@
 <head th:replace="fragments/header_fragment :: headerFragment (title='Edit crews')"></head>
 <body>
 
-<form method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
+<form enctype="multipart/form-data" method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
 
     <div class="container-fluid">
         <br>
@@ -33,6 +33,10 @@
                     <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.phone', label='Phone number')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedReg', label='Accepted regulations:')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedRodo', label='Accepted RODO:')"></div>
+                    <!--                    <div>-->
+                    <!--                        <label>Photo: </label>-->
+                    <!--                        <input type="file" th:field="*{photo}" accept="image/png, image/jpeg" />-->
+                    <!--                    </div>-->
                     <button class="btn btn-primary row-link links" name="add"
                             type="submit">Add
                     </button>

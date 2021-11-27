@@ -1,0 +1,9 @@
+<html xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="showRedirections">
+    <div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">
+        <a th:href="@{'/'+${url}+'/edit/privileges'}">User Privileges</a>
+    </div>
+    <a th:href="@{'/'+${url}+'/edit/crews'}">Crews</a>
+    <a th:href="@{'/'+${url}+'/edit/competitions'}">Competitions</a>
+    <a th:href="@{'/'+${url}+'/edit/categories'}">Categories</a>
+</div>

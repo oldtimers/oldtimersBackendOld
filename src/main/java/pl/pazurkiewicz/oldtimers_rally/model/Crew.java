@@ -28,51 +28,42 @@ public class Crew implements DatabaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
-
     @Column(name = "number")
     private Integer number;
-
     @Column(name = "car", nullable = false, length = 64)
     @NotBlank
     private String car;
-
     @Column(name = "photo", length = 128)
     private String photo;
-
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "description", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Valid
     private EventLanguageCode description;
-
     @Column(name = "year_of_production", nullable = false, columnDefinition = "year")
     @NotNull
     private Year yearOfProduction;
-
     @Column(name = "driver_name", nullable = false, length = 64)
     @NotBlank
     private String driverName;
-
     @Column(name = "phone", nullable = false, length = 16)
     @NotBlank
     private String phone;
-
     @Column(name = "accepted_reg", nullable = false)
     @NotNull
     @AssertTrue
     private Boolean acceptedReg = false;
-
     @Column(name = "accepted_rodo", nullable = false)
     @NotNull
     @AssertTrue
     private Boolean acceptedRodo = false;
-
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CrewCategory> categories = new HashSet<>();
+    @Transient
+    private Boolean removePhoto = false;
 
     public Crew() {
     }
@@ -80,6 +71,14 @@ public class Crew implements DatabaseModel {
     public Crew(Event event) {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+    }
+
+    public Boolean getRemovePhoto() {
+        return removePhoto;
+    }
+
+    public void setRemovePhoto(Boolean removePhoto) {
+        this.removePhoto = removePhoto;
     }
 
     public Boolean getAcceptedRodo() {

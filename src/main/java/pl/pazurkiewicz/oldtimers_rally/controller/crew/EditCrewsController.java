@@ -1,6 +1,6 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
+package pl.pazurkiewicz.oldtimers_rally.controller.crew;
 
-import org.springframework.cache.CacheManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +22,13 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/{url}/edit/crews")
 @SessionAttributes({"crews"})
-public class EditCrewsController{
+public class EditCrewsController {
     private final CrewRepository crewRepository;
     private final SmartValidator validator;
     private final CrewService crewService;
     private final EventRepository eventRepository;
+    @Value("${custom.resourceLocation}")
+    String resourceLocation;
 
     public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService) {
         this.crewRepository = crewRepository;
@@ -37,28 +39,37 @@ public class EditCrewsController{
 
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String getCrews(Model model, Event event){
+    String getCrews(Model model, Event event) {
         event.getEventLanguages().sort(new EventLanguageComparator());
-        model.addAttribute("crews", new CrewsModel(crewRepository.getByEvent_Id(event.getId()), event));
+        model.addAttribute("crews", new CrewsModel(crewRepository.getSortedByEventId(event.getId()), event));
         return "event/crews";
     }
+
     @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String resetCrews(Model model, Event event){
-        return getCrews(model,event);
+    String resetCrews(Model model, Event event) {
+        return getCrews(model, event);
     }
 
     @PostMapping(params = "delete")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String deleteCrew(@ModelAttribute("crews") CrewsModel crews, Event event, @RequestParam(value = "delete") Integer deleteId){
+    String deleteCrew(@ModelAttribute("crews") CrewsModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
         crews.removeCrew(deleteId);
         return "event/crews";
     }
 
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event){
-        if (bindingResult.hasErrors()){
+    String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event) {
+//                  ) throws IOException {
+//        if (!multipartFile.isEmpty()) {
+//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            crewsWrapper.getNewCrew().setPhoto(fileName);
+//            String uploadDir = resourceLocation + "/" + event.getId() + "/1";
+//            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+//        }
+
+        if (bindingResult.hasErrors()) {
             return "event/crews";
         }
         crews.acceptNewCrew(event);
@@ -68,11 +79,11 @@ public class EditCrewsController{
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    String saveCrews(@ModelAttribute("crews") CrewsModel crews, BindingResult bindingResult, Event event){
+    String saveCrews(@ModelAttribute("crews") CrewsModel crews, BindingResult bindingResult, Event event) {
         Crew newCrew = crews.getNewCrew();
         crews.setNewCrew(null);
-        validator.validate(crews,bindingResult);
-        if (bindingResult.hasErrors()){
+        validator.validate(crews, bindingResult);
+        if (bindingResult.hasErrors()) {
             crews.setNewCrew(newCrew);
             return "event/crews";
         }

@@ -2,6 +2,7 @@ package pl.pazurkiewicz.oldtimers_rally.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -50,8 +51,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-        if ((authentication == null) || (targetDomainObject == null) || !(permission instanceof String)) {
+        if ((authentication == null) || !(permission instanceof String)) {
             return false;
+        } else if (targetDomainObject == null) {
+            throw new ResourceNotFoundException();
         }
         Integer eventId;
         if (targetDomainObject instanceof Event) {
@@ -81,7 +84,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         }
         if (target != null && eventId == null) {
             logger.info("Unknown or unreachable target: " + target);
-            return true;
+            throw new ResourceNotFoundException();
         }
         return hasPrivilege(authentication, eventId, permission.toString().toUpperCase());
     }

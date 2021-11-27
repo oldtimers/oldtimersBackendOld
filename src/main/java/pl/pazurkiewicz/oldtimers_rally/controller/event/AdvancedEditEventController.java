@@ -1,7 +1,5 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
+package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
-import org.ehcache.core.EhcacheManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,20 +15,18 @@ import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.validation.Valid;
-import java.util.Locale;
-import java.util.Objects;
 
 @Controller
-@RequestMapping("/{url}/edit")
+@RequestMapping("/{url}/edit/advanced")
 @SessionAttributes({"editEvent"})
-public class EditEventController {
+public class AdvancedEditEventController {
     private final LanguageService languageService;
     private final EventService eventService;
     private final EventRepository eventRepository;
     private final CacheManager cacheManager;
 
 
-    public EditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager) {
+    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager) {
         this.languageService = languageService;
         this.eventService = eventService;
         this.eventRepository = eventRepository;
@@ -45,21 +41,21 @@ public class EditEventController {
         }
         invalidateEventByUrl(event.getUrl());
         model.addAttribute("editEvent", EventWriteModel.generateByEvent(event, languageService));
-        return "event/edit_event";
+        return "event/edit_advanced_event";
     }
 
     @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String reloadEvent(@ModelAttribute("editEvent") @Valid EventWriteModel event, BindingResult bindingResult, String url) {
 //        Reload is done during object validation
-        return "event/edit_event";
+        return "event/edit_advanced_event";
     }
 
     @PostMapping
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String updateEvent(@ModelAttribute("editEvent") @Valid EventWriteModel event, BindingResult bindingResult, String url, Model model) {
         if (bindingResult.hasErrors()) {
-            return "event/edit_event";
+            return "event/edit_advanced_event";
         }
         Event saved = eventService.saveNextTime(event.generateEvent());
         invalidateEventByUrl(saved.getUrl());
@@ -76,10 +72,5 @@ public class EditEventController {
     @ModelAttribute("event")
     Event getEvent(@PathVariable("url") String url) {
         return eventRepository.getByUrl(url);
-    }
-
-    @ModelAttribute("action")
-    String getAction(@PathVariable("url") String url) {
-        return "/" + url + "/edit";
     }
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='Advanced edit')"></head>
+
+
+<body>
+<p th:text="${T(pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum).ROLE_ORGANIZER}"></p>
+
+<form method="post" style="max-width: 600px; margin: 0 auto;"
+      th:action="@{'/'+${url}+'/edit/advanced'}" th:object="${editEvent}">
+    <div class="m-3">
+        <!--        <div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">-->
+        <!--            <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='name', label='Type name')"></div>-->
+        <!--        </div>-->
+        <div th:switch="${#authorization.expression('hasPermission(#vars.event,''ROLE_OWNER'')')}">
+            <div th:case="true">
+                <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
+                <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+                <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
+                <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'name', 'description'} }, languages='editEvent.languages')"></table>
+            </div>
+            <div th:case="false">
+                <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'description'} }, languages='editEvent.languages')"></table>
+            </div>
+        </div>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='Type start date')"></div>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
+        <div th:replace="fragments/form_pieces :: requiredDescription"></div>
+        <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
+    </div>
+</form>
+
+</body>
+</html>

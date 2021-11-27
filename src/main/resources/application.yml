@@ -18,12 +18,18 @@ spring:
           uri: ehcache.xml
         cache:
           use_second_level_cache: true
-#          use_query_cache: true
+          #          use_query_cache: true
           region:
             factory_class= org.hibernate.cache.jcache.JCacheRegionFactory
   cache:
     jcache:
       config: ehcache.xml
       provider: org.ehcache.jsr107.EhcacheCachingProvider
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
 custom:
   defaultLanguage: pl
+  resourceLocation: photos
+

@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
+package pl.pazurkiewicz.oldtimers_rally.controller.privileges;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;

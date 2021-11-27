@@ -1,7 +1,6 @@
-package pl.pazurkiewicz.oldtimers_rally.controller.event.edit;
+package pl.pazurkiewicz.oldtimers_rally.controller.category;
 
 
-import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

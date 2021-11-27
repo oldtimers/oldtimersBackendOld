@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -10,10 +11,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -54,6 +58,23 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
+    }
+
+    @Value("${custom.resourceLocation}")
+    String resourceLocation;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        exposeDirectory(resourceLocation, registry);
+    }
+
+    private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get(dirName);
+        String uploadPath = uploadDir.toFile().getAbsolutePath();
+
+        if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
+
+        registry.addResourceHandler("/" + "photos" + "/**").addResourceLocations("file:/" + uploadPath + "/");
     }
 
     @Override
