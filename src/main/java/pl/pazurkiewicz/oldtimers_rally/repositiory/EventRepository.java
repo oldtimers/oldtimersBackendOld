@@ -13,11 +13,11 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     Boolean existsByUrlAndUrlNot(String url, String oldUrl);
 
-    @Cacheable(value = "eventsId", key = "#url")
+    @Cacheable(value = "eventsId", key = "#url", unless = "#result == null")
     @Query("select e.id from Event e where e.url = :url")
     Integer getIdByUrl(@Param("url") String url);
 
-    @Cacheable(value = "eventsByUrl", key = "#url")
+    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
     @Query("select distinct e from Event e " +
             "left join fetch e.name n  " +
             "left join fetch n.dictionaries n1 " +

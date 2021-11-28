@@ -30,7 +30,7 @@ public @interface IsUrlPossible {
     Class<? extends Payload>[] payload() default {};
 
     class IsUrlPossibleValidator implements ConstraintValidator<IsUrlPossible, String> {
-        private static final Set<String> forbiddenNames = new HashSet<>(Arrays.asList("rally", "rally", "rally", "photos", "static"));
+        private static final Set<String> forbiddenNames = new HashSet<>(Arrays.asList("rally", "photos", "static"));
 
         @Autowired
         EventRepository repository;

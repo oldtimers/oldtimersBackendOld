@@ -11,8 +11,8 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Year;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "crews", indexes = {
         @Index(name = "crews_event_id_number_uindex", columnList = "event_id, number", unique = true)
@@ -38,7 +38,7 @@ public class Crew implements DatabaseModel {
     private String car;
     @Column(name = "photo", length = 128)
     private String photo;
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "description", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Valid
@@ -61,7 +61,7 @@ public class Crew implements DatabaseModel {
     @AssertTrue
     private Boolean acceptedRodo = false;
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<CrewCategory> categories = new HashSet<>();
+    private List<CrewCategory> categories = new ArrayList<>();
 
     public Crew() {
     }
@@ -159,11 +159,11 @@ public class Crew implements DatabaseModel {
         this.id = id;
     }
 
-    public Set<CrewCategory> getCategories() {
+    public List<CrewCategory> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<CrewCategory> categories) {
+    public void setCategories(List<CrewCategory> categories) {
         this.categories = categories;
     }
 }

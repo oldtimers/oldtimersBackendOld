@@ -1,6 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -70,8 +69,13 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
         return new FileUploadUtil(resourceLocation);
     }
 
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/static/", "classpath:/public/", "classpath"};
+
     @Override
-    public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
         exposeDirectory(resourceLocation, registry);
     }
 

@@ -23,6 +23,14 @@ public class CrewCategory implements DatabaseModel {
     @Column(name = "ranking_points")
     private Double rankingPoints;
 
+    public CrewCategory() {
+    }
+
+    public CrewCategory(Crew crew, Category category) {
+        this.crew = crew;
+        this.category = category;
+    }
+
     public Double getRankingPoints() {
         return rankingPoints;
     }

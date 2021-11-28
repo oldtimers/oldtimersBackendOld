@@ -66,7 +66,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
         handler.setPermissionEvaluator(permissionEvaluator);
         web.ignoring()
-                .antMatchers("/resources/**")
+                .antMatchers("/static/**")
                 .and()
                 .expressionHandler(handler)
         ;

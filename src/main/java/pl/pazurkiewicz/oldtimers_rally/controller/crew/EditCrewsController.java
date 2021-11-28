@@ -4,19 +4,24 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
-import pl.pazurkiewicz.oldtimers_rally.model.Crew;
+import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
-import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.CrewListModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/{url}/edit/crews")
@@ -26,19 +31,22 @@ public class EditCrewsController {
     private final SmartValidator validator;
     private final CrewService crewService;
     private final EventRepository eventRepository;
+    private final CategoryRepository categoryRepository;
 
-    public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService) {
+    public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService, CategoryRepository categoryRepository) {
         this.crewRepository = crewRepository;
         this.validator = validator;
         this.crewService = crewService;
         this.eventRepository = eventRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String getCrews(Model model, Event event) {
         event.getEventLanguages().sort(new EventLanguageComparator());
-        model.addAttribute("crews", new CrewsModel(crewRepository.getSortedByEventId(event.getId()), event));
+        List<Category> categories = categoryRepository.findByEvent_IdOrderById(event.getId());
+        model.addAttribute("crews", new CrewListModel(crewRepository.getSortedByEventId(event.getId()), categories, event));
         return "event/crews";
     }
 
@@ -50,26 +58,26 @@ public class EditCrewsController {
 
     @PostMapping(params = "delete")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String deleteCrew(@ModelAttribute("crews") CrewsModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
+    String deleteCrew(@ModelAttribute("crews") CrewListModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
         crews.removeCrew(deleteId);
         return "event/crews";
     }
 
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event) {
+    String addCrew(@ModelAttribute("crews") @Valid CrewListModel crews, BindingResult bindingResult, Event event) {
         if (bindingResult.hasErrors()) {
             return "event/crews";
         }
-        crews.acceptNewCrew(event);
+        crews.acceptNewCrew();
         return "event/crews";
     }
 
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    String saveCrews(@ModelAttribute("crews") CrewsModel crews, BindingResult bindingResult, Event event) {
-        Crew newCrew = crews.getNewCrew();
+    String saveCrews(@ModelAttribute("crews") CrewListModel crews, BindingResult bindingResult, Event event, @RequestParam Map<String, String> allRequestParams, ModelMap model) {
+        CrewModel newCrew = crews.getNewCrew();
         crews.setNewCrew(null);
         validator.validate(crews, bindingResult);
         if (bindingResult.hasErrors()) {

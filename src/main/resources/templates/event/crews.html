@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='Edit crews')"></head>
+<style>
+    #dragArea {
+        border: 1px solid #eee;
+        width: 142px;
+        min-height: 50px;
+        list-style-type: none;
+        margin: 0;
+        padding: 5px 0 0 0;
+        float: left;
+        margin-right: 10px;
+    }
+
+    #dragArea li {
+        margin: 0 5px 5px 5px;
+        padding: 5px;
+        font-size: 1.2em;
+        width: 120px;
+    }
+</style>
 <body>
 
-<form enctype="multipart/form-data" method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
+<form method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
 
     <div class="container-fluid">
         <br>
@@ -33,10 +52,42 @@
                     <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.phone', label='Phone number')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedReg', label='Accepted regulations:')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedRodo', label='Accepted RODO:')"></div>
-                    <!--                    <div>-->
-                    <!--                        <label>Photo: </label>-->
-                    <!--                        <input type="file" th:field="*{photo}" accept="image/png, image/jpeg" />-->
-                    <!--                    </div>-->
+
+                    <div class="card card-bord" th:with="name=${'newCrew'}">
+                        <input th:name="${name}+'.actualCategories'" type="hidden" value="">
+                        <div>
+                            <p>Actual</p>
+                            <ul style="min-height: 50px" th:class="${name}+' dragArea'" th:id="${name}+'1'">
+                                <li class="ui-state-default"
+                                    th:each="x, info2 : *{newCrew.actualCategories}"
+                                    th:pom="${x.id}"
+                                    th:text="${x.name.getDictionary(#locale)}"
+                                ></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p>Possible</p>
+                            <input name="newCrew.possibleCategories" type="hidden" value="">
+                            <ul style="min-height: 50px" th:class="${name}+' dragArea'" th:id="${name}+'2'">
+                                <li class="ui-state-default"
+                                    th:each="x, info2 : *{newCrew.possibleCategories}"
+                                    th:pom="${x.id}"
+                                    th:text="${x.name.getDictionary(#locale)}"
+                                ></li>
+                            </ul>
+                        </div>
+
+                        <script>
+                            $(function () {
+                                var s1 = '#[[${name}]]1';
+                                var s2 = '#[[${name}]]2';
+                                $(s1 + ", " + s2).sortable({
+                                    connectWith: '.[[${name}]]'
+                                }).disableSelection();
+                            });
+                        </script>
+                    </div>
+
                     <button class="btn btn-primary row-link links" name="add"
                             type="submit">Add
                     </button>
@@ -54,3 +105,4 @@
 </div>
 </body>
 </html>
+
