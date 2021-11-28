@@ -217,3 +217,18 @@
         </td>
     </tr>
 </table>
+
+
+<table class="table" th:fragment="categoryTableFragment (fieldName)">
+    <tr>
+        <th>Category</th>
+        <th>Is active</th>
+    </tr>
+    <tr th:each="cp, info2 : *{__${fieldName}__}">
+        <th th:text="${cp.category.name.getDictionary(#locale)}"></th>
+        <th th:if="${cp.value!=null}">
+            <input class="checkbox-inline" style="margin: auto" th:field="*{__${fieldName}__[__${info2.index}__].value}"
+                   type="checkbox"/>
+        </th>
+    </tr>
+</table>

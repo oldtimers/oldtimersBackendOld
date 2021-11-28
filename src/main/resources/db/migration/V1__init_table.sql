@@ -171,17 +171,17 @@ create table categories
 
 create table crews
 (
-    id            int auto_increment,
-    event_id      int         not null,
-    number        int null,
-    car           varchar(64) not null,
-    photo         varchar(128) null,
-    description   int         not null,
-    year_of_production year not null,
-    driver_name   varchar(64) not null,
-    phone         varchar(16) not null,
-    accepted_reg  boolean     not null,
-    accepted_rodo boolean     not null,
+    id                 int auto_increment,
+    event_id           int         not null,
+    number             int null,
+    car                varchar(64) not null,
+    photo              varchar(128) null,
+    description        int         not null,
+    year_of_production int         not null,
+    driver_name        varchar(64) not null,
+    phone              varchar(16) not null,
+    accepted_reg       boolean     not null,
+    accepted_rodo      boolean     not null,
     constraint crews_pk
         primary key (id),
     constraint crews_events_id_fk

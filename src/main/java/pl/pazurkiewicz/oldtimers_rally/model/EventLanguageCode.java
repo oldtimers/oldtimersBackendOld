@@ -1,7 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.DictionaryComparator;
@@ -26,7 +24,6 @@ public class EventLanguageCode implements DatabaseModel {
 
     @Valid
     @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @Fetch(value = FetchMode.JOIN)
     private List<Dictionary> dictionaries = new ArrayList<>();
 
     public static EventLanguageCode generateNewEventLanguageCode(List<EventLanguage> eventLanguages) {
@@ -90,8 +87,7 @@ public class EventLanguageCode implements DatabaseModel {
     }
 
     @PreUpdate
-    @PrePersist
-    public void prepareForSave() {
+    public void preUpdate() {
         dictionaries.removeIf(dictionary -> dictionary.getValue().isBlank());
     }
 

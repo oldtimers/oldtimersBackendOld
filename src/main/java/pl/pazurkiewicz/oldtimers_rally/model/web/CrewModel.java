@@ -3,38 +3,34 @@ package pl.pazurkiewicz.oldtimers_rally.model.web;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 
 import javax.validation.Valid;
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CrewModel implements DatabaseModel {
     @Valid
     private final Crew crew;
-    private List<Category> possibleCategories = new ArrayList<>();
-    private List<Category> actualCategories;
+    private final List<CategoryPiece> categoryTable;
 
     public CrewModel(Crew crew, List<Category> allCategories) {
         this.crew = crew;
-        actualCategories = crew.getCategories().stream().map(CrewCategory::getCategory).collect(Collectors.toList());
-        Set<Integer> crewCategoryIds = actualCategories.stream().map(Category::getId).collect(Collectors.toSet());
-        for (Category category : allCategories) {
-            if (!crewCategoryIds.contains(category.getId())) {
-                possibleCategories.add(category);
-            }
-        }
-    }
-
-    public List<Category> getPossibleCategories() {
-        return possibleCategories;
-    }
-
-    public void setPossibleCategories(List<Category> possibleCategories) {
-        this.possibleCategories = possibleCategories;
+        this.categoryTable = generateCategoryTable(allCategories);
     }
 
     public Crew getCrew() {
+        return crew;
+    }
+
+    public Crew getCrewToSave() {
+        List<CrewCategory> crewCategories = crew.getCategories();
+        for (CategoryPiece categoryPiece : categoryTable) {
+            if (categoryPiece.getValue() == Boolean.TRUE) {
+                if (crewCategories.stream().noneMatch(crewCategory -> Objects.equals(crewCategory.getCategory().getId(), categoryPiece.getCategory().getId()))) {
+                    crewCategories.add(new CrewCategory(crew, categoryPiece.getCategory()));
+                }
+            } else {
+                crewCategories.removeIf(crewCategory -> Objects.equals(crewCategory.getCategory().getId(), categoryPiece.getCategory().getId()));
+            }
+        }
         return crew;
     }
 
@@ -43,104 +39,28 @@ public class CrewModel implements DatabaseModel {
         return crew.getId();
     }
 
-    public void setId(Integer id) {
-        crew.setId(id);
+    public List<CategoryPiece> getCategoryTable() {
+        return categoryTable;
     }
 
-    public Boolean getAcceptedRodo() {
-        return crew.getAcceptedRodo();
+    public void preUpdate(Collection<Category> categories) {
+        crew.preUpdate(categories);
     }
 
-    public void setAcceptedRodo(Boolean acceptedRodo) {
-        crew.setAcceptedRodo(acceptedRodo);
-    }
-
-    public Boolean getAcceptedReg() {
-        return crew.getAcceptedReg();
-    }
-
-    public void setAcceptedReg(Boolean acceptedReg) {
-        crew.setAcceptedReg(acceptedReg);
-    }
-
-    public String getPhone() {
-        return crew.getPhone();
-    }
-
-    public void setPhone(String phone) {
-        crew.setPhone(phone);
-    }
-
-    public String getDriverName() {
-        return crew.getDriverName();
-    }
-
-    public void setDriverName(String driverName) {
-        crew.setDriverName(driverName);
-    }
-
-    public Year getYearOfProduction() {
-        return crew.getYearOfProduction();
-    }
-
-    public void setYearOfProduction(Year yearOfProduction) {
-        crew.setYearOfProduction(yearOfProduction);
-    }
-
-    public EventLanguageCode getDescription() {
-        return crew.getDescription();
-    }
-
-    public void setDescription(EventLanguageCode description) {
-        crew.setDescription(description);
-    }
-
-    public String getPhoto() {
-        return crew.getPhoto();
-    }
-
-    public void setPhoto(String photo) {
-        crew.setPhoto(photo);
-    }
-
-    public String getCar() {
-        return crew.getCar();
-    }
-
-    public void setCar(String car) {
-        crew.setCar(car);
-    }
-
-    public Integer getNumber() {
-        return crew.getNumber();
-    }
-
-    public void setNumber(Integer number) {
-        crew.setNumber(number);
-    }
-
-    public Event getEvent() {
-        return crew.getEvent();
-    }
-
-    public void setEvent(Event event) {
-        crew.setEvent(event);
-    }
-
-    public List<CrewCategory> getCategories() {
-        return crew.getCategories();
-    }
-
-
-    public void setCategories(List<CrewCategory> categories) {
-        crew.setCategories(categories);
-    }
-
-    public List<Category> getActualCategories() {
-        return actualCategories;
-    }
-
-    public void setActualCategories(List<Category> actualCategories) {
-        this.actualCategories = actualCategories;
+    public List<CategoryPiece> generateCategoryTable(List<Category> allCategories) {
+        List<CategoryPiece> categoryTable = new ArrayList<>();
+        Set<Integer> crewCategoryIds = crew.getCategories().stream().map(CrewCategory::getCategory).map(Category::getId).collect(Collectors.toSet());
+        for (Category category : allCategories) {
+            if (crewCategoryIds.contains(category.getId())) {
+                if (category.getMode() == CategoryEnum.other) {
+                    categoryTable.add(new CategoryPiece(category, Boolean.TRUE));
+                } else {
+                    categoryTable.add(new CategoryPiece(category, null));
+                }
+            } else if (category.getMode() == CategoryEnum.other) {
+                categoryTable.add(new CategoryPiece(category, Boolean.FALSE));
+            }
+        }
+        return categoryTable;
     }
 }

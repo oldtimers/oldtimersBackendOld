@@ -55,6 +55,12 @@ public class Category implements DatabaseModel {
         this.setName(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
     }
 
+    @PreUpdate
+    public void preUpdate() {
+        this.name.preUpdate();
+        this.description.preUpdate();
+    }
+
     public Integer getMaxYear() {
         return maxYear;
     }
@@ -109,6 +115,19 @@ public class Category implements DatabaseModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean containYear(Integer year) {
+        if (mode == CategoryEnum.year) {
+            if (minYear != null && maxYear != null)
+                return minYear <= year && year <= maxYear;
+            else if (minYear != null) {
+                return minYear <= year;
+            } else {
+                return year <= maxYear;
+            }
+        }
+        return false;
     }
 }
 

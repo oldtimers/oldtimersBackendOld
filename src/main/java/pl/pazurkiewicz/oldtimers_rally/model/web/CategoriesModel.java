@@ -83,4 +83,9 @@ public class CategoriesModel implements ListWebModel<Category> {
     public void deleteOtherCategory(Integer removeId) {
         removeFromList(removeId, otherCategories, deletedCategories);
     }
+
+    public void preUpdate() {
+        yearCategories.forEach(Category::preUpdate);
+        otherCategories.forEach(Category::preUpdate);
+    }
 }

@@ -1,7 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
+import org.hibernate.Hibernate;
 import org.springframework.cache.CacheManager;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +36,7 @@ public class AdvancedEditEventController {
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String showEditPage(Model model, @ModelAttribute("event") Event event) {
-        if (event == null) {
-            throw new ResourceNotFoundException();
-        }
+        event.getEventLanguages().forEach(eventLanguage -> Hibernate.initialize(eventLanguage.getLanguage()));
         invalidateEventByUrl(event.getUrl());
         model.addAttribute("editEvent", EventWriteModel.generateByEvent(event, languageService));
         return "event/edit_advanced_event";

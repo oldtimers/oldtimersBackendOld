@@ -31,13 +31,14 @@
                 <div class="card card-bord" th:if="*{crews.size()} > 0">
                     <h2>Crews</h2>
                     <div class="card card-bord" th:each="crew, info : *{crews}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].description'} }, languages='event.eventLanguages')"></table>
-                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].car', label='Car')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].yearOfProduction', label='Year of production')"></div>
-                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].driverName', label='Driver name')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].phone', label='Phone number')"></div>
-                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].acceptedReg', label='Accepted regulations:')"></div>
-                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].acceptedRodo', label='Accepted RODO:')"></div>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].crew.description'} }, languages='event.eventLanguages')"></table>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.car', label='Car')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.yearOfProduction', label='Year of production')"></div>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.driverName', label='Driver name')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.phone', label='Phone number')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedReg', label='Accepted regulations:')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedRodo', label='Accepted RODO:')"></div>
+                        <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='crews[__${info.index}__].categoryTable')"></div>
                         <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
                                 type="submit">Delete
                         </button>
@@ -45,48 +46,14 @@
                 </div>
                 <div class="card card-bord">
                     <h3>Add new crew</h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.description'} }, languages='event.eventLanguages')"></table>
-                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.car', label='Car')"></div>
-                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.yearOfProduction', label='Year of production')"></div>
-                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.driverName', label='Driver name')"></div>
-                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.phone', label='Phone number')"></div>
-                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedReg', label='Accepted regulations:')"></div>
-                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.acceptedRodo', label='Accepted RODO:')"></div>
-
-                    <div class="card card-bord" th:with="name=${'newCrew'}">
-                        <input th:name="${name}+'.actualCategories'" type="hidden" value="">
-                        <div>
-                            <p>Actual</p>
-                            <ul style="min-height: 50px" th:class="${name}+' dragArea'" th:id="${name}+'1'">
-                                <li class="ui-state-default"
-                                    th:each="x, info2 : *{newCrew.actualCategories}"
-                                    th:pom="${x.id}"
-                                    th:text="${x.name.getDictionary(#locale)}"
-                                ></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p>Possible</p>
-                            <input name="newCrew.possibleCategories" type="hidden" value="">
-                            <ul style="min-height: 50px" th:class="${name}+' dragArea'" th:id="${name}+'2'">
-                                <li class="ui-state-default"
-                                    th:each="x, info2 : *{newCrew.possibleCategories}"
-                                    th:pom="${x.id}"
-                                    th:text="${x.name.getDictionary(#locale)}"
-                                ></li>
-                            </ul>
-                        </div>
-
-                        <script>
-                            $(function () {
-                                var s1 = '#[[${name}]]1';
-                                var s2 = '#[[${name}]]2';
-                                $(s1 + ", " + s2).sortable({
-                                    connectWith: '.[[${name}]]'
-                                }).disableSelection();
-                            });
-                        </script>
-                    </div>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.crew.description'} }, languages='event.eventLanguages')"></table>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.car', label='Car')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.yearOfProduction', label='Year of production')"></div>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.driverName', label='Driver name')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.phone', label='Phone number')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedReg', label='Accepted regulations:')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedRodo', label='Accepted RODO:')"></div>
+                    <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='newCrew.categoryTable')"></div>
 
                     <button class="btn btn-primary row-link links" name="add"
                             type="submit">Add

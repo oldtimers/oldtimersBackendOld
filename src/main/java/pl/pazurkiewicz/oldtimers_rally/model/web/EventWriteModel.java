@@ -182,8 +182,8 @@ public class EventWriteModel {
     }
 
     public Event generateEvent() {
-        name.prepareForSave();
-        description.prepareForSave();
+        name.preUpdate();
+        description.preUpdate();
         event.setName(name);
         event.setDescription(description);
         event.setUrl(url);

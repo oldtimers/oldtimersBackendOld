@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,16 +14,16 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
     Boolean existsByUrlAndUrlNot(String url, String oldUrl);
 
-    @Cacheable(value = "eventsId", key = "#url", unless = "#result == null")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//    @Cacheable(value = "eventsId", key = "#url", unless = "#result == null")
     @Query("select e.id from Event e where e.url = :url")
     Integer getIdByUrl(@Param("url") String url);
 
-    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
+    //    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Query("select distinct e from Event e " +
             "left join fetch e.name n  " +
-            "left join fetch n.dictionaries n1 " +
-            "left join fetch n1.eventLanguage n2 " +
-            "left join fetch n2.language " +
+            "left join fetch e.description " +
             "where e.url = :url")
 //    @Query("select distinct e from Event e left join fetch e.name left join fetch e.description where e.url = :url")
     Event getByUrl(String url);

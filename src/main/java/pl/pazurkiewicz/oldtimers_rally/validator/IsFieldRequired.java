@@ -2,6 +2,7 @@ package pl.pazurkiewicz.oldtimers_rally.validator;
 
 
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.NullValueInNestedPathException;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -41,15 +42,18 @@ public @interface IsFieldRequired {
         public boolean isValid(Object value, ConstraintValidatorContext context) {
             String fieldValue = (String) new BeanWrapperImpl(value)
                     .getPropertyValue(field);
-            Boolean isRequiredValue = (Boolean) new BeanWrapperImpl(value)
-                    .getPropertyValue(isRequired);
-
-            if (Boolean.TRUE.equals(isRequiredValue) && (fieldValue == null || fieldValue.isBlank())) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                        .addPropertyNode(field).addConstraintViolation();
-                return false;
-            } else {
+            try {
+                Boolean isRequiredValue = (Boolean) new BeanWrapperImpl(value)
+                        .getPropertyValue(isRequired);
+                if (Boolean.TRUE.equals(isRequiredValue) && (fieldValue == null || fieldValue.isBlank())) {
+                    context.disableDefaultConstraintViolation();
+                    context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+                            .addPropertyNode(field).addConstraintViolation();
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (NullValueInNestedPathException e) {
                 return true;
             }
         }

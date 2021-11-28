@@ -1,10 +1,10 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.crew;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,6 @@ import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/{url}/edit/crews")
@@ -44,6 +43,7 @@ public class EditCrewsController {
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String getCrews(Model model, Event event) {
+        event.getEventLanguages().forEach(eventLanguage -> Hibernate.initialize(eventLanguage.getLanguage()));
         event.getEventLanguages().sort(new EventLanguageComparator());
         List<Category> categories = categoryRepository.findByEvent_IdOrderById(event.getId());
         model.addAttribute("crews", new CrewListModel(crewRepository.getSortedByEventId(event.getId()), categories, event));
@@ -69,6 +69,7 @@ public class EditCrewsController {
         if (bindingResult.hasErrors()) {
             return "event/crews";
         }
+        crewService.assignCrewToYearCategory(crews.getNewCrew());
         crews.acceptNewCrew();
         return "event/crews";
     }
@@ -76,7 +77,7 @@ public class EditCrewsController {
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    String saveCrews(@ModelAttribute("crews") CrewListModel crews, BindingResult bindingResult, Event event, @RequestParam Map<String, String> allRequestParams, ModelMap model) {
+    String saveCrews(@ModelAttribute("crews") CrewListModel crews, BindingResult bindingResult, Event event, Model model) {
         CrewModel newCrew = crews.getNewCrew();
         crews.setNewCrew(null);
         validator.validate(crews, bindingResult);
@@ -85,7 +86,7 @@ public class EditCrewsController {
             return "event/crews";
         }
         crewService.saveCrewsModel(crews);
-        return "event/crews";
+        return getCrews(model, event);
     }
 
     @ModelAttribute("event")

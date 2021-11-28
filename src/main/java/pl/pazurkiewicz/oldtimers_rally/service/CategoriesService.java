@@ -13,7 +13,9 @@ public class CategoriesService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void saveCategoriesModel(CategoriesModel categories) {
+    public void saveCategoriesModel(CategoriesModel categories, Integer eventId) {
+//        TODO
+        categories.preUpdate();
         categoryRepository.deleteAllById(categories.getDeletedCategories());
         categoryRepository.saveAll(categories.getOtherCategories());
         categoryRepository.saveAll(categories.getYearCategories());

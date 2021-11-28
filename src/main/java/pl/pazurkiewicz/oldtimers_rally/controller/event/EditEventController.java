@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
+import org.hibernate.Hibernate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,6 +44,8 @@ public class EditEventController {
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String showEditPage(@ModelAttribute("event") Event event) {
+        event.getEventLanguages().sort(new EventLanguageComparator());
+        event.getEventLanguages().forEach(eventLanguage -> Hibernate.initialize(eventLanguage.getLanguage()));
         return "event/edit_event";
     }
 
@@ -62,9 +65,7 @@ public class EditEventController {
 
     @ModelAttribute("event")
     Event getEvent(@PathVariable("url") String url) {
-        Event event = eventRepository.getByUrl(url);
-        event.getEventLanguages().sort(new EventLanguageComparator());
-        return event;
+        return eventRepository.getByUrl(url);
     }
 
 

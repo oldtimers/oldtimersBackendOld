@@ -5,6 +5,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,5 +51,13 @@ public class CrewListModel implements ListWebModel<CrewModel> {
 
     public void setNewCrew(CrewModel newCrew) {
         this.newCrew = newCrew;
+    }
+
+    public void preUpdate(Collection<Category> categories) {
+        crews.forEach(c -> c.preUpdate(categories));
+    }
+
+    public Event getEvent() {
+        return event;
     }
 }

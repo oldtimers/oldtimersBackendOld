@@ -1,28 +1,23 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import com.vladmihalcea.hibernate.type.basic.YearType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Year;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table(name = "crews", indexes = {
         @Index(name = "crews_event_id_number_uindex", columnList = "event_id, number", unique = true)
 })
 @Entity
-@TypeDef(
-        name = "year",
-        typeClass = YearType.class,
-        defaultForType = Year.class
-)
 public class Crew implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +38,9 @@ public class Crew implements DatabaseModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Valid
     private EventLanguageCode description;
-    @Column(name = "year_of_production", nullable = false, columnDefinition = "year")
+    @Column(name = "year_of_production", nullable = false)
     @NotNull
-    private Year yearOfProduction;
+    private Integer yearOfProduction;
     @Column(name = "driver_name", nullable = false, length = 64)
     @NotBlank
     private String driverName;
@@ -61,6 +56,7 @@ public class Crew implements DatabaseModel {
     @AssertTrue
     private Boolean acceptedRodo = false;
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<CrewCategory> categories = new ArrayList<>();
 
     public Crew() {
@@ -103,11 +99,11 @@ public class Crew implements DatabaseModel {
         this.driverName = driverName;
     }
 
-    public Year getYearOfProduction() {
+    public Integer getYearOfProduction() {
         return yearOfProduction;
     }
 
-    public void setYearOfProduction(Year yearOfProduction) {
+    public void setYearOfProduction(Integer yearOfProduction) {
         this.yearOfProduction = yearOfProduction;
     }
 
@@ -165,5 +161,39 @@ public class Crew implements DatabaseModel {
 
     public void setCategories(List<CrewCategory> categories) {
         this.categories = categories;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        description.preUpdate();
+    }
+
+    public List<CrewCategory> assignToCategories(Collection<Category> categories) {
+        List<CrewCategory> result = new ArrayList<>();
+        this.categories.removeIf(crewCategory -> {
+            Category category = crewCategory.getCategory();
+            if (category.getMode() == CategoryEnum.year && !category.containYear(this.yearOfProduction)) {
+                crewCategory.setCrew(null);
+                return true;
+            }
+            return false;
+        });
+        Set<Integer> yearCategoryIds = this.categories.stream()
+                .map(CrewCategory::getCategory)
+                .filter(category -> category.getMode() == CategoryEnum.year)
+                .map(Category::getId).collect(Collectors.toSet());
+        for (Category category : categories) {
+            if (category.getMode() == CategoryEnum.year && category.containYear(this.yearOfProduction) && !yearCategoryIds.contains(category.getId())) {
+                yearCategoryIds.add(category.getId());
+                CrewCategory created = new CrewCategory(this, category);
+                this.categories.add(created);
+                result.add(created);
+            }
+        }
+        return result;
+    }
+
+    public void preUpdate(Collection<Category> categories) {
+        assignToCategories(categories);
     }
 }
