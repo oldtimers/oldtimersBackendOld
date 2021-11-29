@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
+import net.minidev.json.annotate.JsonIgnore;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.CategoryEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
@@ -16,6 +17,7 @@ public class CategoriesModel implements ListWebModel<Category> {
     private final List<Category> yearCategories = new ArrayList<>();
     @Valid
     private final List<Category> otherCategories = new ArrayList<>();
+    @JsonIgnore
     private final Set<Integer> deletedCategories = new HashSet<>();
     @Valid
     private Category newCategory;

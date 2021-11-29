@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Advanced edit')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='Event edit')"></head>
 <body>
 <div th:replace="fragments/view_fragments :: showRedirections"></div>
-<div class="card card-bord" th:if="*{crewsWrapper.crews.size()} > 0">
+<div class="card card-bord" th:if="*{crewsModel.crews.size()} > 0">
     <h2>Crews</h2>
-    <div class="card card-bord" th:each="crew, info : ${crewsWrapper.crews}">
+    <div class="card card-bord" th:each="crewModel, info : ${crewsModel.crews}">
         <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
-              th:object="${crewsWrapper.crews[__${info.index}__]}">
-            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'description'} }, languages='event.eventLanguages')"></table>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='car', label='Car')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='yearOfProduction', label='Year of production')"></div>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='driverName', label='Driver name')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='Phone number')"></div>
+              th:object="${crewsModel.crews[__${info.index}__]}">
+            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crew.description'} }, languages='event.eventLanguages')"></table>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='Car')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='Year of production')"></div>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.driverName', label='Driver name')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='crew.phone', label='Phone number')"></div>
+            <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='categoryTable')"></div>
             <div>
                 <label>Photo: </label>
                 <input accept="image/*" name="photo" type="file"/>
             </div>
-            <div th:if="${crew.photo!=null}">
-                <img alt="No photo" th:src="${crew.photo}">
+            <div th:if="${crewModel.crew.photo!=null}">
+                <img alt="No photo" th:src="${crewModel.crew.photo}">
                 <label>
                     <b>Remove photo:</b>
                     <input class="checkbox-inline" name="removePhoto" style="margin: auto" type="checkbox"/>

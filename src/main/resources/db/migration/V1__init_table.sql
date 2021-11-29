@@ -89,25 +89,6 @@ create
     unique index user_groups_event_id_user_id_uindex
     on user_groups (event_id, user_id);
 
-create table event_schedule
-(
-    id             int auto_increment,
-    event_id       int      not null,
-    selected_order int      not null,
-    start_time     datetime not null,
-    time           int      not null,
-    constraint event_schedule_pk
-        primary key (id),
-    constraint event_schedule_events_id_fk
-        foreign key (event_id) references events (id)
-            on delete cascade
-);
-
-create
-    unique index event_schedule_event_id_selected_order_uindex
-    on event_schedule (event_id, selected_order);
-
-
 create table event_languages
 (
     id          int auto_increment,
@@ -238,17 +219,13 @@ create
 create table competitions
 (
     id                 int auto_increment,
-    event_id           int     not null,
-    name_id            int     not null,
-    description_id     int     not null,
-    type               enum ('REGULAR_DRIVE', 'TIMER', 'BEST_MIN', 'BEST_MAX', 'COUNTED') not null,
-    absence_points     int     not null,
-    time               int     not null,
-    max_ranking_points int     not null,
-    current_state      enum ('BEFORE', 'DURING', 'AFTER') default 'BEFORE' not null,
-    column_8           int null,
+    event_id           int not null,
+    name_id            int not null,
+    description_id     int not null,
+    type               enum ('REGULAR_DRIVE', 'BEST_MIN', 'BEST_MAX') not null,
+    absence_points     int not null,
+    max_ranking_points int not null,
     number_of_subsets  int null,
-    might_be_invalid   boolean not null,
     additional1        float null,
     additional2        float null,
     additional3        float null,

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='Competitions')"></head>
+<body>
+<div th:replace="fragments/view_fragments :: showRedirections"></div>
+<div class="card card-bord" th:if="*{competitionList.size()} > 0">
+    <h2>Competitions</h2>
+    <div class="card card-bord" th:each="competition, info : *{competitionList}">
+        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}"
+           th:text="${competition.name.getDictionary(#locale)}"></a>
+    </div>
+</div>
+<div class="card card-bord">
+    <h2>Create competition</h2>
+    <div class="card card-bord" th:each="competition, info : *{competitionList}">
+        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}"
+           th:text="${competition.name.getDictionary(#locale)}"></a>
+    </div>
+</div>
+</body>
+</html>

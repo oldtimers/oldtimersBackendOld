@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventLanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
@@ -23,13 +23,13 @@ public class EventService {
     @Autowired
     private UserGroupService userGroupService;
 
-    public Event saveFirstTime(EventWriteModel eventWriteModel, MyUserDetails principal) {
-        Event saved = eventRepository.save(eventWriteModel.generateEvent());
+    public Event saveFirstTime(EventModel eventModel, MyUserDetails principal) {
+        Event saved = eventRepository.save(eventModel.generateEvent());
         userGroupService.addOwnerPrivileges(saved, principal);
         return saved;
     }
 
-    public Event saveNextTime(Event event) {
+    public Event saveEventAgain(Event event) {
         return eventRepository.save(event);
     }
 }

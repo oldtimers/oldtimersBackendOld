@@ -21,7 +21,7 @@ public class Dictionary implements DatabaseModel {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
     private EventLanguage eventLanguage;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "code_id", nullable = false)
     private EventLanguageCode code;
 

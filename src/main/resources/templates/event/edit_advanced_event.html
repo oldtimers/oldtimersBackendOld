@@ -12,7 +12,7 @@
         <!--        <div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">-->
         <!--            <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='name', label='Type name')"></div>-->
         <!--        </div>-->
-        <div th:switch="${#authorization.expression('hasPermission(#vars.event,''ROLE_OWNER'')')}">
+        <div th:switch="${#authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_OWNER'')')}">
             <div th:case="true">
                 <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
                 <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>

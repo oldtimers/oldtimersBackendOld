@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
+import net.minidev.json.annotate.JsonIgnore;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
@@ -11,17 +12,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CrewListModel implements ListWebModel<CrewModel> {
+public class CrewsModel implements ListWebModel<CrewModel> {
     @Valid
     private final List<CrewModel> crews;
     private final Set<Integer> deletedPrivileges = new HashSet<>();
     private final List<Category> possibleCategories;
+    @JsonIgnore
     private final Event event;
     @Valid
     private CrewModel newCrew;
 
 
-    public CrewListModel(List<Crew> crews, List<Category> possibleCategories, Event event) {
+    public CrewsModel(List<Crew> crews, List<Category> possibleCategories, Event event) {
         this.possibleCategories = possibleCategories;
         this.event = event;
         this.crews = crews.stream().map(c -> new CrewModel(c, possibleCategories)).collect(Collectors.toList());

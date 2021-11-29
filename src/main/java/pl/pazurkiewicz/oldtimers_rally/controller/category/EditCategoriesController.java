@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.category;
 
 
-import org.hibernate.Hibernate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +39,6 @@ public class EditCategoriesController {
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String showCategoriesPage(Event event, Model model) {
-        event.getEventLanguages().forEach(eventLanguage -> Hibernate.initialize(eventLanguage.getLanguage()));
         event.getEventLanguages().sort(new EventLanguageComparator());
         model.addAttribute("categories", new CategoriesModel(categoryRepository.findByEvent_IdOrderById(event.getId()), event));
         return "event/categories";

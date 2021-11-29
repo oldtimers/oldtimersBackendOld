@@ -12,8 +12,8 @@ import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
-import pl.pazurkiewicz.oldtimers_rally.model.web.CrewListModel;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
@@ -46,7 +46,7 @@ public class EditCrewsController {
         event.getEventLanguages().forEach(eventLanguage -> Hibernate.initialize(eventLanguage.getLanguage()));
         event.getEventLanguages().sort(new EventLanguageComparator());
         List<Category> categories = categoryRepository.findByEvent_IdOrderById(event.getId());
-        model.addAttribute("crews", new CrewListModel(crewRepository.getSortedByEventId(event.getId()), categories, event));
+        model.addAttribute("crews", new CrewsModel(crewRepository.getSortedByEventId(event.getId()), categories, event));
         return "event/crews";
     }
 
@@ -58,14 +58,14 @@ public class EditCrewsController {
 
     @PostMapping(params = "delete")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String deleteCrew(@ModelAttribute("crews") CrewListModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
+    String deleteCrew(@ModelAttribute("crews") CrewsModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
         crews.removeCrew(deleteId);
         return "event/crews";
     }
 
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String addCrew(@ModelAttribute("crews") @Valid CrewListModel crews, BindingResult bindingResult, Event event) {
+    String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event) {
         if (bindingResult.hasErrors()) {
             return "event/crews";
         }
@@ -77,7 +77,7 @@ public class EditCrewsController {
     @PostMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    String saveCrews(@ModelAttribute("crews") CrewListModel crews, BindingResult bindingResult, Event event, Model model) {
+    String saveCrews(@ModelAttribute("crews") CrewsModel crews, BindingResult bindingResult, Event event, Model model) {
         CrewModel newCrew = crews.getNewCrew();
         crews.setNewCrew(null);
         validator.validate(crews, bindingResult);

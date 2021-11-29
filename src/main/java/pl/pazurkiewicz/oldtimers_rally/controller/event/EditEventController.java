@@ -13,10 +13,12 @@ import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
-import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsWrapper;
+import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadUtil;
 
 import java.io.IOException;
@@ -25,20 +27,24 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/{url}/edit")
-@SessionAttributes({"crewsWrapper"})
+@SessionAttributes({"crewsModel"})
 public class EditEventController {
     private final EventRepository eventRepository;
     private final CrewRepository crewRepository;
     private final CompetitionRepository competitionRepository;
     private final SmartValidator smartValidator;
     private final FileUploadUtil fileUploadUtil;
+    private final CategoryRepository categoryRepository;
+    private final CrewService crewService;
 
-    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadUtil fileUploadUtil) {
+    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadUtil fileUploadUtil, CategoryRepository categoryRepository, CrewService crewService) {
         this.eventRepository = eventRepository;
         this.crewRepository = crewRepository;
         this.competitionRepository = competitionRepository;
         this.smartValidator = smartValidator;
         this.fileUploadUtil = fileUploadUtil;
+        this.categoryRepository = categoryRepository;
+        this.crewService = crewService;
     }
 
     @GetMapping
@@ -50,16 +56,16 @@ public class EditEventController {
     }
 
 
-    @ModelAttribute("crewsWrapper")
-    CrewsWrapper getCrews(@PathVariable("url") String url, @ModelAttribute("event") Event event) {
-        return new CrewsWrapper(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(url, Crew.class).stream().peek(crew -> {
+    @ModelAttribute("crewsModel")
+    CrewsModel getCrews(@PathVariable("url") String url, @ModelAttribute("event") Event event) {
+        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(url, Crew.class).stream().peek(crew -> {
             crew.getDescription().prepareForLoad(event.getEventLanguages());
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
     }
 
     @ModelAttribute("competitions")
-    List<Competition> getCompetitions(@PathVariable("url") String url, @ModelAttribute("event") Event event) {
-        return competitionRepository.getAllByEvent_UrlOrderById(url, Competition.class);
+    List<Competition> getCompetitions(@ModelAttribute("event") Event event) {
+        return competitionRepository.getByEvent_Id(event.getId());
     }
 
 
@@ -72,14 +78,14 @@ public class EditEventController {
     @PostMapping(params = "crew")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveSpecificCrew(@ModelAttribute("event") Event event,
-                            @ModelAttribute("crewsWrapper") CrewsWrapper crewsWrapper,
+                            @ModelAttribute("crewsModel") CrewsModel crewsModel,
                             @RequestParam("crew") Integer index,
                             @RequestParam(value = "photo") MultipartFile photo,
                             @RequestParam(value = "removePhoto", required = false, defaultValue = "false") boolean removePhoto,
                             BindingResult bindingResult) throws IOException {
-        Crew crew = crewsWrapper.getCrews().get(index);
+        Crew crew = crewsModel.getCrews().get(index).getCrew();
         try {
-            bindingResult.setNestedPath(String.format("crews[%d]", index));
+            bindingResult.setNestedPath(String.format("crews[%d].crew", index));
             smartValidator.validate(crew, bindingResult);
         } finally {
             bindingResult.setNestedPath("");
@@ -93,7 +99,7 @@ public class EditEventController {
             fileUploadUtil.deleteForCrew(crew);
             crew.setPhoto(null);
         }
-        crewsWrapper.getCrews().set(index, crewRepository.save(crew));
+        crewService.saveCrewsModel(crewsModel);
         return showEditPage(event);
     }
 

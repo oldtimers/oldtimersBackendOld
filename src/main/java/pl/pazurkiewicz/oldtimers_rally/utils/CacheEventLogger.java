@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally;
+package pl.pazurkiewicz.oldtimers_rally.utils;
 
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;

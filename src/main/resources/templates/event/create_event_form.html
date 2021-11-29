@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
 <body>
-<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel"*/-->
+<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.web.EventModel"*/-->
 <form th:action="@{/rally/create}" th:object="${newEvent}"
       method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">

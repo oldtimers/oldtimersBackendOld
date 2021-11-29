@@ -33,5 +33,4 @@ public class EventController {
     Event getEvent(@PathVariable("url") String url) {
         return eventRepository.getByUrl(url);
     }
-
 }

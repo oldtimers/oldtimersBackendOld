@@ -33,10 +33,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
     Class<? extends Payload>[] payload() default {};
 
-    class IsReloaded implements ConstraintValidator<Reload, EventWriteModel> {
+    class IsReloaded implements ConstraintValidator<Reload, EventModel> {
 
         @Override
-        public boolean isValid(EventWriteModel value, ConstraintValidatorContext context) {
+        public boolean isValid(EventModel value, ConstraintValidatorContext context) {
             value.reload();
             return true;
         }
@@ -46,7 +46,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Reload
 @IsUrlAvailable(url = "url", old = "event.url")
 @IsEndDateValid(startDate = "startDate", endDate = "endDate")
-public class EventWriteModel {
+public class EventModel {
     private final Event event;
     private final PossibleLanguageSelector possibleLanguageSelector;
     private final DefaultLanguageSelector defaultLanguageSelector;
@@ -66,7 +66,7 @@ public class EventWriteModel {
 
     private List<EventLanguage> languages;
 
-    public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector, EventLanguageCode name, EventLanguageCode description, LocalDateTime startDate, LocalDateTime endDate, String url) {
+    public EventModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector, EventLanguageCode name, EventLanguageCode description, LocalDateTime startDate, LocalDateTime endDate, String url) {
         this.event = event;
         this.possibleLanguageSelector = possibleLanguageSelector;
         this.defaultLanguageSelector = defaultLanguageSelector;
@@ -77,7 +77,7 @@ public class EventWriteModel {
         this.url = url;
     }
 
-    public EventWriteModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector) {
+    public EventModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector) {
         this.event = event;
         this.possibleLanguageSelector = possibleLanguageSelector;
         this.defaultLanguageSelector = defaultLanguageSelector;
@@ -89,11 +89,11 @@ public class EventWriteModel {
         reload();
     }
 
-    public static EventWriteModel generateNewEventWriteModel(LanguageService languageService) {
+    public static EventModel generateNewEventWriteModel(LanguageService languageService) {
         Event event = new Event();
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelector();
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
-        return new EventWriteModel(
+        return new EventModel(
                 event,
                 possibleLanguageSelector,
                 defaultLanguageSelector,
@@ -107,12 +107,12 @@ public class EventWriteModel {
 
     }
 
-    public static EventWriteModel generateByEvent(Event event, LanguageService languageService) {
+    public static EventModel generateByEvent(Event event, LanguageService languageService) {
         DefaultLanguageSelector defaultLanguageSelector = languageService.generateDefaultLanguageSelectorByEvent(event);
         PossibleLanguageSelector possibleLanguageSelector = new PossibleLanguageSelector(defaultLanguageSelector, event);
         event.getName().prepareForLoad(event.getEventLanguages());
         event.getDescription().prepareForLoad(event.getEventLanguages());
-        return new EventWriteModel(event, possibleLanguageSelector, defaultLanguageSelector);
+        return new EventModel(event, possibleLanguageSelector, defaultLanguageSelector);
     }
 
     public static String generateURL(String url) {

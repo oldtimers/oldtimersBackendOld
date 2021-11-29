@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.web.EventWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
 import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
@@ -31,7 +31,7 @@ public class CreateEventController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     String showCreationForm(Model model) {
-        model.addAttribute("newEvent", EventWriteModel.generateNewEventWriteModel(languageService));
+        model.addAttribute("newEvent", EventModel.generateNewEventWriteModel(languageService));
         return "event/create_event_form";
     }
 
@@ -39,7 +39,7 @@ public class CreateEventController {
     @PostMapping("/create")
     @Transactional
     String createEvent
-            (@ModelAttribute("newEvent") @Valid EventWriteModel event,
+            (@ModelAttribute("newEvent") @Valid EventModel event,
              BindingResult bindingResult,
              @AuthenticationPrincipal MyUserDetails principal,
              RedirectAttributes redirectAttributes
@@ -54,13 +54,13 @@ public class CreateEventController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(path = "/create", params = "reload")
-    String reloadEvent(@ModelAttribute("newEvent") @Valid EventWriteModel event, BindingResult bindingResult) {
+    String reloadEvent(@ModelAttribute("newEvent") @Valid EventModel event, BindingResult bindingResult) {
 //        Reload is done during object validation
         return "event/create_event_form";
     }
 
     @ModelAttribute("newEvent")
-    EventWriteModel getEvent() {
-        return EventWriteModel.generateNewEventWriteModel(languageService);
+    EventModel getEvent() {
+        return EventModel.generateNewEventWriteModel(languageService);
     }
 }

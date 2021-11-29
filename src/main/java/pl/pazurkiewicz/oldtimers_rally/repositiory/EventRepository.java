@@ -2,6 +2,7 @@ package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,8 +20,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Query("select e.id from Event e where e.url = :url")
     Integer getIdByUrl(@Param("url") String url);
 
-    //    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
     @Query("select distinct e from Event e " +
             "left join fetch e.name n  " +
             "left join fetch e.description " +

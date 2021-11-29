@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.CrewCategory;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoryPiece;
-import pl.pazurkiewicz.oldtimers_rally.model.web.CrewListModel;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
+import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 
@@ -23,7 +23,7 @@ public class CrewService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public void saveCrewsModel(CrewListModel crews) {
+    public void saveCrewsModel(CrewsModel crews) {
         crews.preUpdate(categoryRepository.getByEvent_IdAndModeYear(crews.getEvent().getId()));
         crewRepository.deleteAllById(crews.getDeletedCrews());
         crewRepository.saveAll(crews.getCrews().stream().map(CrewModel::getCrewToSave).collect(Collectors.toList()));

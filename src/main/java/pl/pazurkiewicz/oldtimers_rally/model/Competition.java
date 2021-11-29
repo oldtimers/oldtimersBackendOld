@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
 @Table(name = "competitions")
 @Entity
@@ -16,10 +17,12 @@ public class Competition implements DatabaseModel {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "name_id", nullable = false)
+    @Valid
     private EventLanguageCode name;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "description_id", nullable = false)
+    @Valid
     private EventLanguageCode description;
 
     @Enumerated(EnumType.STRING)
@@ -29,24 +32,11 @@ public class Competition implements DatabaseModel {
     @Column(name = "absence_points", nullable = false)
     private Integer absencePoints;
 
-    @Column(name = "time", nullable = false)
-    private Integer time;
-
     @Column(name = "max_ranking_points", nullable = false)
     private Integer maxRankingPoints;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "current_state", nullable = false, columnDefinition = "enum")
-    private CompetitionCurrentStateEnum currentState;
-
-    @Column(name = "column_8")
-    private Integer column8;
-
     @Column(name = "number_of_subsets")
     private Integer numberOfSubsets;
-
-    @Column(name = "might_be_invalid", nullable = false)
-    private Boolean mightBeInvalid = false;
 
     @Column(name = "additional1")
     private Double additional1;
@@ -56,6 +46,16 @@ public class Competition implements DatabaseModel {
 
     @Column(name = "additional3")
     private Double additional3;
+
+    public Competition() {
+    }
+
+    public Competition(Event event) {
+        this.event = event;
+        this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+        this.name = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+        this.type = CompetitionTypeEnum.counted;
+    }
 
     public Double getAdditional3() {
         return additional3;
@@ -81,14 +81,6 @@ public class Competition implements DatabaseModel {
         this.additional1 = additional1;
     }
 
-    public Boolean getMightBeInvalid() {
-        return mightBeInvalid;
-    }
-
-    public void setMightBeInvalid(Boolean mightBeInvalid) {
-        this.mightBeInvalid = mightBeInvalid;
-    }
-
     public Integer getNumberOfSubsets() {
         return numberOfSubsets;
     }
@@ -97,36 +89,12 @@ public class Competition implements DatabaseModel {
         this.numberOfSubsets = numberOfSubsets;
     }
 
-    public Integer getColumn8() {
-        return column8;
-    }
-
-    public void setColumn8(Integer column8) {
-        this.column8 = column8;
-    }
-
-    public CompetitionCurrentStateEnum getCurrentState() {
-        return currentState;
-    }
-
-    public void setCurrentState(CompetitionCurrentStateEnum currentState) {
-        this.currentState = currentState;
-    }
-
     public Integer getMaxRankingPoints() {
         return maxRankingPoints;
     }
 
     public void setMaxRankingPoints(Integer maxRankingPoints) {
         this.maxRankingPoints = maxRankingPoints;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
     }
 
     public Integer getAbsencePoints() {

@@ -8,13 +8,12 @@ import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional(propagation = Propagation.SUPPORTS)
 public class CategoriesService {
     @Autowired
     CategoryRepository categoryRepository;
 
     public void saveCategoriesModel(CategoriesModel categories, Integer eventId) {
-//        TODO
         categories.preUpdate();
         categoryRepository.deleteAllById(categories.getDeletedCategories());
         categoryRepository.saveAll(categories.getOtherCategories());

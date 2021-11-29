@@ -194,6 +194,7 @@ public class Crew implements DatabaseModel {
     }
 
     public void preUpdate(Collection<Category> categories) {
+        description.preUpdate();
         assignToCategories(categories);
     }
 }
