@@ -11,7 +11,7 @@ spring:
           sharedCache:
             mode: ENABLE_SELECTIVE
         cache:
-          config: ehcache.xml
+          config: classpath:ehcache.xml
       hibernate:
         javax.cache:
           provider: org.ehcache.jsr107.EhcacheCachingProvider
@@ -23,7 +23,7 @@ spring:
             factory_class= org.hibernate.cache.jcache.JCacheRegionFactory
   cache:
     jcache:
-      config: ehcache.xml
+      config: classpath:ehcache.xml
       provider: org.ehcache.jsr107.EhcacheCachingProvider
   servlet:
     multipart:

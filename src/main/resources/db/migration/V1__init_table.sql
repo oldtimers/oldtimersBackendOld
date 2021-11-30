@@ -222,13 +222,12 @@ create table competitions
     event_id           int not null,
     name_id            int not null,
     description_id     int not null,
-    type               enum ('REGULAR_DRIVE', 'BEST_MIN', 'BEST_MAX') not null,
+    type               enum ('REGULAR_DRIVE', 'BEST_MIN', 'BEST_MAX', 'COUNTED') not null,
     absence_points     int not null,
-    max_ranking_points int not null,
+    max_ranking_points int null,
     number_of_subsets  int null,
-    additional1        float null,
-    additional2        float null,
-    additional3        float null,
+    distance           float null,
+    average_speed      float null,
     constraint competitions_pk
         primary key (id),
     constraint competitions_events_id_fk

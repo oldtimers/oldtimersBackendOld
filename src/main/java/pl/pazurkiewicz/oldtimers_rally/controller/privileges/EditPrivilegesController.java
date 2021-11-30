@@ -32,7 +32,7 @@ public class EditPrivilegesController {
     @GetMapping
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.OWNER_VALUE + "')")
     String getEventPrivileges(Model model, Event event) {
-        model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event)));
+        model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event), event));
         return "event/privileges";
     }
 
@@ -63,7 +63,7 @@ public class EditPrivilegesController {
     @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String reloadUserPermission(Model model, Event event) {
-        model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event)));
+        model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event), event));
         return "event/privileges";
     }
 

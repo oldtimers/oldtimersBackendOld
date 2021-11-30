@@ -1,10 +1,18 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import pl.pazurkiewicz.oldtimers_rally.validator.IsFunctionValid;
+
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "competitions")
 @Entity
+@IsFunctionValid
 public class Competition implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,37 +23,49 @@ public class Competition implements DatabaseModel {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "name_id", nullable = false)
     @Valid
     private EventLanguageCode name;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "description_id", nullable = false)
     @Valid
     private EventLanguageCode description;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, columnDefinition = "enum")
+    @NotNull
     private CompetitionTypeEnum type;
 
     @Column(name = "absence_points", nullable = false)
-    private Integer absencePoints;
+    @NotNull
+    private Integer absencePoints = 50;
 
-    @Column(name = "max_ranking_points", nullable = false)
+    @Column(name = "max_ranking_points")
+    @NotNull(groups = {BestCategory.class, RegularCategory.class})
     private Integer maxRankingPoints;
 
     @Column(name = "number_of_subsets")
+    @Positive(groups = {BestCategory.class, RegularCategory.class})
     private Integer numberOfSubsets;
 
-    @Column(name = "additional1")
-    private Double additional1;
+    @Column(name = "distance")
+    @Positive(groups = {RegularCategory.class})
+    private Double averageSpeed;
 
-    @Column(name = "additional2")
-    private Double additional2;
+    @Column(name = "average_speed")
+    @Positive(groups = {RegularCategory.class})
+    private Double distance;
 
-    @Column(name = "additional3")
-    private Double additional3;
+    @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("order asc")
+    @Valid
+    private List<CompetitionField> fields = new ArrayList<>();
+
+    @Column(name = "function_code", length = 300)
+    @NotBlank(groups = {BestCategory.class, CountedCategory.class})
+    private String functionCode = "0";
 
     public Competition() {
     }
@@ -54,31 +74,38 @@ public class Competition implements DatabaseModel {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
         this.name = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
-        this.type = CompetitionTypeEnum.counted;
     }
 
-    public Double getAdditional3() {
-        return additional3;
+    public String getFunctionCode() {
+        return functionCode;
     }
 
-    public void setAdditional3(Double additional3) {
-        this.additional3 = additional3;
+    public void setFunctionCode(String functionCode) {
+        this.functionCode = functionCode;
     }
 
-    public Double getAdditional2() {
-        return additional2;
+    public List<CompetitionField> getFields() {
+        return fields;
     }
 
-    public void setAdditional2(Double additional2) {
-        this.additional2 = additional2;
+    public void setFields(List<CompetitionField> fields) {
+        this.fields = fields;
     }
 
-    public Double getAdditional1() {
-        return additional1;
+    public Double getAverageSpeed() {
+        return averageSpeed;
     }
 
-    public void setAdditional1(Double additional1) {
-        this.additional1 = additional1;
+    public void setAverageSpeed(Double averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public Integer getNumberOfSubsets() {
@@ -144,4 +171,28 @@ public class Competition implements DatabaseModel {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public void preUpdate() {
+        this.name.preUpdate();
+        this.description.preUpdate();
+        this.fields.forEach(CompetitionField::preUpdate);
+    }
+//
+//    public List<CompetitionField> getFields() {
+//        return fields;
+//    }
+//
+//    public void setFields(List<CompetitionField> fields) {
+//        this.fields = fields;
+//    }
+
+    public interface BestCategory {
+    }
+
+    public interface RegularCategory {
+    }
+
+    public interface CountedCategory {
+    }
+
 }

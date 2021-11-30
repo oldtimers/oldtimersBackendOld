@@ -4,6 +4,8 @@ import net.minidev.json.annotate.JsonIgnore;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.CategoryEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
+import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 
 import javax.validation.Valid;
 import java.util.*;
@@ -19,10 +21,13 @@ public class CategoriesModel implements ListWebModel<Category> {
     private final List<Category> otherCategories = new ArrayList<>();
     @JsonIgnore
     private final Set<Integer> deletedCategories = new HashSet<>();
+    private final List<EventLanguage> languages;
     @Valid
     private Category newCategory;
 
     public CategoriesModel(List<Category> categories, Event event) {
+        languages = event.getEventLanguages();
+        languages.sort(new EventLanguageComparator());
         for (Category category : categories) {
             if (category.getMode() == CategoryEnum.year) {
                 yearCategories.add(category);
@@ -33,6 +38,10 @@ public class CategoriesModel implements ListWebModel<Category> {
             category.getDescription().prepareForLoad(event.getEventLanguages());
         }
         newCategory = new Category(CategoryEnum.other, event);
+    }
+
+    public List<EventLanguage> getLanguages() {
+        return languages;
     }
 
     public void acceptNewModel(Event event) {

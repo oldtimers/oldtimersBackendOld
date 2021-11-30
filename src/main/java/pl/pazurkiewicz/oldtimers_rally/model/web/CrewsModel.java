@@ -4,6 +4,8 @@ import net.minidev.json.annotate.JsonIgnore;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
+import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -19,15 +21,21 @@ public class CrewsModel implements ListWebModel<CrewModel> {
     private final List<Category> possibleCategories;
     @JsonIgnore
     private final Event event;
+    private final List<EventLanguage> languages;
     @Valid
     private CrewModel newCrew;
 
-
     public CrewsModel(List<Crew> crews, List<Category> possibleCategories, Event event) {
+        languages = event.getEventLanguages();
+        languages.sort(new EventLanguageComparator());
         this.possibleCategories = possibleCategories;
         this.event = event;
         this.crews = crews.stream().map(c -> new CrewModel(c, possibleCategories)).collect(Collectors.toList());
         this.newCrew = new CrewModel(new Crew(event), possibleCategories);
+    }
+
+    public List<EventLanguage> getLanguages() {
+        return languages;
     }
 
     public List<CrewModel> getCrews() {

@@ -1,7 +1,10 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,9 +24,16 @@ public class EventPrivilegesModel implements ListWebModel<UserGroup> {
     private String newUser;
     @NotNull
     private UserGroupEnum newGroupEnum;
+    private final List<EventLanguage> languages;
 
-    public EventPrivilegesModel(List<UserGroup> privileges) {
+    public EventPrivilegesModel(List<UserGroup> privileges, Event event) {
+        languages = event.getEventLanguages();
+        languages.sort(new EventLanguageComparator());
         this.privileges = privileges;
+    }
+
+    public List<EventLanguage> getLanguages() {
+        return languages;
     }
 
     public List<UserGroup> getAllCheckedPrivileges() {

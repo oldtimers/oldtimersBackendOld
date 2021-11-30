@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='Competition - '+${competitionModel.competition.name.getDictionary(#locale)})"></head>
+<script th:src="@{/static/js/jquery.tablednd.js}"></script>
+
+<style>
+    .dragHandle:hover {
+        cursor: move;
+    }
+</style>
+
+<body>
+<div th:replace="fragments/view_fragments :: showRedirections"></div>
+<div class="card card-bord">
+    <h2 th:text="'Competition - '+ ${competitionModel.competition.name.getDictionary(#locale)}"></h2>
+    <form method="post" th:action="@{/__${url}__/edit/competition/__${competitionId}__}"
+          th:object="${competitionModel.competition}">
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'name', 'description'} }, languages='competitionModel.languages')"></table>
+        <div th:replace="fragments/form_pieces :: number (fieldName='absencePoints', label='Absence points value:')"></div>
+
+        <div id="BestCategory" th:if="*{type}!=${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).COUNTED}">
+            <div th:replace="fragments/form_pieces :: number (fieldName='maxRankingPoints', label='Max ranking points')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='numberOfSubsets', label='Number of subsets')"></div>
+        </div>
+        <div id="RegularCategory"
+             th:if="*{type}==${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
+            <div th:replace="fragments/form_pieces :: number (fieldName='averageSpeed', label='Average speed')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='distance', label='Distance')"></div>
+        </div>
+        <div id="functionCode"
+             th:if="*{type}!=${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
+            <div th:replace="fragments/form_pieces :: classic (fieldName='functionCode', label='Function:')"></div>
+        </div>
+
+
+        <table class="table" id="fieldTable" th:if="*{fields.size()} > 0">
+            <tr class="nodrop nodrag">
+                <td></td>
+                <td>Variable</td>
+                <td>Label</td>
+                <td>Type</td>
+                <td>Action</td>
+            </tr>
+            <tr class="fieldRow" th:each="field, info : *{fields}" th:id="${field.order}">
+                <input th:field="${competitionModel.competition.fields[__${info.index}__].order}"
+                       th:id="'orderId'+${field.order}" type="hidden">
+                <td class="dragHandle">
+                    <img alt="drag" th:src="@{/static/assets/drag.svg}"/>
+                </td>
+                <td th:text="${T(pl.pazurkiewicz.oldtimers_rally.service.CalculatorService).variableMapping.get(__${field.order}__)}"></td>
+                <td>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Label'} },fieldNames=${ {'fields[__${info.index}__].label'} }, languages='competitionModel.languages')"></table>
+                </td>
+                <td>
+                    <label>
+                        Field type
+                        <select th:field="*{fields[__${info.index}__].type}">
+                            <option th:each="p : ${competitionModel.fieldEnums}"
+                                    th:text="${p.key}"
+                                    th:value="${p.value}">
+                            </option>
+                        </select>
+                    </label>
+                </td>
+                <td>
+                    <button class="btn btn-primary" name="remove" type="submit">Delete</button>
+                </td>
+            </tr>
+        </table>
+        <button class="btn btn-primary" name="add" type="submit">Add field</button>
+
+
+        <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
+    </form>
+    <script>
+        $(document).ready(function () {
+            $("#fieldTable").tableDnD({
+                onDrop: function (table, row) {
+                    var rows = table.tBodies[0].rows;
+                    for (var i = 1; i < rows.length; i++) {
+                        var r = document.getElementById('orderId' + rows[i].id)
+                        r.value = i - 1;
+                    }
+                },
+                dragHandle: ".dragHandle"
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

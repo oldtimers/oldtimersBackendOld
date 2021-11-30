@@ -8,7 +8,7 @@
     <div class="card card-bord" th:each="crewModel, info : ${crewsModel.crews}">
         <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
               th:object="${crewsModel.crews[__${info.index}__]}">
-            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crew.description'} }, languages='event.eventLanguages')"></table>
+            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crew.description'} }, languages='crewsModel.languages')"></table>
             <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='Car')"></div>
             <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='Year of production')"></div>
             <div th:replace="fragments/form_pieces :: classic (fieldName='crew.driverName', label='Driver name')"></div>

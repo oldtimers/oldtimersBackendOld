@@ -6,16 +6,49 @@
 <div class="card card-bord" th:if="*{competitionList.size()} > 0">
     <h2>Competitions</h2>
     <div class="card card-bord" th:each="competition, info : *{competitionList}">
-        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}"
+        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}}"
            th:text="${competition.name.getDictionary(#locale)}"></a>
     </div>
 </div>
 <div class="card card-bord">
     <h2>Create competition</h2>
-    <div class="card card-bord" th:each="competition, info : *{competitionList}">
-        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}"
-           th:text="${competition.name.getDictionary(#locale)}"></a>
-    </div>
+    <form method="post" th:action="@{/__${url}__/edit/competitions}" th:object="${newCompetition}">
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages')"></table>
+        <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='Absence points value:')"></div>
+        <label>
+            Competition type
+            <select id="newSelector" th:field="*{competition.type}">
+                <option th:each="p : *{typeEnums}"
+                        th:text="${p.key}"
+                        th:value="${p.value}">
+                </option>
+            </select>
+        </label>
+        <div id="BestCategory">
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.maxRankingPoints', label='Max ranking points')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='Number of subsets')"></div>
+        </div>
+        <div id="RegularCategory">
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='Average speed')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='Distance')"></div>
+        </div>
+
+        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+    </form>
 </div>
 </body>
+<script>
+    function start() {
+        setupAdditional();
+        document.getElementById("newSelector").addEventListener("change", setupAdditional, false);
+    }
+
+    function setupAdditional() {
+        const sel = document.getElementById("newSelector").value;
+        document.getElementById("BestCategory").hidden = sel === 'COUNTED';
+        document.getElementById("RegularCategory").hidden = sel !== 'REGULAR_DRIVE';
+    }
+
+    window.addEventListener("load", start, false);
+</script>
 </html>

@@ -31,7 +31,7 @@
                 <div class="card card-bord" th:if="*{crews.size()} > 0">
                     <h2>Crews</h2>
                     <div class="card card-bord" th:each="crew, info : *{crews}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].crew.description'} }, languages='event.eventLanguages')"></table>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].crew.description'} }, languages='crews.languages')"></table>
                         <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.car', label='Car')"></div>
                         <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.yearOfProduction', label='Year of production')"></div>
                         <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.driverName', label='Driver name')"></div>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="card card-bord">
                     <h3>Add new crew</h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.crew.description'} }, languages='event.eventLanguages')"></table>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.crew.description'} }, languages='crews.languages')"></table>
                     <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.car', label='Car')"></div>
                     <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.yearOfProduction', label='Year of production')"></div>
                     <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.driverName', label='Driver name')"></div>

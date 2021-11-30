@@ -65,7 +65,7 @@ public class EditEventController {
 
     @ModelAttribute("competitions")
     List<Competition> getCompetitions(@ModelAttribute("event") Event event) {
-        return competitionRepository.getByEvent_Id(event.getId());
+        return competitionRepository.getByEvent(event);
     }
 
 

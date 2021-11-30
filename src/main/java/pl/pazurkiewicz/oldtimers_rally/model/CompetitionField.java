@@ -1,8 +1,15 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import javax.persistence.*;
+import org.hibernate.validator.constraints.Range;
 
-@Table(name = "competition_fields")
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@Table(name = "competition_fields", indexes = {
+        @Index(name = "competition_fields_competition_id_label_id_uindex", columnList = "competition_id, order_info", unique = true)
+})
 @Entity
 public class CompetitionField implements DatabaseModel {
     @Id
@@ -14,13 +21,36 @@ public class CompetitionField implements DatabaseModel {
     @JoinColumn(name = "competition_id", nullable = false)
     private Competition competition;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "label_id", nullable = false)
+    @Valid
     private EventLanguageCode label;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false, columnDefinition = "enum")
+    @NotNull
     private CompetitionFieldTypeEnum type;
+
+    @Column(name = "order_info", nullable = false)
+    @Range(min = 0, max = 4)
+    private Integer order;
+
+    public CompetitionField() {
+    }
+
+    public CompetitionField(Competition competition, Integer order, List<EventLanguage> languages) {
+        this.competition = competition;
+        this.order = order;
+        this.label = EventLanguageCode.generateNewEventLanguageCode(languages);
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 
     public CompetitionFieldTypeEnum getType() {
         return type;
@@ -52,5 +82,9 @@ public class CompetitionField implements DatabaseModel {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void preUpdate() {
+        label.preUpdate();
     }
 }
