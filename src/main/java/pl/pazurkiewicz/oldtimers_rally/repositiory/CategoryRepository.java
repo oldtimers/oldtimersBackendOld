@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.CategoryEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 import java.util.List;
 import java.util.Set;
@@ -18,4 +19,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     default Set<Category> getByEvent_IdAndModeYear(Integer eventId) {
         return getByEvent_IdAndMode(eventId, CategoryEnum.year, Category.class);
     }
+
+    List<Category> getByEvent(Event event);
 }

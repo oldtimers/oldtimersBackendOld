@@ -22,7 +22,7 @@
 </style>
 <body>
 
-<form method="post" th:action="@{__${action}__/crews}" th:object="${crews}">
+<form method="post" th:action="@{/__${url}__/edit/crews}" th:object="${crews}">
 
     <div class="container-fluid">
         <br>
@@ -68,7 +68,7 @@
     <button class="btn btn-primary" th:text="Save" type="submit"></button>
 </form>
 <div class="card card-bord">
-    <a class="btn btn-primary" th:href="@{__${action}__}">Back</a>
+    <a class="btn btn-primary" th:href="@{/__${url}__/edit}">Back</a>
 </div>
 </body>
 </html>

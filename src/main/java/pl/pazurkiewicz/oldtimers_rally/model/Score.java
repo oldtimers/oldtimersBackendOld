@@ -12,11 +12,11 @@ public class Score implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "competition_id", nullable = false)
     private Competition competition;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crew_id", nullable = false)
     private Crew crew;
 
@@ -42,13 +42,13 @@ public class Score implements DatabaseModel {
     private Double additional5;
 
     @Column(name = "result")
-    private Double result;
+    private Float result;
 
-    public Double getResult() {
+    public Float getResult() {
         return result;
     }
 
-    public void setResult(Double result) {
+    public void setResult(Float result) {
         this.result = result;
     }
 

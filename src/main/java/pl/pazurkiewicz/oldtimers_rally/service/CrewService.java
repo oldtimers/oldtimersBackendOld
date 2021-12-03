@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.CrewCategory;
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoryPiece;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
@@ -26,7 +27,12 @@ public class CrewService {
     public void saveCrewsModel(CrewsModel crews) {
         crews.preUpdate(categoryRepository.getByEvent_IdAndModeYear(crews.getEvent().getId()));
         crewRepository.deleteAllById(crews.getDeletedCrews());
-        crewRepository.saveAll(crews.getCrews().stream().map(CrewModel::getCrewToSave).collect(Collectors.toList()));
+        crewRepository.saveAllAndFlush(crews.getCrews().stream().map(CrewModel::getCrewToSave).collect(Collectors.toList()));
+    }
+
+    public void saveCrewModel(CrewModel crewModel, Event event) {
+        crewModel.preUpdate(categoryRepository.getByEvent_IdAndModeYear(event.getId()));
+        crewRepository.saveAndFlush(crewModel.getCrewToSave());
     }
 
     //    returns added CrewCategory

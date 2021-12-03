@@ -30,8 +30,8 @@ public class CrewsModel implements ListWebModel<CrewModel> {
         languages.sort(new EventLanguageComparator());
         this.possibleCategories = possibleCategories;
         this.event = event;
-        this.crews = crews.stream().map(c -> new CrewModel(c, possibleCategories)).collect(Collectors.toList());
-        this.newCrew = new CrewModel(new Crew(event), possibleCategories);
+        this.crews = crews.stream().map(c -> new CrewModel(c, languages, possibleCategories)).collect(Collectors.toList());
+        this.newCrew = new CrewModel(new Crew(event), languages, possibleCategories);
     }
 
     public List<EventLanguage> getLanguages() {
@@ -52,7 +52,7 @@ public class CrewsModel implements ListWebModel<CrewModel> {
 
     public void acceptNewCrew() {
         crews.add(newCrew);
-        newCrew = new CrewModel(new Crew(event), possibleCategories);
+        newCrew = new CrewModel(new Crew(event), languages, possibleCategories);
     }
 
     public CrewModel getNewCrew() {

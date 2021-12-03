@@ -12,11 +12,11 @@ public class CrewCategory implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crew_id", nullable = false)
     private Crew crew;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -37,6 +37,10 @@ public class CrewCategory implements DatabaseModel {
 
     public void setRankingPoints(Double rankingPoints) {
         this.rankingPoints = rankingPoints;
+    }
+
+    public void setRankingPoints(Float rankingPoints) {
+        this.rankingPoints = rankingPoints.doubleValue();
     }
 
     public Category getCategory() {

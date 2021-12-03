@@ -15,7 +15,7 @@ public class QrCode implements DatabaseModel {
     @Column(name = "qr", nullable = false, length = 128)
     private String qr;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 

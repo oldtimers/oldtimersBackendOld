@@ -28,11 +28,11 @@ public class Event implements DatabaseModel {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<EventLanguage> eventLanguages = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "name_id")
     private EventLanguageCode name;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "description_id")
     private EventLanguageCode description;
 

@@ -16,7 +16,7 @@ public class UserGroup implements DatabaseModel {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

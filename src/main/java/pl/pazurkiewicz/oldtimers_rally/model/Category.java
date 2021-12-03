@@ -7,6 +7,7 @@ import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsValid;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import java.util.Set;
 
 @Table(name = "categories")
 @Entity
@@ -18,41 +19,48 @@ public class Category implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "name_id", nullable = false)
     @Valid
     private EventLanguageCode name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "description_id", nullable = false)
     @Valid
     private EventLanguageCode description;
 
+    @OneToMany(mappedBy = "category")
+    private Set<CrewCategory> crewCategories;
     @Enumerated(EnumType.STRING)
     @Column(name = "mode", nullable = false, columnDefinition = "enum")
     private CategoryEnum mode;
-
     @Column(name = "min_year")
     private Integer minYear;
-
     @Column(name = "max_year")
     private Integer maxYear;
 
     public Category() {
     }
 
-
     public Category(CategoryEnum mode, Event event) {
         this.mode = mode;
         this.event = event;
         this.setDescription(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
         this.setName(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
+    }
+
+    public Set<CrewCategory> getCrewCategories() {
+        return crewCategories;
+    }
+
+    public void setCrewCategories(Set<CrewCategory> crewCategories) {
+        this.crewCategories = crewCategories;
     }
 
     @PreUpdate

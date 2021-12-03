@@ -50,7 +50,7 @@ public class User implements DatabaseModel {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<UserGroup> userGroups = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "default_language", nullable = false)
     private Language defaultLanguage;
 

@@ -12,7 +12,8 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/{url}")
+//^(?!rally$)(?!api$).*$
+@RequestMapping("/{url:^(?!rally$).*$}")
 public class EventController {
     private final EventRepository eventRepository;
 

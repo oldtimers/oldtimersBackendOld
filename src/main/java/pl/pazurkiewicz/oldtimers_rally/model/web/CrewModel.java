@@ -10,10 +10,13 @@ public class CrewModel implements DatabaseModel {
     @Valid
     private final Crew crew;
     private final List<CategoryPiece> categoryTable;
+    private final List<EventLanguage> languages;
 
-    public CrewModel(Crew crew, List<Category> allCategories) {
+    public CrewModel(Crew crew, List<EventLanguage> languages, List<Category> allCategories) {
         this.crew = crew;
         this.categoryTable = generateCategoryTable(allCategories);
+        this.languages = languages;
+        crew.getDescription().prepareForLoad(languages);
     }
 
     public Crew getCrew() {

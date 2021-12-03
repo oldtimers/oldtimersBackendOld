@@ -23,7 +23,7 @@ public class Crew implements DatabaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
     @Column(name = "number")
@@ -33,7 +33,7 @@ public class Crew implements DatabaseModel {
     private String car;
     @Column(name = "photo", length = 128)
     private String photo;
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "description", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @Valid
@@ -55,8 +55,7 @@ public class Crew implements DatabaseModel {
     @NotNull
     @AssertTrue
     private Boolean acceptedRodo = false;
-    @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrewCategory> categories = new ArrayList<>();
 
     public Crew() {
@@ -164,6 +163,7 @@ public class Crew implements DatabaseModel {
     }
 
     @PreUpdate
+    @PrePersist
     public void preUpdate() {
         description.preUpdate();
     }

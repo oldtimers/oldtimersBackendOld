@@ -99,7 +99,7 @@ public class EditEventController {
             fileUploadUtil.deleteForCrew(crew);
             crew.setPhoto(null);
         }
-        crewService.saveCrewsModel(crewsModel);
+        crewService.saveCrewModel(crewsModel.getCrews().get(index), event);
         return showEditPage(event);
     }
 

@@ -1,5 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.DictionaryComparator;
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
 
 @Table(name = "event_language_codes")
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EventLanguageCode implements DatabaseModel {
     private final static Logger logger = LoggerFactory.getLogger(EventLanguageCode.class);
 
@@ -23,7 +28,9 @@ public class EventLanguageCode implements DatabaseModel {
     private Integer id;
 
     @Valid
-    @OneToMany(mappedBy = "code", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "code", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<Dictionary> dictionaries = new ArrayList<>();
 
     public static EventLanguageCode generateNewEventLanguageCode(List<EventLanguage> eventLanguages) {
