@@ -6,6 +6,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ public class AuthenticationSuccessHandlerImpl extends SavedRequestAwareAuthentic
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         super.onAuthenticationSuccess(request, response, authentication);
-        localeResolver.setLocale(request, response, new Locale(((MyUserDetails) authentication.getPrincipal()).getUser().getDefaultLanguage().getCode()));
-        userRepository.updateLastLogin(Instant.now(), ((MyUserDetails) authentication.getPrincipal()).getUsername());
+        localeResolver.setLocale(request, response, new Locale(((UserDetailsImpl) authentication.getPrincipal()).getUser().getDefaultLanguage().getCode()));
+        userRepository.updateLastLogin(Instant.now(), ((UserDetailsImpl) authentication.getPrincipal()).getUsername());
     }
 }

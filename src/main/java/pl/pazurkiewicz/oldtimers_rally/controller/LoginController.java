@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
-import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.validation.Valid;
@@ -52,7 +52,7 @@ public class LoginController {
         String encodedPassword = passwordEncoder.encode(user.getNewPassword());
         user.setNewPassword(encodedPassword);
         User savedUser = userRepo.save(new User(user));
-        UserDetails userDetails = new MyUserDetails(savedUser);
+        UserDetails userDetails = new UserDetailsImpl(savedUser);
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         model.addAttribute("user", null);

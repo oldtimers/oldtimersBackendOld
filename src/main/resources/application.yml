@@ -35,5 +35,6 @@ spring:
       max-request-size: 50MB
 custom:
   defaultLanguage: pl
-  resourceLocation: photos
-
+  jwtSecret: qwerty123
+  jwtExpiration: 600000
+  jwtRefreshExpiration: 86400000

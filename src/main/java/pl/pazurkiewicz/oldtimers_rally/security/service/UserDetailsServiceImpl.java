@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.security;
+package pl.pazurkiewicz.oldtimers_rally.security.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Could not find user");
         }
 
-        return new MyUserDetails(user.get());
+        return new UserDetailsImpl(user.get());
     }
 }

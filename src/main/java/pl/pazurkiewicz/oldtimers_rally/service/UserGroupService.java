@@ -11,7 +11,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventPrivilegesModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserGroupRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
-import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class UserGroupService {
     @Autowired
     private UserRepository userRepository;
 
-    public void addOwnerPrivileges(Event event, MyUserDetails userDetails) {
+    public void addOwnerPrivileges(Event event, UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         userGroupRepository.saveAndFlush(new UserGroup(event, user, UserGroupEnum.ROLE_OWNER));
         user.setUserGroups(userGroupRepository.getByUser_Id(user.getId()));

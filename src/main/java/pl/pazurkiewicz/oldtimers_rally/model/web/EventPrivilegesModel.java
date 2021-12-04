@@ -20,11 +20,11 @@ public class EventPrivilegesModel implements ListWebModel<UserGroup> {
     }};
     private final List<UserGroup> privileges;
     private final Set<Integer> deletedPrivileges = new HashSet<>();
+    private final List<EventLanguage> languages;
     @NotBlank
     private String newUser;
     @NotNull
     private UserGroupEnum newGroupEnum;
-    private final List<EventLanguage> languages;
 
     public EventPrivilegesModel(List<UserGroup> privileges, Event event) {
         languages = event.getEventLanguages();

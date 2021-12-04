@@ -9,7 +9,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventLanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -23,7 +23,7 @@ public class EventService {
     @Autowired
     private UserGroupService userGroupService;
 
-    public Event saveFirstTime(EventModel eventModel, MyUserDetails principal) {
+    public Event saveFirstTime(EventModel eventModel, UserDetailsImpl principal) {
         Event saved = eventRepository.save(eventModel.generateEvent());
         userGroupService.addOwnerPrivileges(saved, principal);
         return saved;

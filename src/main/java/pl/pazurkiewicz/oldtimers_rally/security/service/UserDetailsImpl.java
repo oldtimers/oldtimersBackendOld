@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.security;
+package pl.pazurkiewicz.oldtimers_rally.security.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,10 +9,10 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class MyUserDetails implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
     private final User user;
 
-    public MyUserDetails(User user) {
+    public UserDetailsImpl(User user) {
         this.user = user;
     }
 

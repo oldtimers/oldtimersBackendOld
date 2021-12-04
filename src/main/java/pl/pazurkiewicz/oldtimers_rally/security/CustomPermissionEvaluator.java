@@ -12,6 +12,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserGroupRepository;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -102,10 +103,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 addPermission(possiblePermissions, eventId, UserGroupEnum.Constants.ADMIN_VALUE);
         }
         Object myUserDetails = auth.getPrincipal();
-        if (!(myUserDetails instanceof MyUserDetails)) {
+        if (!(myUserDetails instanceof UserDetailsImpl)) {
             return false;
         }
-        User user = ((MyUserDetails) auth.getPrincipal()).getUser();
+        User user = ((UserDetailsImpl) auth.getPrincipal()).getUser();
         return userGroupRepository.getByUser_Id(user.getId()).stream().map(CustomPermissionEvaluator::generateEventPermission).anyMatch(possiblePermissions::contains);
     }
 }

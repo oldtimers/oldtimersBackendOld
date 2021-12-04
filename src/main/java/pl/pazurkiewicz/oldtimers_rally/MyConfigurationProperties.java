@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 public class MyConfigurationProperties {
     private String defaultLanguage = "en";
     private String resourceLocation = "photos";
+    private String jwtSecret = "secret";
+    private Long jwtExpiration = 60000L;
+    private Long jwtRefreshExpiration = 86400000L;
 
     public String getDefaultLanguage() {
         return defaultLanguage;
@@ -23,5 +26,29 @@ public class MyConfigurationProperties {
 
     public void setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
+    }
+
+    public String getJwtSecret() {
+        return jwtSecret;
+    }
+
+    public void setJwtSecret(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public Long getJwtExpiration() {
+        return jwtExpiration;
+    }
+
+    public void setJwtExpiration(Long jwtExpiration) {
+        this.jwtExpiration = jwtExpiration;
+    }
+
+    public Long getJwtRefreshExpiration() {
+        return jwtRefreshExpiration;
+    }
+
+    public void setJwtRefreshExpiration(Long jwtRefreshExpiration) {
+        this.jwtRefreshExpiration = jwtRefreshExpiration;
     }
 }

@@ -1,6 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -26,8 +26,10 @@ import java.util.Locale;
 @EnableScheduling
 public class OldtimersRallyApplication implements WebMvcConfigurer {
 
-    @Value("${custom.resourceLocation}")
-    String resourceLocation;
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/static/", "classpath:/public/", "classpath"};
+    @Autowired
+    MyConfigurationProperties configurationProperties;
 
     public static void main(String[] args) {
         SpringApplication.run(OldtimersRallyApplication.class, args);
@@ -67,17 +69,14 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
 
     @Bean
     public FileUploadUtil getFileUploadUtil() {
-        return new FileUploadUtil(resourceLocation);
+        return new FileUploadUtil(configurationProperties.getResourceLocation());
     }
-
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/static/", "classpath:/public/", "classpath"};
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
-        exposeDirectory(resourceLocation, registry);
+        exposeDirectory(configurationProperties.getResourceLocation(), registry);
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {

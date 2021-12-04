@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
-import pl.pazurkiewicz.oldtimers_rally.error.InvalidConfigurationProperties;
+import pl.pazurkiewicz.oldtimers_rally.exception.InvalidConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.web.DefaultLanguageSelector;

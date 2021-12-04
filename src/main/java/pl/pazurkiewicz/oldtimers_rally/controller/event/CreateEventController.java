@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
-import pl.pazurkiewicz.oldtimers_rally.security.MyUserDetails;
+import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
@@ -41,7 +41,7 @@ public class CreateEventController {
     String createEvent
             (@ModelAttribute("newEvent") @Valid EventModel event,
              BindingResult bindingResult,
-             @AuthenticationPrincipal MyUserDetails principal,
+             @AuthenticationPrincipal UserDetailsImpl principal,
              RedirectAttributes redirectAttributes
             ) {
         if (bindingResult.hasErrors()) {

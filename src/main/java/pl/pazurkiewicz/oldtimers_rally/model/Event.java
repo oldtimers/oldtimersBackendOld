@@ -3,7 +3,7 @@ package pl.pazurkiewicz.oldtimers_rally.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.*;
-import pl.pazurkiewicz.oldtimers_rally.error.InvalidEventConfiguration;
+import pl.pazurkiewicz.oldtimers_rally.exception.InvalidEventConfiguration;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
