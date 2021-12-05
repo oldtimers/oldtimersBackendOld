@@ -1,6 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.*;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidEventConfiguration;
@@ -47,7 +46,7 @@ public class Event implements DatabaseModel {
 
     @Type(type = "json")
     @Column(name = "photos", columnDefinition = "json")
-    private JsonNode photos;
+    private List<String> photos;
 
     @Column(name = "qr_code_template", length = 128)
     private String qrCodeTemplate;
@@ -57,6 +56,15 @@ public class Event implements DatabaseModel {
 
     @Column(name = "url", nullable = false, length = 64)
     private String url = "";
+
+
+    public List<String> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
+    }
 
     public List<EventLanguage> getEventLanguages() {
         return eventLanguages;
@@ -88,14 +96,6 @@ public class Event implements DatabaseModel {
 
     public void setQrCodeTemplate(String qrCodeTemplate) {
         this.qrCodeTemplate = qrCodeTemplate;
-    }
-
-    public JsonNode getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(JsonNode photos) {
-        this.photos = photos;
     }
 
     public String getMainPhoto() {

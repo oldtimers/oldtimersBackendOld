@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventPrivilegesModel;
@@ -16,7 +17,7 @@ import pl.pazurkiewicz.oldtimers_rally.service.UserGroupService;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/{url}/edit/privileges")
+@RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/privileges")
 @SessionAttributes({"privileges"})
 public class EditPrivilegesController {
     private final UserGroupRepository userGroupRepository;

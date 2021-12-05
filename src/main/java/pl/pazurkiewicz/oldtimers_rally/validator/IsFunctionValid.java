@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = IsFunctionValid.IsFunctionValidValidator.class)
 public @interface IsFunctionValid {
-    String message() default "{category.yearsNotTyped}";
+    String message() default "{category.invalidArguments}";
 
     Class<?>[] groups() default {};
 

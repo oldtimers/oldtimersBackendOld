@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadUtil;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -65,11 +64,6 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
-    }
-
-    @Bean
-    public FileUploadUtil getFileUploadUtil() {
-        return new FileUploadUtil(configurationProperties.getResourceLocation());
     }
 
     @Override

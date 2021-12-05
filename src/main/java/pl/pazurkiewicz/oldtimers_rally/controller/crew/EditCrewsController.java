@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/{url}/edit/crews")
+@RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/crews")
 @SessionAttributes({"crews"})
 public class EditCrewsController {
     private final CrewRepository crewRepository;
@@ -50,7 +51,7 @@ public class EditCrewsController {
         event.getEventLanguages().sort(new EventLanguageComparator());
         List<Category> categories = categoryRepository.findByEvent_IdOrderById(event.getId());
         model.addAttribute("crews", new CrewsModel(crewRepository.getSortedByEventId(event.getId()), categories, event));
-        return "event/crews";
+        return "crew/edit_crews";
     }
 
     @PostMapping(params = "reload")
@@ -63,18 +64,18 @@ public class EditCrewsController {
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String deleteCrew(@ModelAttribute("crews") CrewsModel crews, Event event, @RequestParam(value = "delete") Integer deleteId) {
         crews.removeCrew(deleteId);
-        return "event/crews";
+        return "crew/edit_crews";
     }
 
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String addCrew(@ModelAttribute("crews") @Valid CrewsModel crews, BindingResult bindingResult, Event event) {
         if (bindingResult.hasErrors()) {
-            return "event/crews";
+            return "crew/edit_crews";
         }
         crewService.assignCrewToYearCategory(crews.getNewCrew());
         crews.acceptNewCrew();
-        return "event/crews";
+        return "crew/edit_crews";
     }
 
     @PostMapping
@@ -86,7 +87,7 @@ public class EditCrewsController {
         validator.validate(crews, bindingResult);
         if (bindingResult.hasErrors()) {
             crews.setNewCrew(newCrew);
-            return "event/crews";
+            return "crew/edit_crews";
         }
         crewService.saveCrewsModel(crews);
         return getCrews(model, event);

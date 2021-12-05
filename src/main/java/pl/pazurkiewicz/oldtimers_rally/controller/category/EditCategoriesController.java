@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
@@ -20,7 +21,7 @@ import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/{url}/edit/categories")
+@RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/categories")
 @SessionAttributes({"categories"})
 public class EditCategoriesController {
     private final CategoryRepository categoryRepository;

@@ -1,7 +1,10 @@
 package pl.pazurkiewicz.oldtimers_rally.utils;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
+import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,28 +14,30 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public class FileUploadUtil {
+@Service
+public class FileUploadService {
 
     private final String resourceLocation;
 
-    public FileUploadUtil(String resourceLocation) {
-        this.resourceLocation = resourceLocation;
+    public FileUploadService(MyConfigurationProperties configurationProperties) {
+        this.resourceLocation = configurationProperties.getResourceLocation();
     }
 
     public String saveFile(String uploadDir, String fileName,
                            MultipartFile multipartFile) throws IOException {
-        Path uploadPath = Paths.get(uploadDir);
+        String realDir = resourceLocation + "/" + uploadDir;
+        Path uploadPath = Paths.get(realDir);
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         } else {
-            deleteFromPath(uploadDir);
+            deleteFromPath(realDir);
         }
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            return String.format("/%s/%s", uploadDir, fileName);
+            return String.format("/photos/%s/%s", uploadDir, fileName);
         } catch (IOException ioe) {
             throw new IOException("Could not save image file: " + fileName, ioe);
         }
@@ -48,7 +53,11 @@ public class FileUploadUtil {
     }
 
     private String generatePathForCrew(Crew crew) {
-        return String.format("%s/%d/%d", resourceLocation, crew.getEvent().getId(), crew.getId());
+        return String.format("%d/%d", crew.getEvent().getId(), crew.getId());
+    }
+
+    private String generateBasicPathForEvent(Event event) {
+        return String.format("%d", event.getId());
     }
 
     public void deleteForCrew(Crew crew) throws IOException {
@@ -56,6 +65,21 @@ public class FileUploadUtil {
     }
 
     public String savePhotoForCrew(Crew crew, MultipartFile photo) throws IOException {
+        return saveFile(generatePathForCrew(crew), "main." + getExtension(photo), photo);
+    }
+
+    public String cleanPath(String path) {
+        return path.replaceFirst("/photos", "");
+    }
+
+    public String saveMainEventPhoto(Event event, MultipartFile photo) throws IOException {
+        if (event.getMainPhoto() != null) {
+            removeOldPhoto(resourceLocation + cleanPath(event.getMainPhoto()));
+        }
+        return saveFile(generateBasicPathForEvent(event), "mainPhoto." + getExtension(photo), photo);
+    }
+
+    private String getExtension(MultipartFile photo) {
         String extension = "jpg";
         if (photo.getOriginalFilename() != null) {
             String[] fileFrags = photo.getOriginalFilename().split("\\.");
@@ -63,6 +87,13 @@ public class FileUploadUtil {
                 extension = fileFrags[fileFrags.length - 1];
             }
         }
-        return saveFile(generatePathForCrew(crew), "main." + extension, photo);
+        return extension;
+    }
+
+    private void removeOldPhoto(String fullPath) {
+        File file = new File(fullPath);
+        if (!file.isDirectory()) {
+            file.delete();
+        }
     }
 }

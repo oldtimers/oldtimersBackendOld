@@ -2,7 +2,6 @@ package pl.pazurkiewicz.oldtimers_rally.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsTyped;
 import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsValid;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Set;
 @Table(name = "categories")
 @Entity
 @AreYearsValid
-@AreYearsTyped
 public class Category implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -131,9 +129,10 @@ public class Category implements DatabaseModel {
                 return minYear <= year && year <= maxYear;
             else if (minYear != null) {
                 return minYear <= year;
-            } else {
+            } else if (maxYear != null) {
                 return year <= maxYear;
             }
+            return true;
         }
         return false;
     }

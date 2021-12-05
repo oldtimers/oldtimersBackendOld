@@ -11,6 +11,7 @@ public class MyConfigurationProperties {
     private String jwtSecret = "secret";
     private Long jwtExpiration = 60000L;
     private Long jwtRefreshExpiration = 86400000L;
+    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$).*$";
 
     public String getDefaultLanguage() {
         return defaultLanguage;

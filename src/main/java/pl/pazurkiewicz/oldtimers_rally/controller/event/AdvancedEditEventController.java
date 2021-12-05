@@ -7,31 +7,37 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
+import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
-@RequestMapping("/{url}/edit/advanced")
+@RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/advanced")
 @SessionAttributes({"editEvent"})
 public class AdvancedEditEventController {
     private final LanguageService languageService;
     private final EventService eventService;
     private final EventRepository eventRepository;
     private final CacheManager cacheManager;
+    private final FileUploadService fileUploadService;
 
 
-    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager) {
+    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager, FileUploadService fileUploadService) {
         this.languageService = languageService;
         this.eventService = eventService;
         this.eventRepository = eventRepository;
         this.cacheManager = cacheManager;
+        this.fileUploadService = fileUploadService;
     }
 
     @GetMapping
@@ -68,5 +74,24 @@ public class AdvancedEditEventController {
     public void invalidateEventByUrl(String url) {
         cacheManager.getCache("eventsByUrl").evictIfPresent(url);
         cacheManager.getCache("eventsId").evictIfPresent(url);
+    }
+
+    @PostMapping(value = "/mainPhoto")
+    @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String saveMainPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
+        Event event = eventRepository.getByUrl(url);
+        event.setMainPhoto(fileUploadService.saveMainEventPhoto(event, photo));
+        eventRepository.saveAndFlush(event);
+        redirectAttributes.addAttribute("url", url);
+        return "redirect:/{url}/edit/advanced";
+    }
+
+    @PostMapping(value = "/photos")
+    @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String saveAdditionalPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
+        Event event = eventRepository.getByUrl(url);
+        eventRepository.saveAndFlush(event);
+        redirectAttributes.addAttribute("url", url);
+        return "redirect:/{url}/edit/advanced";
     }
 }

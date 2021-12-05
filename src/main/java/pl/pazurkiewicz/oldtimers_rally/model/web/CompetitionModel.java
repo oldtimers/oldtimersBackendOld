@@ -85,4 +85,11 @@ public class CompetitionModel {
                 smartValidator.validate(competition, bindingResult, Competition.CountedCategory.class);
         }
     }
+
+    public void removeField(Integer deleteId) {
+        List<CompetitionField> fields = competition.getFields();
+        if (fields.size() > deleteId && deleteId >= 0) {
+            fields.remove(deleteId.intValue());
+        }
+    }
 }

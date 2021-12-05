@@ -11,7 +11,9 @@ import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Competition;
+import pl.pazurkiewicz.oldtimers_rally.model.CompetitionField;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CompetitionModel;
@@ -20,10 +22,11 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CompetitionService;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.Objects;
 
 @Controller
-@RequestMapping("/{url}/edit")
+@RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit")
 @SessionAttributes({"newCompetition", "competitionModel"})
 public class EditCompetitionController {
     private final EventRepository eventRepository;
@@ -72,6 +75,7 @@ public class EditCompetitionController {
         if (competition == null) {
             throw new ResourceNotFoundException();
         }
+        competition.getFields().sort(Comparator.comparingInt(CompetitionField::getOrder));
         model.addAttribute("competitionModel", new CompetitionModel(competition, event));
         return "competition/selected_competition";
     }
@@ -81,6 +85,14 @@ public class EditCompetitionController {
     String addVariable(Event event, @PathVariable("competitionId") Integer competitionId, @ModelAttribute("competitionModel") CompetitionModel competitionModel) {
         checkAccess(competitionId, competitionModel);
         competitionModel.addField();
+        return "competition/selected_competition";
+    }
+
+    @PostMapping(value = "/competition/{competitionId}", params = "delete")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String removeSelectedField(Event event, @PathVariable("competitionId") Integer competitionId, @ModelAttribute("competitionModel") CompetitionModel competitionModel, @RequestParam(value = "delete") Integer deleteId) {
+        checkAccess(competitionId, competitionModel);
+        competitionModel.removeField(deleteId);
         return "competition/selected_competition";
     }
 

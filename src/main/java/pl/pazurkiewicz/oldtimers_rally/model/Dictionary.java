@@ -10,8 +10,6 @@ import javax.persistence.*;
 })
 @Entity
 @IsFieldRequired
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Dictionary implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

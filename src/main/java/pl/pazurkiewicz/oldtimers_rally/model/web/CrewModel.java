@@ -30,7 +30,7 @@ public class CrewModel implements DatabaseModel {
                 if (crewCategories.stream().noneMatch(crewCategory -> Objects.equals(crewCategory.getCategory().getId(), categoryPiece.getCategory().getId()))) {
                     crewCategories.add(new CrewCategory(crew, categoryPiece.getCategory()));
                 }
-            } else {
+            } else if (categoryPiece.getValue() != null && categoryPiece.getCategory().getMode() != CategoryEnum.year) {
                 crewCategories.removeIf(crewCategory -> Objects.equals(crewCategory.getCategory().getId(), categoryPiece.getCategory().getId()));
             }
         }

@@ -78,13 +78,30 @@
                 onDrop: function (table, row) {
                     var rows = table.tBodies[0].rows;
                     for (var i = 1; i < rows.length; i++) {
-                        var r = document.getElementById('orderId' + rows[i].id)
-                        r.value = i - 1;
+                        var children = rows[i].children;
+                        children[0].value = i - 1
+                        children[2].textContent = variableName(i - 1)
                     }
                 },
+                onDrag
                 dragHandle: ".dragHandle"
             });
         })
+
+        function variableName(order) {
+            switch (order) {
+                case 0:
+                    return 'a';
+                case 1:
+                    return 'b';
+                case 2:
+                    return 'c';
+                case 3:
+                    return 'd';
+                case 4:
+                    return 'e';
+            }
+        }
     </script>
 </div>
 </body>
