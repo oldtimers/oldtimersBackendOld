@@ -35,9 +35,25 @@
     <form enctype="multipart/form-data" method="post" th:action="@{'/'+${url}+'/edit/advanced/mainPhoto'}">
         <div>
             <label>Main photo: </label>
+            <div th:if="${editEvent.event.mainPhoto!=null}">
+                <img alt="No photo" th:src="${editEvent.event.mainPhoto}">
+            </div>
             <input accept="image/*" name="photo" type="file"/>
         </div>
         <div th:replace="fragments/form_pieces :: submitButton (title='Upload')"></div>
+    </form>
+</div>
+<div class="card card-body">
+    <form enctype="multipart/form-data" method="post" th:action="@{'/'+${url}+'/edit/advanced/photos'}">
+        <div>
+            <label>Additional photos: </label>
+            <div class="row" th:each="p, info : ${editEvent.event.photos}">
+                <img alt="No photo, please delete" th:src="${p}">
+                <button class="btn btn-primary" name="delete" th:value="${info.index}" type="submit">Delete</button>
+            </div>
+        </div>
+        <input accept="image/*" name="photo" type="file"/>
+        <div th:replace="fragments/form_pieces :: submitButton (title='Add')"></div>
     </form>
 </div>
 

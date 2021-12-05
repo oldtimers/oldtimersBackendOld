@@ -89,8 +89,24 @@ public class AdvancedEditEventController {
     @PostMapping(value = "/photos")
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveAdditionalPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
+        if (!photo.isEmpty()) {
+            Event event = eventRepository.getByUrl(url);
+            event.getPhotos().add(fileUploadService.saveEventPhoto(event, photo));
+            eventRepository.saveAndFlush(event);
+        }
+        redirectAttributes.addAttribute("url", url);
+        return "redirect:/{url}/edit/advanced";
+    }
+
+    @PostMapping(value = "/photos", params = "delete")
+    @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String deleteAdditionalPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("delete") Integer deleteId) throws IOException {
         Event event = eventRepository.getByUrl(url);
-        eventRepository.saveAndFlush(event);
+        if (event.getPhotos().size() > deleteId && deleteId >= 0) {
+            fileUploadService.deleteFileFromPathDatabase(event.getPhotos().get(deleteId));
+            event.getPhotos().remove(deleteId.intValue());
+            eventRepository.saveAndFlush(event);
+        }
         redirectAttributes.addAttribute("url", url);
         return "redirect:/{url}/edit/advanced";
     }

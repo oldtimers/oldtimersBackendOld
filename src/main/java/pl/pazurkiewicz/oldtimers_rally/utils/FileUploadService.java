@@ -43,13 +43,17 @@ public class FileUploadService {
         }
     }
 
-    public void deleteFromPath(String path) throws IOException {
+    private void deleteFromPath(String path) {
         File[] files = new java.io.File(path).listFiles();
         if (files != null) {
             for (File file : files)
                 if (!file.isDirectory())
                     file.delete();
         }
+    }
+
+    public void deleteFileFromPathDatabase(String path) throws IOException {
+        removeOldPhoto(resourceLocation + cleanPath(path));
     }
 
     private String generatePathForCrew(Crew crew) {
@@ -77,6 +81,10 @@ public class FileUploadService {
             removeOldPhoto(resourceLocation + cleanPath(event.getMainPhoto()));
         }
         return saveFile(generateBasicPathForEvent(event), "mainPhoto." + getExtension(photo), photo);
+    }
+
+    public String saveEventPhoto(Event event, MultipartFile photo) throws IOException {
+        return saveFile(generateBasicPathForEvent(event), System.currentTimeMillis() + "." + getExtension(photo), photo);
     }
 
     private String getExtension(MultipartFile photo) {

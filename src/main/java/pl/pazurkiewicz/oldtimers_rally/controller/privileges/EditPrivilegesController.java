@@ -34,7 +34,7 @@ public class EditPrivilegesController {
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.OWNER_VALUE + "')")
     String getEventPrivileges(Model model, Event event) {
         model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event), event));
-        return "event/privileges";
+        return "privileges/privileges";
     }
 
     @PostMapping
@@ -51,21 +51,21 @@ public class EditPrivilegesController {
             privileges.setNewUser("");
             privileges.setNewGroupEnum(UserGroupEnum.ROLE_JUDGE);
         }
-        return "event/privileges";
+        return "privileges/privileges";
     }
 
     @PostMapping(params = "delete")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String deleteUserPermission(@ModelAttribute("privileges") EventPrivilegesModel privileges, Event event, @RequestParam(value = "delete") Integer deleteId) {
         privileges.deletePrivilege(deleteId);
-        return "event/privileges";
+        return "privileges/privileges";
     }
 
     @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String reloadUserPermission(Model model, Event event) {
         model.addAttribute("privileges", new EventPrivilegesModel(userGroupRepository.getAllByEventExceptAdmin(event), event));
-        return "event/privileges";
+        return "privileges/privileges";
     }
 
     @ModelAttribute("event")

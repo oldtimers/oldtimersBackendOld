@@ -42,7 +42,7 @@ public class EditCategoriesController {
     String showCategoriesPage(Event event, Model model) {
         event.getEventLanguages().sort(new EventLanguageComparator());
         model.addAttribute("categories", new CategoriesModel(categoryRepository.findByEvent_IdOrderById(event.getId()), event));
-        return "event/categories";
+        return "category/categories";
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class EditCategoriesController {
         validator.validate(categories, result);
         if (result.hasErrors()) {
             categories.setNewCategory(temp);
-            return "event/categories";
+            return "category/categories";
         }
         categoriesService.saveCategoriesModel(categories, event.getId());
         return showCategoriesPage(event, model);
@@ -70,24 +70,24 @@ public class EditCategoriesController {
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String deleteYearCategory(@ModelAttribute("categories") CategoriesModel categories, Event event, @RequestParam(value = "delete2") Integer deleteId) {
         categories.deleteYearCategory(deleteId);
-        return "event/categories";
+        return "category/categories";
     }
 
     @PostMapping(params = "delete1")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String deleteOtherCategory(@ModelAttribute("categories") CategoriesModel categories, Event event, @RequestParam(value = "delete1") Integer deleteId) {
         categories.deleteOtherCategory(deleteId);
-        return "event/categories";
+        return "category/categories";
     }
 
     @PostMapping(params = "add")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String addCategory(@ModelAttribute("categories") @Valid CategoriesModel categories, BindingResult bindingResult, Event event) {
         if (bindingResult.hasErrors() || categories.getNewCategory() == null) {
-            return "event/categories";
+            return "category/categories";
         }
         categories.acceptNewModel(event);
-        return "event/categories";
+        return "category/categories";
     }
 
     @ModelAttribute("event")
