@@ -53,7 +53,7 @@ public class Event implements DatabaseModel {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "stage", nullable = false, columnDefinition = "enum")
-    private StageEnum stage;
+    private StageEnum stage = StageEnum.NEW;
 
     public StageEnum getStage() {
         return stage;

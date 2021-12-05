@@ -1,8 +1,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
-<h3 style="text-align: center; color: green">
-    <span th:text="'Welcome to ' + 'test' + '!'"></span>
-    <img alt="#" th:src="'data:image/png;base64,' + ${wrapper.pieces[0].base64}"/>
-</h3>
+<body class="border-box">
+
+<div class="row" th:each="p : ${wrapper.special}">
+    <div style="float: left; width: 45%; padding: 15px; border:1px solid black;" th:each="sp : ${p}">
+        <div style="width: 100%">
+            <H4 style="text-align: center" th:text="${sp.crew.number} + ' - '+ ${sp.crew.driverName}"></H4>
+            <img alt="#" style="width:100%" th:src="'data:image/png;base64,' + ${sp.base64}"/>
+        </div>
+    </div>
+</div>
 </body>
 </html>

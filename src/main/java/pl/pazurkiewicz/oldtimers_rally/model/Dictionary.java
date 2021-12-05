@@ -18,7 +18,7 @@ public class Dictionary implements DatabaseModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_language_id", nullable = false, updatable = false)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private EventLanguage eventLanguage;
 
     @ManyToOne(fetch = FetchType.LAZY)
