@@ -11,9 +11,9 @@ import javax.validation.Valid;
 import java.util.*;
 
 public class CategoriesModel implements ListWebModel<Category> {
-    private static final Hashtable<String, CategoryEnum> categoriesEnum = new Hashtable<>() {{
-        put("Category by year", CategoryEnum.year);
-        put("Other category", CategoryEnum.other);
+    private static final Hashtable<CategoryEnum, String> categoriesEnum = new Hashtable<>() {{
+        put(CategoryEnum.year, "categories.year");
+        put(CategoryEnum.other, "categories.other");
     }};
     @Valid
     private final List<Category> yearCategories = new ArrayList<>();
@@ -63,7 +63,7 @@ public class CategoriesModel implements ListWebModel<Category> {
         return otherCategories;
     }
 
-    public Hashtable<String, CategoryEnum> getCategoriesEnum() {
+    public Hashtable<CategoryEnum, String> getCategoriesEnum() {
         return categoriesEnum;
     }
 

@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = IsEndDateValid.IsEndDateValidValidator.class)
 public @interface IsEndDateValid {
-    String message() default "End date is invalid";
+    String message() default "{event.endDateInvalid}";
 
     String startDate();
 

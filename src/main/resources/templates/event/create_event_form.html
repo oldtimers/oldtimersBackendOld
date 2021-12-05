@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{event.create}__')"></head>
 <body>
 <!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.web.EventModel"*/-->
 <form th:action="@{/rally/create}" th:object="${newEvent}"
       method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">
-        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
-        <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='__#{language.default}__')"></div>
+        <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='__#{event.url}__')"></div>
         <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
-        <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='name', label='Type name')"></div>
-        <div th:replace="fragments/form_pieces :: defaultMessage (fieldName='description', label='Type description')"></div>
-        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='Type start date')"></div>
-        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='newEvent.languages')"></table>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='__#{startDate}__')"></div>
+        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='__#{endDate}__')"></div>
         <div th:replace="fragments/form_pieces :: requiredDescription"></div>
-        <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
-        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+        <div th:replace="fragments/form_pieces :: reloadButton (title='__#{reload}__')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
     </div>
 </form>
 </body>

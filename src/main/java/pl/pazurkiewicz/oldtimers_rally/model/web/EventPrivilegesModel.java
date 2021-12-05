@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 public class EventPrivilegesModel implements ListWebModel<UserGroup> {
-    private static final Hashtable<String, UserGroupEnum> groupEnums = new Hashtable<>() {{
-        put("Organizer", UserGroupEnum.ROLE_ORGANIZER);
-        put("Judge", UserGroupEnum.ROLE_JUDGE);
+    private static final Hashtable<UserGroupEnum, String> groupEnums = new Hashtable<>() {{
+        put(UserGroupEnum.ROLE_ORGANIZER, "role.organizer");
+        put(UserGroupEnum.ROLE_JUDGE, "role.judge");
     }};
     private final List<UserGroup> privileges;
     private final Set<Integer> deletedPrivileges = new HashSet<>();
@@ -59,7 +59,7 @@ public class EventPrivilegesModel implements ListWebModel<UserGroup> {
         return privileges;
     }
 
-    public Hashtable<String, UserGroupEnum> getGroupEnums() {
+    public Hashtable<UserGroupEnum, String> getGroupEnums() {
         return groupEnums;
     }
 

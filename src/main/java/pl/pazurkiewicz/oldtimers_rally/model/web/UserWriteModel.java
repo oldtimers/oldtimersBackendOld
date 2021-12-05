@@ -11,35 +11,35 @@ import javax.validation.constraints.NotNull;
 @FieldsValueMatch(
         field = "newPassword",
         fieldMatch = "newPasswordConfirmation",
-        message = "Passwords do not match!"
+        message = "{passwords.notMatch}"
 )
 public class UserWriteModel {
-    @NotBlank(message = "{login.notBlank}")
+    @NotBlank
     @Length(min = 3, max = 32)
     private String login;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(min = 3, max = 64)
     private String firstName;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(min = 3, max = 64)
     private String lastName;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(min = 6, max = 40)
     private String newPassword;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(min = 6, max = 40)
     private String newPasswordConfirmation;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(min = 6, max = 12)
     private String phone;
-    @NotBlank(message = "s")
+    @NotBlank
     @Length(max = 64)
     private String email;
     @NotNull
-    @AssertTrue(message = "t")
+    @AssertTrue
     private Boolean acceptedReg = false;
     @NotNull
-    @AssertTrue(message = "b")
+    @AssertTrue
     private Boolean acceptedRodo = false;
     @NotNull
     private DefaultLanguageSelector languageSelector;

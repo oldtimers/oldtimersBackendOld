@@ -1,9 +1,9 @@
 <html xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="showRedirections">
     <div sec:authorize="hasPermission(#vars.event,'ROLE_OWNER')">
-        <a th:href="@{'/'+${url}+'/edit/privileges'}">User Privileges</a>
+        <a th:href="@{'/'+${url}+'/edit/privileges'}" th:text="#{user.privileges}"></a>
     </div>
-    <a th:href="@{'/'+${url}+'/edit/crews'}">Crews</a>
-    <a th:href="@{'/'+${url}+'/edit/competitions'}">Competitions</a>
-    <a th:href="@{'/'+${url}+'/edit/categories'}">Categories</a>
+    <a th:href="@{'/'+${url}+'/edit/crews'}" th:text="#{crews}"></a>
+    <a th:href="@{'/'+${url}+'/edit/competitions'}" th:text="#{competitions}"></a>
+    <a th:href="@{'/'+${url}+'/edit/categories'}" th:text="#{categories}"></a>
 </div>

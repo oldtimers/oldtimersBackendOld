@@ -11,16 +11,16 @@ import java.util.List;
 
 public class CompetitionModel {
     private static final Hashtable<CompetitionTypeEnum, String> typeEnums = new Hashtable<>() {{
-        put(CompetitionTypeEnum.REGULAR_DRIVE, "Regular drive");
-        put(CompetitionTypeEnum.BEST_MIN, "Best min");
-        put(CompetitionTypeEnum.BEST_MAX, "Best max");
-        put(CompetitionTypeEnum.COUNTED, "Counted");
+        put(CompetitionTypeEnum.REGULAR_DRIVE, "type.regular_drive");
+        put(CompetitionTypeEnum.BEST_MIN, "type.best_min");
+        put(CompetitionTypeEnum.BEST_MAX, "type.best_max");
+        put(CompetitionTypeEnum.COUNTED, "type.counted");
     }};
-    private static final Hashtable<String, CompetitionFieldTypeEnum> fieldEnums = new Hashtable<>() {{
-        put("Boolean", CompetitionFieldTypeEnum.BOOLEAN);
-        put("Float", CompetitionFieldTypeEnum.FLOAT);
-        put("Integer", CompetitionFieldTypeEnum.INT);
-        put("Timer", CompetitionFieldTypeEnum.TIMER);
+    private static final Hashtable<CompetitionFieldTypeEnum, String> fieldEnums = new Hashtable<>() {{
+        put(CompetitionFieldTypeEnum.BOOLEAN, "field.boolean");
+        put(CompetitionFieldTypeEnum.FLOAT, "field.float");
+        put(CompetitionFieldTypeEnum.INT, "field.int");
+        put(CompetitionFieldTypeEnum.TIMER, "field.timer");
     }};
     @Valid
     private final Competition competition;
@@ -47,7 +47,7 @@ public class CompetitionModel {
         return languages;
     }
 
-    public Hashtable<String, CompetitionFieldTypeEnum> getFieldEnums() {
+    public Hashtable<CompetitionFieldTypeEnum, String> getFieldEnums() {
         return fieldEnums;
     }
 

@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Event edit')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{event.edit}__')"></head>
 <body>
 <div th:replace="fragments/view_fragments :: showRedirections"></div>
 <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
     <form method="post" th:action="@{/__${url}__/edit/count}">
-        <button class="btn btn-primary" type="submit">Calculate points</button>
+        <button class="btn btn-primary" th:text="#{calculate.points}" type="submit"></button>
     </form>
 </div>
 <div>
     <form method="post" th:action="@{/__${url}__/edit/qr_codes}">
-        <button class="btn btn-primary" type="submit">Get QR codes</button>
+        <button class="btn btn-primary" th:text="#{generateQR}" type="submit"></button>
     </form>
 </div>
 <div class="card card-bord" th:if="*{crewsModel.crews.size()} > 0">
-    <h2>Crews</h2>
+    <h2 th:text="#{crews}"></h2>
     <div class="card card-bord" th:each="crewModel, info : ${crewsModel.crews}">
         <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
               th:object="${crewsModel.crews[__${info.index}__]}">
-            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crew.description'} }, languages='crewsModel.languages')"></table>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='Car')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='Year of production')"></div>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.driverName', label='Driver name')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='crew.phone', label='Phone number')"></div>
+            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'crew.description'} }, languages='crewsModel.languages')"></table>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='__#{crew.car}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='__#{crew.yearOfProduction}__')"></div>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='crew.driverName', label='__#{crew.driverName}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='crew.phone', label='__#{phone}__')"></div>
             <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='categoryTable')"></div>
             <div>
-                <label>Photo: </label>
+                <label th:text="#{photo}"></label>
                 <input accept="image/*" name="photo" type="file"/>
             </div>
             <div th:if="${crewModel.crew.photo!=null}">
                 <img alt="No photo" th:src="${crewModel.crew.photo}">
                 <label>
-                    <b>Remove photo:</b>
+                    <b th:text="#{photo.remove}">Remove photo:</b>
                     <input class="checkbox-inline" name="removePhoto" style="margin: auto" type="checkbox"/>
                 </label>
             </div>
-            <button class="btn btn-primary" name="crew" th:text="Save" th:value="${info.index}" type="submit"></button>
+            <button class="btn btn-primary" name="crew" th:text="#{save}" th:value="${info.index}"
+                    type="submit"></button>
         </form>
     </div>
 </div>

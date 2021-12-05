@@ -3,6 +3,7 @@
 <head th:replace="fragments/header_fragment :: headerFragment (title='Welcome page')"></head>
 
 <body>
+<H1>TODO</H1>
 <div sec:authorize="isAuthenticated()">
     <form class="form-inline" form-method="post" th:action="@{/logout}">
         <button class="btn" type="submit">Logout</button>
@@ -18,9 +19,6 @@
 </div>
 <div>
     <a th:href="@{/rally/create}">Create rally</a>
-</div>
-<div>
-    <a th:text="#{validation.user.email}"></a>
 </div>
 
 <div th:each="event : ${events}">

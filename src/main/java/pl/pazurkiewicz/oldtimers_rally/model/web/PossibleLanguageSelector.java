@@ -14,16 +14,6 @@ public class PossibleLanguageSelector {
         possibleLanguages = defaultLanguageSelector.getPossibleLanguages().stream()
                 .map(language -> new LanguageSelectorElement(event, language, Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(), language.getId()))).collect(Collectors.toList());
     }
-//     possibleLanguages = defaultLanguageSelector.getPossibleLanguages().stream()
-//                .map(language -> {
-//                    event.getEventLanguages().stream()
-//                            .filter(el -> Objects.equals(el.getLanguage().getCode(),language.getCode())).findAny()
-//                            .orElseGet(()-> {return new LanguageSelectorElement(event, language, Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(),language.getId()));});
-//                }).collect(Collectors.toList());
-//    }
-
-
-//    new LanguageSelectorElement(event, language, Objects.equals(defaultLanguageSelector.getDefaultLanguage().getId(),language.getId()))
 
     public List<LanguageSelectorElement> getPossibleLanguages() {
         return possibleLanguages;

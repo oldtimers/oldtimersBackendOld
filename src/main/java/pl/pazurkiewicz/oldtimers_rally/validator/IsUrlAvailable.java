@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = IsUrlAvailable.IsUrlAvailableValidator.class)
 @Documented
 public @interface IsUrlAvailable {
-    String message() default "{event.invalidUrl}";
+    String message() default "{event.urlUnavailable}";
 
     String url();
 

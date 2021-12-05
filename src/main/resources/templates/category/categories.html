@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Edit categories')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{title.categories}__')"></head>
 <body>
 
 <form method="post" th:action="@{__${action}__/categories}" th:object="${categories}">
@@ -10,38 +10,38 @@
         <div class="row">
             <div class="col-md">
                 <div class="card card-bord" th:if="${categories.otherCategories.size()} > 0">
-                    <h2>Other categories</h2>
+                    <h2 th:text="#{categories.others}"></h2>
                     <div class="card card-bord" th:each="category, info : ${categories.otherCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
                         <button class="btn btn-primary row-link links" name="delete1" th:value="${info.index}"
-                                type="submit">Delete
+                                th:text="#{delete}" type="submit">
                         </button>
                     </div>
                 </div>
                 <div class="card card-bord" th:if="${categories.yearCategories.size()} > 0">
-                    <h2>Year categories</h2>
+                    <h2 th:text="#{categories.years}"></h2>
                     <div class="card card-bord" th:each="category, info : ${categories.yearCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].minYear', label='From')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].maxYear', label='To')"></div>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].minYear', label='__#{from}__')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].maxYear', label='__#{to}__')"></div>
                         <button class="btn btn-primary row-link links" name="delete2" th:value="${info.index}"
-                                type="submit">Delete
+                                th:text="#{delete}" type="submit">
                         </button>
                     </div>
                 </div>
                 <div class="card card-bord">
-                    <h3>Add new category</h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages')"></table>
+                    <h3 th:text="#{categories.new}"></h3>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages')"></table>
                     <label>
                         <select th:field="*{newCategory.mode}" id="newSelector">
                             <option th:each="p : ${categories.categoriesEnum}"
-                                    th:text="${p.key}"
-                                    th:value="${p.value}">
+                                    th:text="#{${p.value}}"
+                                    th:value="${p.key}">
                             </option>
                         </select>
                     </label>
                     <script>
-                        function start(){
+                        function start() {
                             setupAdditional();
                             document.getElementById("newSelector").addEventListener("change", setupAdditional, false);
                         }
@@ -53,15 +53,15 @@
                         window.addEventListener("load", start, false);
                     </script>
                     <div id="additional">
-                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='From')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='To')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='__#{from}__')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='__#{to}__')"></div>
                     </div>
                     <ul th:if="${#fields.hasErrors('newCategory')}">
                         <li th:each="err : ${#fields.errors('newCategory')}"
                             th:text="${err}" class="text-danger"></li>
                     </ul>
                     <button class="btn btn-primary row-link links" name="add"
-                            type="submit">Add
+                            th:text="#{add}" type="submit">
                     </button>
                 </div>
             </div>
@@ -69,8 +69,8 @@
     </div>
 
 
-    <button class="btn btn-primary" name="reload" th:text="Reset" type="submit"></button>
-    <button class="btn btn-primary" th:text="Save" type="submit"></button>
+    <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
+    <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
 </form>
 <div class="card card-bord">
     <a class="btn btn-primary" th:href="@{__${action}__}">Back</a>

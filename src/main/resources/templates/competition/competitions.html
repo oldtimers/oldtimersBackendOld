@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Competitions')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{title.competitions}__')"></head>
 <body>
 <div th:replace="fragments/view_fragments :: showRedirections"></div>
 <div class="card card-bord" th:if="*{competitionList.size()} > 0">
-    <h2>Competitions</h2>
+    <h2 th:text="#{competitions}">Competitions</h2>
     <div class="card card-bord" th:each="competition, info : *{competitionList}">
         <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}}"
            th:text="${competition.name.getDictionary(#locale)}"></a>
     </div>
 </div>
 <div class="card card-bord">
-    <h2>Create competition</h2>
+    <h2 th:text="#{competitions.create}"></h2>
     <form method="post" th:action="@{/__${url}__/edit/competitions}" th:object="${newCompetition}">
-        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages')"></table>
-        <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='Absence points value:')"></div>
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages')"></table>
+        <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='__#{competition.absencePoints}__')"></div>
         <label>
-            Competition type
+            <p th:text="#{type}"></p>
             <select id="newSelector" th:field="*{competition.type}">
                 <option th:each="p : *{typeEnums}"
-                        th:text="${p.value}"
+                        th:text="#{${p.value}}"
                         th:value="${p.key}">
                 </option>
             </select>
         </label>
         <div id="BestCategory">
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.maxRankingPoints', label='Max ranking points')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='Number of subsets')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.maxRankingPoints', label='__#{competition.maxRankingPoints}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='__#{competition.numberOfSubsets}__')"></div>
         </div>
         <div id="RegularCategory">
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='Average speed')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='Distance')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='__#{competition.averageSpeed}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='__#{competition.distance}__')"></div>
         </div>
 
-        <div th:replace="fragments/form_pieces :: submitButton (title='Create')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
     </form>
 </div>
 </body>

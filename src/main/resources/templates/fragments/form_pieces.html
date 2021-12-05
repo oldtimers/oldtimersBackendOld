@@ -124,8 +124,8 @@
             <table>
                 <thead>
                 <tr>
-                    <th> Language</th>
-                    <th> Enabled</th>
+                    <th th:text="#{language}"></th>
+                    <th th:text="#{enabled}"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -146,47 +146,47 @@
     </div>
 </div>
 
-<div th:fragment="defaultMessage (fieldName, label)">
-    <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-            </label>
-            <table>
-                <thead>
-                <tr>
-                    <th> Language</th>
-                    <th> Message</th>
-                </tr>
-                </thead>
-                <tbody>
-                <th:block th:each="dictionaryEntry, index : *{__${fieldName}__.dictionaries}">
-                    <tr class="table">
-                        <td>
-                            <!--/*@thymesVar id="dictionaryEntry" type="pl.pazurkiewicz.oldtimers_rally.model.Dictionary"*/-->
-                            <label th:text="${dictionaryEntry.eventLanguage.language.code}"></label></td>
-                        <td>
-                            <label>
-                                <input type="text"
-                                       th:field="*{__${fieldName}__.dictionaries[__${index.index}__].value}">
-                            </label>
-                            <ul>
-                                <li th:each="err : ${#fields.errors(fieldName)}"
-                                    th:text="${err}" class="text-danger"></li>
-                            </ul>
-                    </tr>
-                    <tr class="table">
-                        <td th:if="${#fields.hasAnyErrors()}"
-                            th:errors="*{__${fieldName}__.dictionaries[__${index.index}__].value}"
-                            class="text-danger">
-                        </td>
-                    </tr>
-                </th:block>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<!--<div th:fragment="defaultMessage (fieldName, label)">-->
+<!--    <div class="m-3">-->
+<!--        <div class="form-group row">-->
+<!--            <label>-->
+<!--                <b th:text="${label}"></b>-->
+<!--            </label>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th> Language</th>-->
+<!--                    <th> Message</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <th:block th:each="dictionaryEntry, index : *{__${fieldName}__.dictionaries}">-->
+<!--                    <tr class="table">-->
+<!--                        <td>-->
+<!--                            &lt;!&ndash;/*@thymesVar id="dictionaryEntry" type="pl.pazurkiewicz.oldtimers_rally.model.Dictionary"*/&ndash;&gt;-->
+<!--                            <label th:text="${dictionaryEntry.eventLanguage.language.code}"></label></td>-->
+<!--                        <td>-->
+<!--                            <label>-->
+<!--                                <input type="text"-->
+<!--                                       th:field="*{__${fieldName}__.dictionaries[__${index.index}__].value}">-->
+<!--                            </label>-->
+<!--                            <ul>-->
+<!--                                <li th:each="err : ${#fields.errors(fieldName)}"-->
+<!--                                    th:text="${err}" class="text-danger"></li>-->
+<!--                            </ul>-->
+<!--                    </tr>-->
+<!--                    <tr class="table">-->
+<!--                        <td th:if="${#fields.hasAnyErrors()}"-->
+<!--                            th:errors="*{__${fieldName}__.dictionaries[__${index.index}__].value}"-->
+<!--                            class="text-danger">-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </th:block>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <div th:fragment="requiredDescription">
     <b th:text="#{form.required}"></b>
 </div>
@@ -221,8 +221,8 @@
 
 <table class="table" th:fragment="categoryTableFragment (fieldName)">
     <tr>
-        <th>Category</th>
-        <th>Is active</th>
+        <th th:text="#{category}"></th>
+        <th th:text="#{isActive}"></th>
     </tr>
     <tr th:each="cp, info2 : *{__${fieldName}__}">
         <th th:text="${cp.category.name.getDictionary(#locale)}"></th>

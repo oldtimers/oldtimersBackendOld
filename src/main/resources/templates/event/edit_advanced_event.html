@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Advanced edit')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{edit.advanced}__')"></head>
 
 
 <body>
@@ -14,46 +14,47 @@
             <!--        </div>-->
             <div th:switch="${#authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_OWNER'')')}">
                 <div th:case="true">
-                    <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='Default language')"></div>
-                    <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='Rally url:')"></div>
+                    <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='__#{language.default}__')"></div>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='__#{event.url}__')"></div>
                     <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'name', 'description'} }, languages='editEvent.languages')"></table>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='editEvent.languages')"></table>
                 </div>
                 <div th:case="false">
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'description'} }, languages='editEvent.languages')"></table>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'description'} }, languages='editEvent.languages')"></table>
                 </div>
             </div>
-            <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='Type start date')"></div>
-            <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='Type end date')"></div>
+            <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='__#{startDate}__')"></div>
+            <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='__#{endDate}__')"></div>
             <div th:replace="fragments/form_pieces :: requiredDescription"></div>
-            <div th:replace="fragments/form_pieces :: reloadButton (title='Reload')"></div>
-            <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
+            <div th:replace="fragments/form_pieces :: reloadButton (title='__#{reload}__')"></div>
+            <div th:replace="fragments/form_pieces :: submitButton (title='__#{save}__')"></div>
         </div>
     </form>
 </div>
 <div class="card card-body">
     <form enctype="multipart/form-data" method="post" th:action="@{'/'+${url}+'/edit/advanced/mainPhoto'}">
         <div>
-            <label>Main photo: </label>
+            <label th:text="#{mainPhoto}"></label>
             <div th:if="${editEvent.event.mainPhoto!=null}">
                 <img alt="No photo" th:src="${editEvent.event.mainPhoto}">
             </div>
             <input accept="image/*" name="photo" type="file"/>
         </div>
-        <div th:replace="fragments/form_pieces :: submitButton (title='Upload')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='__#{upload}__')"></div>
     </form>
 </div>
 <div class="card card-body">
     <form enctype="multipart/form-data" method="post" th:action="@{'/'+${url}+'/edit/advanced/photos'}">
         <div>
-            <label>Additional photos: </label>
+            <label th:text="#{additionalPhotos}"></label>
             <div class="row" th:each="p, info : ${editEvent.event.photos}">
                 <img alt="No photo, please delete" th:src="${p}">
-                <button class="btn btn-primary" name="delete" th:value="${info.index}" type="submit">Delete</button>
+                <button class="btn btn-primary" name="delete" th:text="#{delete}" th:value="${info.index}"
+                        type="submit"></button>
             </div>
         </div>
         <input accept="image/*" name="photo" type="file"/>
-        <div th:replace="fragments/form_pieces :: submitButton (title='Add')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='__#{add}__')"></div>
     </form>
 </div>
 

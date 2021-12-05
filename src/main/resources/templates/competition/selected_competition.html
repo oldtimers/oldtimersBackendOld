@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Competition - '+${competitionModel.competition.name.getDictionary(#locale)})"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title=#{competition}+' - '+${competitionModel.competition.name.getDictionary(#locale)})"></head>
 <script th:src="@{/static/js/jquery.tablednd.js}"></script>
 
 <style>
@@ -12,31 +12,31 @@
 <body>
 <div th:replace="fragments/view_fragments :: showRedirections"></div>
 <div class="card card-bord">
-    <h2 text="Competition"></h2>
+    <h2 th:text="#{competition}"></h2>
     <form method="post" th:action="@{/__${url}__/edit/competition/__${competitionId}__}"
           th:object="${competitionModel.competition}">
-        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Name','Description'} },fieldNames=${ {'name', 'description'} }, languages='competitionModel.languages')"></table>
-        <div th:replace="fragments/form_pieces :: number (fieldName='absencePoints', label='Absence points value:')"></div>
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='competitionModel.languages')"></table>
+        <div th:replace="fragments/form_pieces :: number (fieldName='absencePoints', label='__#{competition.absencePoints}__')"></div>
         <div id="BestCategory" th:if="*{type}!=${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).COUNTED}">
-            <div th:replace="fragments/form_pieces :: number (fieldName='maxRankingPoints', label='Max ranking points')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='numberOfSubsets', label='Number of subsets')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='maxRankingPoints', label='__#{competition.maxRankingPoints}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='numberOfSubsets', label='__#{competition.numberOfSubsets}__')"></div>
         </div>
         <div id="RegularCategory"
              th:if="*{type}==${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
-            <div th:replace="fragments/form_pieces :: number (fieldName='averageSpeed', label='Average speed')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='distance', label='Distance')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='averageSpeed', label='__#{competition.averageSpeed}__')"></div>
+            <div th:replace="fragments/form_pieces :: number (fieldName='distance', label='__#{competition.distance}__')"></div>
         </div>
         <div id="functionCode"
              th:if="*{type}!=${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
-            <div th:replace="fragments/form_pieces :: classic (fieldName='functionCode', label='Function:')"></div>
-            <p th:text="'Type: ' + ${competitionModel.typeEnums.get(competitionModel.competition.type)}"></p>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='functionCode', label='__#{competition.function}__')"></div>
+            <p th:text="#{competition.type}+' ' + #{${competitionModel.typeEnums.get(competitionModel.competition.type)}}"></p>
             <table class="table" id="fieldTable" th:if="*{fields.size()} > 0">
                 <tr class="nodrop nodrag">
                     <td></td>
-                    <td>Variable</td>
-                    <td>Label</td>
-                    <td>Type</td>
-                    <td>Action</td>
+                    <td th:text="#{variable}"></td>
+                    <td th:text="#{label}"></td>
+                    <td th:text="#{type}"></td>
+                    <td th:text="#{action}"></td>
                 </tr>
                 <tr class="fieldRow" th:each="field, info : *{fields}" th:id="${field.order}">
                     <input th:field="${competitionModel.competition.fields[__${info.index}__].order}"
@@ -50,25 +50,25 @@
                     </td>
                     <td>
                         <label>
-                            Field type
+                            <p th:text="#{type.field}"></p>
                             <select th:field="*{fields[__${info.index}__].type}">
                                 <option th:each="p : ${competitionModel.fieldEnums}"
-                                        th:text="${p.key}"
-                                        th:value="${p.value}">
+                                        th:text="#{${p.value}}"
+                                        th:value="${p.key}">
                                 </option>
                             </select>
                         </label>
                     </td>
                     <td>
-                        <button class="btn btn-primary" name="remove" type="submit">Delete</button>
+                        <button class="btn btn-primary" name="remove" th:text="#{delete}" type="submit"></button>
                     </td>
                 </tr>
             </table>
-            <button class="btn btn-primary" name="add" type="submit">Add field</button>
+            <button class="btn btn-primary" name="add" th:text="#{add.field}" type="submit"></button>
         </div>
 
 
-        <div th:replace="fragments/form_pieces :: submitButton (title='Save')"></div>
+        <div th:replace="fragments/form_pieces :: submitButton (title='__#{save}__')"></div>
     </form>
     <script>
         $(document).ready(function () {
@@ -81,7 +81,6 @@
                         children[2].textContent = variableName(i - 1)
                     }
                 },
-                onDrag
                 dragHandle: ".dragHandle"
             });
         })

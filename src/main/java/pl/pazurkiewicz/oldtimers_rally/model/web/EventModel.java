@@ -60,7 +60,7 @@ public class EventModel {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime endDate;
-    @NotBlank
+    @NotBlank(message = "{notBlank}")
     @IsUrlPossible
     private String url;
 
@@ -75,6 +75,7 @@ public class EventModel {
         this.startDate = startDate;
         this.endDate = endDate;
         this.url = url;
+        reload();
     }
 
     public EventModel(Event event, PossibleLanguageSelector possibleLanguageSelector, DefaultLanguageSelector defaultLanguageSelector) {
@@ -101,7 +102,7 @@ public class EventModel {
                 EventLanguageCode.generateNewEventLanguageCode(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector)),
                 LocalDateTime.now(),
                 LocalDateTime.now().plus(1, ChronoUnit.DAYS),
-                null
+                ""
         );
 
 

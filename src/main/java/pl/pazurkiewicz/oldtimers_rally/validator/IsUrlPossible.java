@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = IsUrlPossible.IsUrlPossibleValidator.class)
 @Documented
 public @interface IsUrlPossible {
-    String message() default "This URL is forbidden";
+    String message() default "{event.urlForbidden}";
 
     Class<?>[] groups() default {};
 

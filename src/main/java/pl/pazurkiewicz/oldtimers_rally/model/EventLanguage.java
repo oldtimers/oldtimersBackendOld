@@ -44,6 +44,18 @@ public class EventLanguage implements DatabaseModel {
         this.isDefault = isDefault;
     }
 
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    public void setDictionaries(Set<Dictionary> dictionaries) {
+        this.dictionaries = dictionaries;
+    }
+
     public Set<Dictionary> getDictionaries() {
         return dictionaries;
     }

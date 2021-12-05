@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Edit crews')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{edit.crews}__')"></head>
 <style>
     #dragArea {
         border: 1px solid #eee;
@@ -29,34 +29,34 @@
         <div class="row">
             <div class="col-md">
                 <div class="card card-bord" th:if="*{crews.size()} > 0">
-                    <h2>Crews</h2>
+                    <h2 th:text="#{crews}"></h2>
                     <div class="card card-bord" th:each="crew, info : *{crews}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'crews[__${info.index}__].crew.description'} }, languages='crews.languages')"></table>
-                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.car', label='Car')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.yearOfProduction', label='Year of production')"></div>
-                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.driverName', label='Driver name')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.phone', label='Phone number')"></div>
-                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedReg', label='Accepted regulations:')"></div>
-                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedRodo', label='Accepted RODO:')"></div>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'crews[__${info.index}__].crew.description'} }, languages='crews.languages')"></table>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.car', label='__#{crew.car}__')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.yearOfProduction', label='__#{crew.yearOfProduction}__')"></div>
+                        <div th:replace="fragments/form_pieces :: classic (fieldName='crews[__${info.index}__].crew.driverName', label='__#{crew.driverName}__')"></div>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.phone', label='__#{phone}__')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedReg', label='__#{acceptedReg}__')"></div>
+                        <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedRodo', label='__#{acceptedRodo}__')"></div>
                         <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='crews[__${info.index}__].categoryTable')"></div>
                         <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
-                                type="submit">Delete
+                                th:text="#{delete}" type="submit">
                         </button>
                     </div>
                 </div>
                 <div class="card card-bord">
-                    <h3>Add new crew</h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'Language','Description'} },fieldNames=${ {'newCrew.crew.description'} }, languages='crews.languages')"></table>
-                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.car', label='Car')"></div>
-                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.yearOfProduction', label='Year of production')"></div>
-                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.driverName', label='Driver name')"></div>
-                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.phone', label='Phone number')"></div>
-                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedReg', label='Accepted regulations:')"></div>
-                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedRodo', label='Accepted RODO:')"></div>
+                    <h3 th:text="#{crew.new}"></h3>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'newCrew.crew.description'} }, languages='crews.languages')"></table>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.car', label='__#{crew.car}__')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.yearOfProduction', label='__#{crew.yearOfProduction}__')"></div>
+                    <div th:replace="fragments/form_pieces :: classic (fieldName='newCrew.crew.driverName', label='__#{crew.driverName}__')"></div>
+                    <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.phone', label='__#{phone}__')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedReg', label='__#{acceptedReg}__')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedRodo', label='__#{acceptedRodo}__')"></div>
                     <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='newCrew.categoryTable')"></div>
 
                     <button class="btn btn-primary row-link links" name="add"
-                            type="submit">Add
+                            th:text="#{add}" type="submit">
                     </button>
                 </div>
             </div>
@@ -64,11 +64,11 @@
     </div>
 
 
-    <button class="btn btn-primary" name="reload" th:text="Reset" type="submit"></button>
-    <button class="btn btn-primary" th:text="Save" type="submit"></button>
+    <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
+    <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
 </form>
 <div class="card card-bord">
-    <a class="btn btn-primary" th:href="@{/__${url}__/edit}">Back</a>
+    <a class="btn btn-primary" th:href="@{/__${url}__/edit}" th:text="#{back}"></a>
 </div>
 </body>
 </html>
