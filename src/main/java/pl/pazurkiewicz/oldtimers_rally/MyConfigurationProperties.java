@@ -11,6 +11,7 @@ public class MyConfigurationProperties {
     private String jwtSecret = "secret";
     private Long jwtExpiration = 60000L;
     private Long jwtRefreshExpiration = 86400000L;
+    private String realUrl = "http://localhost:8080/";
     public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$).*$";
 
     public String getDefaultLanguage() {
@@ -51,5 +52,13 @@ public class MyConfigurationProperties {
 
     public void setJwtRefreshExpiration(Long jwtRefreshExpiration) {
         this.jwtRefreshExpiration = jwtRefreshExpiration;
+    }
+
+    public String getRealUrl() {
+        return realUrl;
+    }
+
+    public void setRealUrl(String realUrl) {
+        this.realUrl = realUrl;
     }
 }

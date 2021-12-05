@@ -8,10 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Table(name = "crews", indexes = {
@@ -57,6 +54,8 @@ public class Crew implements DatabaseModel {
     private Boolean acceptedRodo = false;
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrewCategory> categories = new ArrayList<>();
+    @OneToMany(mappedBy = "crew")
+    private Set<QrCode> qrCodes = new HashSet<>();
 
     public Crew() {
     }
@@ -64,6 +63,14 @@ public class Crew implements DatabaseModel {
     public Crew(Event event) {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+    }
+
+    public Set<QrCode> getQrCodes() {
+        return qrCodes;
+    }
+
+    public void setQrCodes(Set<QrCode> qrCodes) {
+        this.qrCodes = qrCodes;
     }
 
     public Boolean getAcceptedRodo() {

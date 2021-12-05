@@ -6,26 +6,32 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>pl.pazurkiewicz</groupId>
-	<artifactId>oldtimers_rally</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>oldtimers_rally</name>
-	<description>Oldtimers rally is a platform for creating rallies of vintage vehicles</description>
-	<properties>
-		<java.version>11</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-		<dependency>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>pl.pazurkiewicz</groupId>
+    <artifactId>oldtimers_rally</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>oldtimers_rally</name>
+    <description>Oldtimers rally is a platform for creating rallies of vintage vehicles</description>
+    <properties>
+        <java.version>11</java.version>
+    </properties>
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
@@ -112,6 +118,17 @@
         <!--            <artifactId>spring-hibernate-query-utils</artifactId>-->
         <!--            <version>1.0.3</version>-->
         <!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.kenglxn.qrgen</groupId>
+            <artifactId>javase</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.22</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

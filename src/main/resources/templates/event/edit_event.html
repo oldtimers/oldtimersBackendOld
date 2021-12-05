@@ -3,6 +3,16 @@
 <head th:replace="fragments/header_fragment :: headerFragment (title='Event edit')"></head>
 <body>
 <div th:replace="fragments/view_fragments :: showRedirections"></div>
+<div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
+    <form method="post" th:action="@{/__${url}__/edit/count}">
+        <button class="btn btn-primary" type="submit">Calculate points</button>
+    </form>
+</div>
+<div>
+    <form method="post" th:action="@{/__${url}__/edit/qr_codes}">
+        <button class="btn btn-primary" type="submit">Get QR codes</button>
+    </form>
+</div>
 <div class="card card-bord" th:if="*{crewsModel.crews.size()} > 0">
     <h2>Crews</h2>
     <div class="card card-bord" th:each="crewModel, info : ${crewsModel.crews}">

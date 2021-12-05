@@ -48,15 +48,20 @@ public class Event implements DatabaseModel {
     @Column(name = "photos", columnDefinition = "json")
     private List<String> photos;
 
-    @Column(name = "qr_code_template", length = 128)
-    private String qrCodeTemplate;
-
-    @Column(name = "nr_template", length = 128)
-    private String nrTemplate;
-
     @Column(name = "url", nullable = false, length = 64)
     private String url = "";
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "stage", nullable = false, columnDefinition = "enum")
+    private StageEnum stage;
+
+    public StageEnum getStage() {
+        return stage;
+    }
+
+    public void setStage(StageEnum stage) {
+        this.stage = stage;
+    }
 
     public List<String> getPhotos() {
         return photos;
@@ -80,22 +85,6 @@ public class Event implements DatabaseModel {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getNrTemplate() {
-        return nrTemplate;
-    }
-
-    public void setNrTemplate(String nrTemplate) {
-        this.nrTemplate = nrTemplate;
-    }
-
-    public String getQrCodeTemplate() {
-        return qrCodeTemplate;
-    }
-
-    public void setQrCodeTemplate(String qrCodeTemplate) {
-        this.qrCodeTemplate = qrCodeTemplate;
     }
 
     public String getMainPhoto() {

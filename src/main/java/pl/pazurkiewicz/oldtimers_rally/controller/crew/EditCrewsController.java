@@ -18,7 +18,6 @@ import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.service.CalculatorService;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 
 import javax.validation.Valid;
@@ -33,15 +32,13 @@ public class EditCrewsController {
     private final CrewService crewService;
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
-    private final CalculatorService calculatorService;
 
-    public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService, CategoryRepository categoryRepository, CalculatorService calculatorService) {
+    public EditCrewsController(EventRepository eventRepository, CrewRepository crewRepository, SmartValidator validator, CrewService crewService, CategoryRepository categoryRepository) {
         this.crewRepository = crewRepository;
         this.validator = validator;
         this.crewService = crewService;
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
-        this.calculatorService = calculatorService;
     }
 
     @GetMapping
@@ -96,12 +93,5 @@ public class EditCrewsController {
     @ModelAttribute("event")
     Event getEvent(@PathVariable("url") String url) {
         return eventRepository.getByUrl(url);
-    }
-
-    @GetMapping("/count")
-    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String countPoints(Event event, Model model) {
-        calculatorService.countGlobalPoints(event);
-        return getCrews(model, event);
     }
 }

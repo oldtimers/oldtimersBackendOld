@@ -99,6 +99,22 @@ public class CalculatorService {
     }
 
     public void calculateCompetitionForBestMax(HashMap<Crew, Float> crewsValue, List<Score> scores, Competition competition) {
-//TODO
+        int subsets = competition.getNumberOfSubsets();
+        if (!scores.isEmpty() && subsets > 1) {
+            float minScore = scores.get(0).getResult();
+            float maxScore = scores.get(scores.size() - 1).getResult();
+            float pointMove = competition.getMaxRankingPoints() / (subsets - 1.f);
+            List<Float> jumps = new LinkedList<>();
+            for (int i = 0; i < subsets; i++) {
+                jumps.add(minScore + ((i + 1) * (maxScore - minScore) / subsets));
+            }
+            int i = 0;
+            for (Score score : scores) {
+                while (score.getResult() > jumps.get(i)) {
+                    i++;
+                }
+                crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));
+            }
+        }
     }
 }

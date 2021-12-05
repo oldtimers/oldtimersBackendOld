@@ -19,8 +19,8 @@
             Competition type
             <select id="newSelector" th:field="*{competition.type}">
                 <option th:each="p : *{typeEnums}"
-                        th:text="${p.key}"
-                        th:value="${p.value}">
+                        th:text="${p.value}"
+                        th:value="${p.key}">
                 </option>
             </select>
         </label>

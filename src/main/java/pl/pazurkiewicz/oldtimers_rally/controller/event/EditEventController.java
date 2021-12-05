@@ -1,26 +1,33 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
+import org.dom4j.DocumentException;
 import org.hibernate.Hibernate;
+import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
-import pl.pazurkiewicz.oldtimers_rally.model.Competition;
-import pl.pazurkiewicz.oldtimers_rally.model.Crew;
-import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.service.CalculatorService;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
+import pl.pazurkiewicz.oldtimers_rally.service.QrCodeService;
 import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
 
 import java.io.IOException;
@@ -38,8 +45,11 @@ public class EditEventController {
     private final FileUploadService fileUploadService;
     private final CategoryRepository categoryRepository;
     private final CrewService crewService;
+    private final CalculatorService calculatorService;
+    private final CacheManager cacheManager;
+    private final QrCodeService qrCodeService;
 
-    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadService fileUploadService, CategoryRepository categoryRepository, CrewService crewService) {
+    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadService fileUploadService, CategoryRepository categoryRepository, CrewService crewService, CalculatorService calculatorService, CacheManager cacheManager, QrCodeService qrCodeService) {
         this.eventRepository = eventRepository;
         this.crewRepository = crewRepository;
         this.competitionRepository = competitionRepository;
@@ -47,6 +57,9 @@ public class EditEventController {
         this.fileUploadService = fileUploadService;
         this.categoryRepository = categoryRepository;
         this.crewService = crewService;
+        this.calculatorService = calculatorService;
+        this.cacheManager = cacheManager;
+        this.qrCodeService = qrCodeService;
     }
 
     @GetMapping
@@ -60,7 +73,7 @@ public class EditEventController {
 
 
     CrewsModel getCrews(Event event) {
-        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl(), Crew.class).stream().peek(crew -> {
+        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl()).stream().peek(crew -> {
             crew.getDescription().prepareForLoad(event.getEventLanguages());
         }).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
     }
@@ -107,4 +120,35 @@ public class EditEventController {
     }
 
 
+    @PostMapping("/count")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    @Transactional
+    String countPoints(Event event, RedirectAttributes redirectAttributes) {
+        if (event.getStage() != StageEnum.NEW) {
+            calculatorService.countGlobalPoints(event);
+            redirectAttributes.addAttribute("url", event.getUrl());
+            event.setStage(StageEnum.RESULTS);
+            invalidateEventByUrl(event.getUrl());
+        }
+        return "redirect:/{url}/edit";
+    }
+
+    @PostMapping(value = "/qr_codes", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    @Transactional
+    ResponseEntity<byte[]> generateNumbersWithQr(Event event, RedirectAttributes redirectAttributes) throws DocumentException, com.lowagie.text.DocumentException, IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        // Here you have to set the actual filename of your pdf
+        String filename = "qr.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<>(qrCodeService.generateFullQrUserList(event), headers, HttpStatus.OK);
+        return response;
+    }
+
+    public void invalidateEventByUrl(String url) {
+        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
+        cacheManager.getCache("eventsId").evictIfPresent(url);
+    }
 }

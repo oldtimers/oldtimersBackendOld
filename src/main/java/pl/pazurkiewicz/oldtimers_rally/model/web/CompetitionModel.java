@@ -10,18 +10,17 @@ import java.util.Hashtable;
 import java.util.List;
 
 public class CompetitionModel {
-    private static final Hashtable<String, CompetitionTypeEnum> typeEnums = new Hashtable<>() {{
-        put("Regular drive", CompetitionTypeEnum.REGULAR_DRIVE);
-        put("Best min", CompetitionTypeEnum.BEST_MIN);
-        put("Best max", CompetitionTypeEnum.BEST_MAX);
-        put("Counted", CompetitionTypeEnum.COUNTED);
+    private static final Hashtable<CompetitionTypeEnum, String> typeEnums = new Hashtable<>() {{
+        put(CompetitionTypeEnum.REGULAR_DRIVE, "Regular drive");
+        put(CompetitionTypeEnum.BEST_MIN, "Best min");
+        put(CompetitionTypeEnum.BEST_MAX, "Best max");
+        put(CompetitionTypeEnum.COUNTED, "Counted");
     }};
     private static final Hashtable<String, CompetitionFieldTypeEnum> fieldEnums = new Hashtable<>() {{
         put("Boolean", CompetitionFieldTypeEnum.BOOLEAN);
         put("Float", CompetitionFieldTypeEnum.FLOAT);
         put("Integer", CompetitionFieldTypeEnum.INT);
         put("Timer", CompetitionFieldTypeEnum.TIMER);
-
     }};
     @Valid
     private final Competition competition;
@@ -56,7 +55,7 @@ public class CompetitionModel {
         return competition;
     }
 
-    public Hashtable<String, CompetitionTypeEnum> getTypeEnums() {
+    public Hashtable<CompetitionTypeEnum, String> getTypeEnums() {
         return typeEnums;
     }
 
