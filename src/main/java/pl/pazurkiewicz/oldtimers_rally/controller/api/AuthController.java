@@ -48,7 +48,7 @@ public class AuthController {
     RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -70,7 +70,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     @Transactional
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+    ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -85,9 +85,15 @@ public class AuthController {
                         "Refresh token is not in database!"));
     }
 
+    @GetMapping("/verify")
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<?> test() {
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/logout")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> logoutUser(@RequestBody @Valid LogOutRequest logOutRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
+    ResponseEntity<?> logoutUser(@RequestBody @Valid LogOutRequest logOutRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         refreshTokenService.deleteByUserId(logOutRequest.getUserId());
         return ResponseEntity.ok(new MessageResponse("Log out successful!"));
     }
