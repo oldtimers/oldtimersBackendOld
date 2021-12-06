@@ -9,8 +9,8 @@
     <form th:action="@{/register}" th:object="${user}"
           method="post" style="max-width: 600px; margin: 0 auto;">
         <div class="m-3">
-            <div th:replace="fragments/form_pieces :: classic (fieldName='login', label='__#{login.username}__')"></div>
-            <div th:replace="fragments/form_pieces :: email (fieldName='email', label='__#{login}__')"></div>
+            <div th:replace="fragments/form_pieces :: classic (fieldName='login', label='__#{login}__')"></div>
+            <div th:replace="fragments/form_pieces :: email (fieldName='email', label='__#{email}__')"></div>
             <div th:replace="fragments/form_pieces :: classic (fieldName='firstName', label='__#{firstName}__')"></div>
             <div th:replace="fragments/form_pieces :: classic (fieldName='lastName', label='__#{lastName}__')"></div>
             <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='__#{phone}__')"></div>

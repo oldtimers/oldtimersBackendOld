@@ -1,5 +1,5 @@
-INSERT INTO oldtimers_rally.languages (code)
+INSERT INTO languages (code)
 VALUES ('pl');
 
-INSERT INTO oldtimers_rally.languages (code)
+INSERT INTO languages (code)
 VALUES ('en');

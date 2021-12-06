@@ -2,7 +2,8 @@
 <body class="border-box">
 
 <div class="row" th:each="p : ${wrapper.special}">
-    <div style="float: left; width: 45%; padding: 15px; border:1px solid black;" th:each="sp : ${p}">
+    <div style="float: left; width: 45%; padding: 15px; border:1px solid black;" th:each="sp : ${p}"
+         th:if="${sp} != null">
         <div style="width: 100%">
             <H4 style="text-align: center" th:text="${sp.crew.number} + ' - '+ ${sp.crew.driverName}"></H4>
             <img alt="#" style="width:100%" th:src="'data:image/png;base64,' + ${sp.base64}"/>
