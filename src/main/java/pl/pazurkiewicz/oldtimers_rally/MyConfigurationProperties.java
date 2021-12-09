@@ -12,7 +12,7 @@ public class MyConfigurationProperties {
     private Long jwtExpiration = 60000L;
     private Long jwtRefreshExpiration = 86400000L;
     private String realUrl = "http://localhost:8080/";
-    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$).*$";
+    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$)(?!logout$).*$";
 
     public String getDefaultLanguage() {
         return defaultLanguage;
