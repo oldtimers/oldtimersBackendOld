@@ -204,4 +204,9 @@ public class Crew implements DatabaseModel {
         description.preUpdate();
         assignToCategories(categories);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s%s, %s - %d",((number == null) ? "" : number+", "),driverName,car,yearOfProduction);
+    }
 }

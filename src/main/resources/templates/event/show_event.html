@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title=${event.name.getDictionary(#locale)})"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
 <body>
-<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.Event"*/-->
-<h1 th:text="#{rally.name}"></h1>
-<h2 th:text="${event.name.getDictionary(#locale)}"></h2>
-<h1 th:text="#{rally.description}"></h1>
-<h2 th:text="${event.description.getDictionary(#locale)}"></h2>
+<div class="container">
+    <div th:replace="fragments/navbar :: myNavbar (events= 'events')"></div>
+    <div class="col-4">
+        <h3 class="back-button"><a th:href="@{'/'}" class="text-white" th:text="#{back}"></a></h3>
+    </div>
+    <div class="event-row">
+        <div class="description">
+            <h2 class="title" th:text="${event.name.getDictionary(#locale)}"></h2>
+            <img th:src="${event.mainPhoto}" class="event-img" alt="rally">
+            <div class="text">
+                <span th:text="${event.description.getDictionary(#locale)}"></span>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

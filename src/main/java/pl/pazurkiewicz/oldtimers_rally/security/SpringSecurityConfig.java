@@ -120,7 +120,9 @@ public class SpringSecurityConfig {
                     .and()
                     .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .and()
+                    .cors();
         }
     }
 

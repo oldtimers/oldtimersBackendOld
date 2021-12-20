@@ -30,4 +30,12 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     @Query("select distinct e from Event e left join fetch e.name left join fetch e.description order by e.url")
     List<Event> findAllSorted();
+
+    @Query("select distinct u.event from UserGroup u inner join fetch u.event.eventLanguages el inner join fetch el.language where u.user.id=:userId order by u.event.id")
+    <T>
+    List<T> getEventsWithJudgePrivilegesForId(Integer userId, Class<T> type);
+
+    @Query("select distinct e from Event e, UserGroup u inner join fetch e.eventLanguages el inner join fetch el.language where u.user.id=:userId and u.event is null")
+    <T>
+    List<T> getEventsWithGlobalJudgePrivilegesForId(Integer userId, Class<T> type);
 }

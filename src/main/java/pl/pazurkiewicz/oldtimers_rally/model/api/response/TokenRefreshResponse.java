@@ -1,29 +1,29 @@
 package pl.pazurkiewicz.oldtimers_rally.model.api.response;
 
 public class TokenRefreshResponse {
-    private String accessToken;
-    private String refreshToken;
+    private String access;
+    private String refresh;
     private String tokenType = "Bearer";
 
     public TokenRefreshResponse(String accessToken, String refreshToken) {
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+        this.access = accessToken;
+        this.refresh = refreshToken;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getAccess() {
+        return access;
     }
 
-    public void setAccessToken(String token) {
-        this.accessToken = token;
+    public void setAccess(String token) {
+        this.access = token;
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
+    public String getRefresh() {
+        return refresh;
     }
 
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
     }
 
     public String getTokenType() {

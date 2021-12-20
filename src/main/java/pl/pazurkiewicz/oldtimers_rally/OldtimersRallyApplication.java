@@ -38,7 +38,7 @@ public class OldtimersRallyApplication implements WebMvcConfigurer {
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
 
-        localeResolver.setDefaultLocale(Locale.US);
+        localeResolver.setDefaultLocale(new Locale("en"));
         return localeResolver;
     }
 

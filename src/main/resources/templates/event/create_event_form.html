@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='__#{event.create}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
 <body>
-<!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.web.EventModel"*/-->
-<form th:action="@{/rally/create}" th:object="${newEvent}"
-      method="post" style="max-width: 600px; margin: 0 auto;">
-    <div class="m-3">
-        <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='__#{language.default}__')"></div>
-        <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='__#{event.url}__')"></div>
-        <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
-        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='newEvent.languages')"></table>
-        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='__#{startDate}__')"></div>
-        <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='__#{endDate}__')"></div>
-        <div th:replace="fragments/form_pieces :: requiredDescription"></div>
-        <div th:replace="fragments/form_pieces :: reloadButton (title='__#{reload}__')"></div>
-        <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
-    </div>
-</form>
+<div class="container text-center">
+    <div th:replace="fragments/navbar :: myNavbar (events= 'events')"></div>
+    <form th:action="@{/rally/create}" th:object="${newEvent}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='defaultLanguageSelector', label='__#{language.default}__')"></div>
+                <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='__#{event.url}__')"></div>
+                <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
+                <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='newEvent.languages' , fieldTypes=${ {true,false} })"></table>
+                <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='__#{startDate}__')"></div>
+                <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='__#{endDate}__')"></div>
+                <div th:replace="fragments/form_pieces :: requiredDescription"></div>
+                <div class="button-row">
+                    <div th:replace="fragments/form_pieces :: reloadButton (title='__#{reload}__')"></div>
+                    <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
+<script>
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+        tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight + 52) + "px;" + "width: 300px;");
+        tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    }
+</script>
 </html>

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Table(name = "events")
@@ -46,7 +47,7 @@ public class Event implements DatabaseModel {
 
     @Type(type = "json")
     @Column(name = "photos", columnDefinition = "json")
-    private List<String> photos;
+    private List<String> photos = new LinkedList<>();
 
     @Column(name = "url", nullable = false, length = 64)
     private String url = "";

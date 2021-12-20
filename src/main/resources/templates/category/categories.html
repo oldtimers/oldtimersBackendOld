@@ -12,7 +12,7 @@
                 <div class="card card-bord" th:if="${categories.otherCategories.size()} > 0">
                     <h2 th:text="#{categories.others}"></h2>
                     <div class="card card-bord" th:each="category, info : ${categories.otherCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
                         <button class="btn btn-primary row-link links" name="delete1" th:value="${info.index}"
                                 th:text="#{delete}" type="submit">
                         </button>
@@ -21,7 +21,7 @@
                 <div class="card card-bord" th:if="${categories.yearCategories.size()} > 0">
                     <h2 th:text="#{categories.years}"></h2>
                     <div class="card card-bord" th:each="category, info : ${categories.yearCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages')"></table>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
                         <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].minYear', label='__#{from}__')"></div>
                         <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].maxYear', label='__#{to}__')"></div>
                         <button class="btn btn-primary row-link links" name="delete2" th:value="${info.index}"
@@ -31,7 +31,7 @@
                 </div>
                 <div class="card card-bord">
                     <h3 th:text="#{categories.new}"></h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages')"></table>
+                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
                     <label>
                         <select th:field="*{newCategory.mode}" id="newSelector">
                             <option th:each="p : ${categories.categoriesEnum}"

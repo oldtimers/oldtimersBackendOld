@@ -13,7 +13,7 @@
 <div class="card card-bord">
     <h2 th:text="#{competitions.create}"></h2>
     <form method="post" th:action="@{/__${url}__/edit/competitions}" th:object="${newCompetition}">
-        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages')"></table>
+        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages', fieldTypes=${ {true,false} })"></table>
         <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='__#{competition.absencePoints}__')"></div>
         <label>
             <p th:text="#{type}"></p>

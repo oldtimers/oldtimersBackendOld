@@ -1,55 +1,31 @@
 package pl.pazurkiewicz.oldtimers_rally.model.api.response;
 
-import java.util.List;
-
 public class JwtResponse {
-    private final List<String> roles;
-    private String token;
+    private String access;
     private String type = "Bearer";
-    private String refreshToken;
-    private Integer id;
+    private String refresh;
     private String username;
-    private String email;
 
-    public JwtResponse(String accessToken, String refreshToken, Integer id, String username, String email, List<String> roles) {
-        this.token = accessToken;
-        this.refreshToken = refreshToken;
-        this.id = id;
+    public JwtResponse(String accessToken, String refreshToken, String username) {
+        this.access = accessToken;
+        this.refresh = refreshToken;
         this.username = username;
-        this.email = email;
-        this.roles = roles;
     }
 
-    public String getAccessToken() {
-        return token;
+    public String getAccess() {
+        return access;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.token = accessToken;
+    public void setAccess(String access) {
+        this.access = access;
     }
 
-    public String getTokenType() {
+    public String getType() {
         return type;
     }
 
-    public void setTokenType(String tokenType) {
-        this.type = tokenType;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getUsername() {
@@ -60,15 +36,11 @@ public class JwtResponse {
         this.username = username;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRefresh() {
+        return refresh;
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public void setRefresh(String refresh) {
+        this.refresh = refresh;
     }
 }

@@ -20,6 +20,7 @@ import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.LinkedList;
 
 @Controller
 @RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/advanced")
@@ -79,9 +80,11 @@ public class AdvancedEditEventController {
     @PostMapping(value = "/mainPhoto")
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveMainPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
-        Event event = eventRepository.getByUrl(url);
-        event.setMainPhoto(fileUploadService.saveMainEventPhoto(event, photo));
-        eventRepository.saveAndFlush(event);
+        if (!photo.isEmpty()){
+            Event event = eventRepository.getByUrl(url);
+            event.setMainPhoto(fileUploadService.saveMainEventPhoto(event, photo));
+            eventRepository.saveAndFlush(event);
+        }
         redirectAttributes.addAttribute("url", url);
         return "redirect:/{url}/edit/advanced";
     }
@@ -91,6 +94,8 @@ public class AdvancedEditEventController {
     String saveAdditionalPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
         if (!photo.isEmpty()) {
             Event event = eventRepository.getByUrl(url);
+            if (event.getPhotos()==null)
+                event.setPhotos(new LinkedList<>());
             event.getPhotos().add(fileUploadService.saveEventPhoto(event, photo));
             eventRepository.saveAndFlush(event);
         }

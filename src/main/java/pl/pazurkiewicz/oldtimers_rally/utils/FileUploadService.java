@@ -30,8 +30,6 @@ public class FileUploadService {
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
-        } else {
-            deleteFromPath(realDir);
         }
 
         try (InputStream inputStream = multipartFile.getInputStream()) {

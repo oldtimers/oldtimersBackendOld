@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='Welcome page')"></head>
-
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/index.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
 <body>
-<H1>TODO</H1>
-<div sec:authorize="isAuthenticated()">
-    <form class="form-inline" form-method="post" th:action="@{/logout}">
-        <button class="btn" type="submit">Logout</button>
-    </form>
-    <a th:href="@{/rally/create}">Create rally</a>
+<div class="container">
+    <div th:replace="fragments/navbar :: myNavbar (events= 'events')"></div>
+    <h1 sec:authorize="isAuthenticated()" class="title" th:text="#{welcomeMessage.login}"></h1>
+    <h1 sec:authorize="isAnonymous()" class="title" th:text="#{welcomeMessage.logout}"></h1>
 
-</div>
-<div sec:authorize="isAnonymous()">
-    <a th:href="@{/login}">Login</a>
-</div>
-<div>
-    <a th:href="@{/register}">Register</a>
-</div>
-<div>
-    <a th:href="@{/rally/create}">Create rally</a>
-</div>
-
-<div th:each="event : ${events}">
-    <div>
-        <a th:href="@{__${event.url}__}" th:text="${event.name.getDictionary(#locale)}"></a>
+    <div th:each="event : ${events}">
+        <div class="card">
+            <!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.Event"*/-->
+            <img th:src="${event.mainPhoto}" class="card-img-top" alt="rally">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${event.name.getDictionary(#locale)}"></h5>
+                <p class="card-text" th:text="${event.description.getDictionary(#locale)}"></p>
+                <a class="btn-primary" th:href="@{__${event.url}__}" th:text="#{checkRally}"></a>
+            </div>
+        </div>
     </div>
 </div>
 </body>

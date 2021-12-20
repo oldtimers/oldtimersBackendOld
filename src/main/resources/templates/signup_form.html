@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='Create rally')"></head>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <body>
 <div class="container text-center">
     <div>
-        <h1 th:text="#{signup.h1}"></h1>
+        <h1 th:text="#{register}"></h1>
     </div>
     <form th:action="@{/register}" th:object="${user}"
-          method="post" style="max-width: 600px; margin: 0 auto;">
+          method="post">
         <div class="m-3">
-            <div th:replace="fragments/form_pieces :: classic (fieldName='login', label='__#{login}__')"></div>
-            <div th:replace="fragments/form_pieces :: email (fieldName='email', label='__#{email}__')"></div>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='firstName', label='__#{firstName}__')"></div>
-            <div th:replace="fragments/form_pieces :: classic (fieldName='lastName', label='__#{lastName}__')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='__#{phone}__')"></div>
-            <div th:replace="fragments/form_pieces :: password (fieldName='newPassword', label='__#{password}__')"></div>
-            <div th:replace="fragments/form_pieces :: password (fieldName='newPasswordConfirmation', label='__#{confirmation}__')"></div>
-            <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedReg', label='__#{acceptedReg}__')"></div>
-            <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedRodo', label='__#{acceptedRodo}__')"></div>
-            <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='languageSelector', label='__#{language.default}__')"></div>
-            <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
-
+            <div class="form-group row">
+                <div th:replace="fragments/form_pieces :: classic (fieldName='login', label='__#{login}__')"></div>
+                <div th:replace="fragments/form_pieces :: email (fieldName='email', label='__#{email}__')"></div>
+                <div th:replace="fragments/form_pieces :: classic (fieldName='firstName', label='__#{firstName}__')"></div>
+                <div th:replace="fragments/form_pieces :: classic (fieldName='lastName', label='__#{lastName}__')"></div>
+                <div th:replace="fragments/form_pieces :: number (fieldName='phone', label='__#{phone}__')"></div>
+                <div th:replace="fragments/form_pieces :: password (fieldName='newPassword', label='__#{password}__')"></div>
+                <div th:replace="fragments/form_pieces :: password (fieldName='newPasswordConfirmation', label='__#{confirmation}__')"></div>
+                <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedReg', label='__#{acceptedReg}__')"></div>
+                <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedRodo', label='__#{acceptedRodo}__')"></div>
+                <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='languageSelector', label='__#{language.default}__')"></div>
+                <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
+            </div>
         </div>
     </form>
 </div>

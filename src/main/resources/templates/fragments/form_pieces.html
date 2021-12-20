@@ -1,148 +1,149 @@
 <html xmlns:th="http://www.thymeleaf.org">
+
 <div th:fragment="defaultLanguageSelector (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <select th:field="*{__${fieldName}__.defaultLanguage}">
-                    <option th:each="languages: *{__${fieldName}__.possibleLanguages}"
-                            th:value="${languages.id}"
-                            th:text="${languages.code}"></option>
-                </select>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
-        </div>
+
+        <label>
+            <b th:text="${label}"></b>
+            <select th:field="*{__${fieldName}__.defaultLanguage}">
+                <option th:each="languages: *{__${fieldName}__.possibleLanguages}"
+                        th:value="${languages.id}"
+                        th:text="${languages.code}"></option>
+            </select>
+        </label>
+        <ul>
+            <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
+        </ul>
+
     </div>
 </div>
 
 <div th:fragment="classic (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="text" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="text" th:field="*{__${fieldName}__}" class="form-control"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 <div th:fragment="number (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="number" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="number" th:field="*{__${fieldName}__}" class="form-control"/>
+        </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
         </div>
     </div>
+
 </div>
 
 
 <div th:fragment="password (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 
 <div th:fragment="passwordConfirmation (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="password" th:field="*{__${fieldName}__}" class="form-control"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 <div th:fragment="datetimeField (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="datetime-local" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="datetime-local" th:field="*{__${fieldName}__}" class="form-control"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 <div th:fragment="email (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="email" th:field="*{__${fieldName}__}" class="form-control"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="email" th:field="*{__${fieldName}__}" class="form-control"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 
 <div th:fragment="checkbox (fieldName, label)">
     <div class="m-3">
-        <div class="form-group row">
-            <label>
-                <b th:text="${label}"></b>
-                <input type="checkbox" th:field="*{__${fieldName}__}" class="checkbox-inline" style="margin: auto"/>
-            </label>
-            <ul>
-                <li th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></li>
-            </ul>
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input type="checkbox" th:field="*{__${fieldName}__}" class="checkbox-inline"/>
         </div>
+        <div class="error-info">
+            <span th:each="err : ${#fields.errors(fieldName)}" th:text="${err}" class="text-danger"></span>
+        </div>
+
     </div>
 </div>
 
 <div th:fragment="possibleLanguage (fieldName)">
     <div class="m-3">
-        <div class="form-group row">
-            <table>
-                <thead>
-                <tr>
-                    <th th:text="#{language}"></th>
-                    <th th:text="#{enabled}"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="table" th:each="possibleLanguage, index : *{__${fieldName}__.possibleLanguages} ">
-                    <td>
-                        <!--/*@thymesVar id="possibleLanguage" type="pl.pazurkiewicz.oldtimers_rally.model.web.LanguageSelectorElement"*/-->
-                        <label th:text="${possibleLanguage.language.code}"></label></td>
-                    <td>
-                        <label>
-                            <input type="checkbox"
-                                   th:field="*{__${fieldName}__.possibleLanguages[__${index.index}__].accept}">
-                        </label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th th:text="#{language}"></th>
+                <th th:text="#{enabled}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table" th:each="possibleLanguage, index : *{__${fieldName}__.possibleLanguages} ">
+                <td>
+                    <!--/*@thymesVar id="possibleLanguage" type="pl.pazurkiewicz.oldtimers_rally.model.web.LanguageSelectorElement"*/-->
+                    <label th:text="${possibleLanguage.language.code}"></label></td>
+                <td>
+                    <label>
+                        <input type="checkbox"
+                               th:field="*{__${fieldName}__.possibleLanguages[__${index.index}__].accept}">
+                    </label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 
@@ -199,17 +200,17 @@
     <button class="btn btn-primary" name="reload" th:text="${title}" type="submit"></button>
 </div>
 
-<table class="table" th:fragment="dictionaryFragment (labels,fieldNames, languages)">
+<table class="table" th:fragment="dictionaryFragment (labels,fieldNames, languages, fieldTypes)">
     <tr>
         <th th:each="l : ${labels}" th:text="${l}"></th>
     </tr>
     <tr th:each="la, info2 : ${__${languages}__}">
         <td th:text="${la.isDefault} ? ${la.language.code}+'*' : ${la.language.code}"></td>
-        <td th:each="fieldName : ${fieldNames}">
-            <label>
+        <td th:each="fieldName, info1 : ${fieldNames}">
                 <input th:field="*{__${fieldName}__.dictionaries[__${info2.index}__].value}"
-                       type="text">
-            </label>
+                       type="text" th:if="${fieldTypes[__${info1.index}__]}">
+                <textarea th:field="*{__${fieldName}__.dictionaries[__${info2.index}__].value}"
+                          type="text" th:unless="${fieldTypes[__${info1.index}__]}"></textarea>
             <ul th:if="${#fields.hasErrors('__${fieldName}__.dictionaries[__${info2.index}__].value')}">
                 <li th:each="err : ${#fields.errors('__${fieldName}__.dictionaries[__${info2.index}__].value')}"
                     th:text="${err}" class="text-danger"></li>

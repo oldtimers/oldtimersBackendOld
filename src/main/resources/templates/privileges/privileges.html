@@ -1,63 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='__#{edit.privileges}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <body>
-<div class="card card-bord">
-    <form method="post" th:action="@{__${action}__/privileges}" th:object="${privileges}">
-        <table class="table">
-            <tr>
-                <th th:text="#{user}">User</th>
-                <th th:text="#{privilege}">Privilege</th>
-                <th th:text="#{action}">Action</th>
-            </tr>
-            <!--/*@thymesVar id="privilege" type="pl.pazurkiewicz.oldtimers_rally.model.UserGroup"*/-->
-            <tr th:each="privilege, info : ${privileges.privileges}">
-                <td th:text="${privilege.user.login}"></td>
-                <td>
-                    <label>
-                        <select th:field="${privileges.privileges[__${info.index}__].selectedGroup}">
-                            <option th:each="p : ${privileges.groupEnums}"
-                                    th:text="#{${p.value}}"
-                                    th:value="${p.key}">
-                            </option>
-                        </select>
-                    </label>
-                </td>
-                <td>
-                    <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
-                            th:text="#{delete}" type="submit">
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>
-                        <input th:field="*{newUser}" type="text">
-                    </label>
-                    <p th:errors="*{newUser}"></p>
-                </td>
-                <td>
-                    <label>
-                        <select th:field="*{newGroupEnum}">
-                            <option th:each="p : ${privileges.groupEnums}"
-                                    th:text="${p.key}"
-                                    th:value="${p.value}">
-                            </option>
-                        </select>
-                    </label>
-                </td>
-                <td>
-                    <button class="btn btn-primary row-link links" name="add" type="submit">Add</button>
-                </td>
-            </tr>
-        </table>
+<div class="container">
+    <div class="col-4">
+        <h3 class="back-button"><a class="text-white" th:href="@{__${action}__}" th:text="#{back}"></a></h3>
+    </div>
+    <div class="">
+        <form method="post" th:action="@{__${action}__/privileges}" th:object="${privileges}">
+            <table class="table">
+                <tr>
+                    <th th:text="#{user}">User</th>
+                    <th th:text="#{privilege}">Privilege</th>
+                    <th th:text="#{action}">Action</th>
+                </tr>
+                <!--/*@thymesVar id="privilege" type="pl.pazurkiewicz.oldtimers_rally.model.UserGroup"*/-->
+                <tr th:each="privilege, info : ${privileges.privileges}">
+                    <td th:text="${privilege.user.login}"></td>
+                    <td>
+                        <label>
+                            <select th:field="${privileges.privileges[__${info.index}__].selectedGroup}">
+                                <option th:each="p : ${privileges.groupEnums}"
+                                        th:text="#{${p.value}}"
+                                        th:value="${p.key}">
+                                </option>
+                            </select>
+                        </label>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
+                                th:text="#{delete}" type="submit">
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>
+                            <input th:field="*{newUser}" type="text">
+                        </label>
+                        <p th:errors="*{newUser}"></p>
+                    </td>
+                    <td>
+                        <label>
+                            <select th:field="*{newGroupEnum}">
+                                <option th:each="p : ${privileges.groupEnums}"
+                                        th:text="#{__${p.value}__}"
+                                        th:value="${p.key}">
+                                </option>
+                            </select>
+                        </label>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary row-link links" name="add" type="submit">Add</button>
+                    </td>
+                </tr>
+            </table>
+            <div class="button-row">
+                <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
+                <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
+            </div>
+        </form>
+    </div>
 
-        <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
-        <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
-    </form>
-</div>
-<div class="card card-bord">
-    <a class="btn btn-primary" th:href="@{__${action}__}" th:text="#{back}"></a>
 </div>
 </body>
 </html>
