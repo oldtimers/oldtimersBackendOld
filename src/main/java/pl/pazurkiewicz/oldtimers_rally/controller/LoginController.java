@@ -12,13 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
@@ -26,14 +30,18 @@ import javax.validation.Valid;
 public class LoginController {
     private final UserRepository userRepo;
     private final LanguageService languageService;
+    private final LanguageRepository languageRepository;
 
-    public LoginController(UserRepository userRepo, LanguageService languageService) {
+    public LoginController(UserRepository userRepo, LanguageService languageService, LanguageRepository languageRepository) {
         this.userRepo = userRepo;
         this.languageService = languageService;
+        this.languageRepository = languageRepository;
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("url_prior_login", referrer);
         return "login";
     }
 
@@ -57,5 +65,10 @@ public class LoginController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         model.addAttribute("user", null);
         return "index";
+    }
+
+    @ModelAttribute("languages")
+    List<Language> languages() {
+        return languageRepository.findAll();
     }
 }

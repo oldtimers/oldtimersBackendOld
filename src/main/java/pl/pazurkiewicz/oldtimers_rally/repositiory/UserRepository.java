@@ -1,5 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> getUserByLogin(String login);
 
     @Query("SELECT u FROM User u JOIN FETCH u.defaultLanguage WHERE u.login=:login")
+    @Cacheable("user")
     Optional<User> getUserByLoginForLogging(String login);
 
     @Query("UPDATE User u SET u.lastLogin=:lastLogin WHERE u.login =:login")

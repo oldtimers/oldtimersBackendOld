@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
-import pl.pazurkiewicz.oldtimers_rally.model.Competition;
-import pl.pazurkiewicz.oldtimers_rally.model.CompetitionField;
-import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CompetitionModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
@@ -23,7 +20,10 @@ import pl.pazurkiewicz.oldtimers_rally.service.CompetitionService;
 
 import javax.validation.Valid;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit")
@@ -41,7 +41,7 @@ public class EditCompetitionController {
         this.competitionService = competitionService;
     }
 
-    @GetMapping("/competitions")
+    @GetMapping("/competition")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String getCompetitions(Event event, Model model) {
         model.addAttribute("newCompetition", new CompetitionModel(event));
@@ -49,7 +49,7 @@ public class EditCompetitionController {
         return "competition/competitions";
     }
 
-    @PostMapping("/competitions")
+    @PostMapping("/competition")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveNewCompetition(@ModelAttribute("newCompetition") @Valid CompetitionModel newCompetition, BindingResult bindingResult, Model model, Event event, RedirectAttributes redirectAttributes) {
         newCompetition.validate(smartValidator, bindingResult);
@@ -112,6 +112,15 @@ public class EditCompetitionController {
         if (!Objects.equals(competitionId, competitionModel.getCompetition().getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid competitionId");
         }
+    }
+
+
+    @ModelAttribute("languages")
+    List<Language> languages(Event event) {
+        if (event != null) {
+            return event.getEventLanguages().stream().map(EventLanguage::getLanguage).collect(Collectors.toList());
+        }
+        return new LinkedList<>();
     }
 
 }

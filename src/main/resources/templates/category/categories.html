@@ -1,79 +1,133 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='__#{title.categories}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <body>
+<div class="container">
+    <div class="col-4">
+        <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__/edit}" th:text="#{back}"></a></h3>
+    </div>
+    <form method="post" th:action="@{__${action}__/categories}" th:object="${categories}">
 
-<form method="post" th:action="@{__${action}__/categories}" th:object="${categories}">
-
-    <div class="container-fluid">
-        <br>
-        <div class="row">
-            <div class="col-md">
-                <div class="card card-bord" th:if="${categories.otherCategories.size()} > 0">
-                    <h2 th:text="#{categories.others}"></h2>
-                    <div class="card card-bord" th:each="category, info : ${categories.otherCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
-                        <button class="btn btn-primary row-link links" name="delete1" th:value="${info.index}"
-                                th:text="#{delete}" type="submit">
-                        </button>
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-md">
+                    <div class="" th:if="${categories.otherCategories.size()} > 0">
+                        <h2 th:text="#{categories.others}"></h2>
+                        <div class="" th:each="category, info : ${categories.otherCategories}">
+                            <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+                            <button class="accordion"
+                                    th:text="${category.name.getDictionary(event.getDefaultLanguage().language.code)}"
+                                    type="button"></button>
+                            <div class="panel">
+                                <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
+                                <div class="button-row">
+                                    <button class="btn btn-primary row-link links" name="delete1"
+                                            th:text="#{delete}"
+                                            th:value="${info.index}" type="submit">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card card-bord" th:if="${categories.yearCategories.size()} > 0">
-                    <h2 th:text="#{categories.years}"></h2>
-                    <div class="card card-bord" th:each="category, info : ${categories.yearCategories}">
-                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].minYear', label='__#{from}__')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].maxYear', label='__#{to}__')"></div>
-                        <button class="btn btn-primary row-link links" name="delete2" th:value="${info.index}"
-                                th:text="#{delete}" type="submit">
-                        </button>
+                    <div class="" th:if="${categories.yearCategories.size()} > 0">
+                        <h2 th:text="#{categories.years}"></h2>
+                        <div class="" th:each="category, info : ${categories.yearCategories}">
+                            <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+                            <button class="accordion"
+                                    th:text="${category.name.getDictionary(event.getDefaultLanguage().language.code)}"
+                                    type="button"></button>
+                            <div class="panel">
+                                <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
+                                <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].minYear', label='__#{from}__')"></div>
+                                <div th:replace="fragments/form_pieces :: number (fieldName='yearCategories[__${info.index}__].maxYear', label='__#{to}__')"></div>
+                                <div class="button-row">
+                                    <button class="btn btn-primary row-link links" name="delete2"
+                                            th:text="#{delete}"
+                                            th:value="${info.index}" type="submit">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card card-bord">
-                    <h3 th:text="#{categories.new}"></h3>
-                    <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
-                    <label>
-                        <select th:field="*{newCategory.mode}" id="newSelector">
-                            <option th:each="p : ${categories.categoriesEnum}"
-                                    th:text="#{${p.value}}"
-                                    th:value="${p.key}">
-                            </option>
-                        </select>
-                    </label>
-                    <script>
-                        function start() {
-                            setupAdditional();
-                            document.getElementById("newSelector").addEventListener("change", setupAdditional, false);
-                        }
+                    <div class="">
+                        <h3 th:text="#{categories.new}"></h3>
+                        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'newCategory.name', 'newCategory.description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
+                        <label>
+                            <select id="newSelector" th:field="*{newCategory.mode}">
+                                <option th:each="p : ${categories.categoriesEnum}"
+                                        th:text="#{${p.value}}"
+                                        th:value="${p.key}">
+                                </option>
+                            </select>
+                        </label>
+                        <script>
+                            function start() {
+                                setupAdditional();
+                                document.getElementById("newSelector").addEventListener("change", setupAdditional, false);
+                            }
 
-                        function setupAdditional(){
-                            document.getElementById("additional").hidden = document.getElementById("newSelector").value !== "year";
-                        }
+                            function setupAdditional() {
+                                document.getElementById("additional").hidden = document.getElementById("newSelector").value !== "year";
+                            }
 
-                        window.addEventListener("load", start, false);
-                    </script>
-                    <div id="additional">
-                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='__#{from}__')"></div>
-                        <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='__#{to}__')"></div>
+                            window.addEventListener("load", start, false);
+                        </script>
+                        <div id="additional">
+                            <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.minYear', label='__#{from}__')"></div>
+                            <div th:replace="fragments/form_pieces :: number (fieldName='newCategory.maxYear', label='__#{to}__')"></div>
+                        </div>
+                        <ul th:if="${#fields.hasErrors('newCategory')}">
+                            <li class="text-danger"
+                                th:each="err : ${#fields.errors('newCategory')}" th:text="${err}"></li>
+                        </ul>
+                        <div class="button-row">
+                            <button class="btn btn-primary row-link links" name="add"
+                                    th:text="#{add}" type="submit">
+                            </button>
+                        </div>
                     </div>
-                    <ul th:if="${#fields.hasErrors('newCategory')}">
-                        <li th:each="err : ${#fields.errors('newCategory')}"
-                            th:text="${err}" class="text-danger"></li>
-                    </ul>
-                    <button class="btn btn-primary row-link links" name="add"
-                            th:text="#{add}" type="submit">
-                    </button>
                 </div>
             </div>
         </div>
-    </div>
 
-
-    <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
-    <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
-</form>
-<div class="card card-bord">
-    <a class="btn btn-primary" th:href="@{__${action}__}">Back</a>
+        <div class="button-row">
+            <button class="btn btn-primary" name="reload" th:text="#{reset}" type="submit"></button>
+            <button class="btn btn-primary" th:text="#{save}" type="submit"></button>
+        </div>
+    </form>
 </div>
 </body>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+<script>
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+        tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight + 52) + "px;" + "width: 300px;");
+        tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    }
+</script>
 </html>

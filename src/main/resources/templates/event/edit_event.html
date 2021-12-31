@@ -4,21 +4,24 @@
 <link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
 <body>
 <div class="container">
+    <div th:replace="fragments/navbar :: myNavbar (links=${ {'advanced','privileges','crews','competitions','categories'} })"></div>
     <div class="col-4">
         <h3 class="back-button"><a th:href="@{'/'+${url}}" class="text-white" th:text="#{back}"></a></h3>
     </div>
-    <div th:replace="fragments/view_fragments :: showRedirections"></div>
-    <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
-        <form method="post" th:action="@{/__${url}__/edit/count}">
-            <button class="btn btn-primary" th:text="#{calculate.points}" type="submit"></button>
-        </form>
-    </div>
-    <div>
-        <form method="post" th:action="@{/__${url}__/edit/qr_codes}">
-            <button class="btn btn-primary" th:text="#{generateQR}" type="submit"></button>
-        </form>
+    <div class="col-4" style="display: flex; width: 100%; justify-content: end;">
+        <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
+            <form method="post" th:action="@{/__${url}__/edit/count}">
+                <button class="btn btn-primary" th:text="#{calculate.points}" type="submit"></button>
+            </form>
+        </div>
+        <div>
+            <form method="post" th:action="@{/__${url}__/edit/qr_codes}">
+                <button class="btn btn-primary" th:text="#{generateQR}" type="submit"></button>
+            </form>
+        </div>
     </div>
     <div th:if="*{crewsModel.crews.size()} > 0">
         <h2 th:text="#{crews}"></h2>

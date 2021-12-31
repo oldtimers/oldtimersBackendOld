@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.service;
 
+import org.mariuszgromada.math.mxparser.Argument;
+import org.mariuszgromada.math.mxparser.Expression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,6 +37,25 @@ public class CalculatorService {
     @Autowired
     private ScoreRepository scoreRepository;
 
+    public static void calculateScoreResult(Score score, Competition competition) {
+        int j = competition.getFields().size();
+        Argument[] arguments = new Argument[j];
+        for (int i = 0; i < j; i++) {
+            Argument argument = new Argument(CalculatorService.variableMapping.get(i));
+            argument.setArgumentValue(score.getValue(i));
+            arguments[i] = argument;
+        }
+        Expression expression = new Expression(competition.getFunctionCode(), arguments);
+        double result = expression.calculate();
+        if (Double.isNaN(result)) {
+            score.setResult(null);
+            score.setInvalidResult(true);
+        } else {
+            score.setResult(result);
+            score.setInvalidResult(false);
+        }
+    }
+
     @Transactional
     public void countGlobalPoints(Event event) {
         List<Competition> competitions = competitionRepository.getByEvent(event);
@@ -42,14 +63,15 @@ public class CalculatorService {
         for (Category category : categories) {
             calculateGlobalPointsForCategory(competitions, category);
         }
+        event.setStage(StageEnum.RESULTS);
     }
 
     public void calculateGlobalPointsForCategory(List<Competition> competitions, Category category) {
         Set<Crew> crews = category.getCrewCategories().stream().map(CrewCategory::getCrew).collect(Collectors.toSet());
-        HashMap<Crew, Float> crewsValue = new HashMap<>();
-        crews.forEach(c -> crewsValue.put(c, 0.f));
+        HashMap<Crew, Double> crewsValue = new HashMap<>();
+        crews.forEach(c -> crewsValue.put(c, 0.0));
         for (Competition competition : competitions) {
-            List<Score> scores = scoreRepository.getByCompetitionAndCrew_InOrderByResult(competition, crews);
+            List<Score> scores = scoreRepository.getByCompetitionAndResultNotNullAndCrew_InOrderByResult(competition, crews);
             Set<Crew> crewsWithScore = scores.stream().map(Score::getCrew).collect(Collectors.toSet());
             switch (competition.getType()) {
                 case REGULAR_DRIVE:
@@ -72,48 +94,47 @@ public class CalculatorService {
         crewCategoryRepository.saveAllAndFlush(category.getCrewCategories());
     }
 
-    public void calculateCompetitionForBestMin(HashMap<Crew, Float> crewsValue, List<Score> scores, Competition competition) {
-        int subsets = competition.getNumberOfSubsets();
-        if (!scores.isEmpty() && subsets > 1) {
-            float minScore = scores.get(0).getResult();
-            float maxScore = scores.get(scores.size() - 1).getResult();
-            float pointMove = competition.getMaxRankingPoints() / (subsets - 1.f);
-            List<Float> jumps = new LinkedList<>();
-            for (int i = 0; i < subsets; i++) {
-                jumps.add(minScore + ((i + 1) * (maxScore - minScore) / subsets));
-            }
-            int i = 0;
-            for (Score score : scores) {
-                while (score.getResult() > jumps.get(i)) {
-                    i++;
-                }
-                crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));
-            }
-        }
+    public void calculateCompetitionForBestMin(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
+        calculateCompetitionForBest(crewsValue, scores, competition, false);
     }
 
-    public void calculateCompetitionForCounted(HashMap<Crew, Float> crewsValue, List<Score> scores) {
+    public void calculateCompetitionForBestMax(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
+        calculateCompetitionForBest(crewsValue, scores, competition, true);
+    }
+
+    public void calculateCompetitionForCounted(HashMap<Crew, Double> crewsValue, List<Score> scores) {
         for (Score score : scores) {
             crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + score.getResult());
         }
     }
 
-    public void calculateCompetitionForBestMax(HashMap<Crew, Float> crewsValue, List<Score> scores, Competition competition) {
+    private void calculateCompetitionForBest(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition, boolean isMax) {
         int subsets = competition.getNumberOfSubsets();
         if (!scores.isEmpty() && subsets > 1) {
-            float minScore = scores.get(0).getResult();
-            float maxScore = scores.get(scores.size() - 1).getResult();
-            float pointMove = competition.getMaxRankingPoints() / (subsets - 1.f);
-            List<Float> jumps = new LinkedList<>();
+            double minScore = scores.get(0).getResult();
+            double maxScore = scores.get(scores.size() - 1).getResult();
+            double pointMove = competition.getMaxRankingPoints() / (subsets - 1.0);
+            List<Double> jumps = new LinkedList<>();
             for (int i = 0; i < subsets; i++) {
                 jumps.add(minScore + ((i + 1) * (maxScore - minScore) / subsets));
             }
             int i = 0;
-            for (Score score : scores) {
-                while (score.getResult() > jumps.get(i)) {
-                    i++;
+            if (isMax) {
+                for (Score score : scores) {
+                    while (score.getResult() > jumps.get(i)) {
+                        i++;
+                    }
+                    crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));
                 }
-                crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));
+            } else {
+                int subMover = subsets - 1;
+                for (Score score : scores) {
+                    while (i < subMover && (score.getResult() > jumps.get(i) || minScore == maxScore)) {
+                        i++;
+                    }
+                    float z = Math.round(pointMove * (subMover - i));
+                    crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + z);
+                }
             }
         }
     }

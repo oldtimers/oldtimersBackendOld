@@ -23,9 +23,6 @@ public class Score implements DatabaseModel {
     @Column(name = "invalid_result", nullable = false)
     private Boolean invalidResult = false;
 
-    @Column(name = "error_occurred", nullable = false)
-    private Boolean errorOccurred = false;
-
     @Column(name = "additional1")
     private Double additional1;
 
@@ -40,15 +37,30 @@ public class Score implements DatabaseModel {
 
     @Column(name = "additional5")
     private Double additional5;
-
     @Column(name = "result")
-    private Float result;
+    private Double result;
 
-    public Float getResult() {
+    public Double getValue(Integer integer) {
+        switch (integer) {
+            case 0:
+                return additional1;
+            case 1:
+                return additional2;
+            case 2:
+                return additional3;
+            case 3:
+                return additional4;
+            case 4:
+                return additional5;
+        }
+        return null;
+    }
+
+    public Double getResult() {
         return result;
     }
 
-    public void setResult(Float result) {
+    public void setResult(Double result) {
         this.result = result;
     }
 
@@ -90,14 +102,6 @@ public class Score implements DatabaseModel {
 
     public void setAdditional1(Double additional1) {
         this.additional1 = additional1;
-    }
-
-    public Boolean getErrorOccurred() {
-        return errorOccurred;
-    }
-
-    public void setErrorOccurred(Boolean errorOccurred) {
-        this.errorOccurred = errorOccurred;
     }
 
     public Boolean getInvalidResult() {

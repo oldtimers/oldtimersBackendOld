@@ -19,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /*
-* Based on
-* https://www.bezkoder.com/spring-boot-security-postgresql-jwt-authentication/
-* */
+ * Based on
+ * https://www.bezkoder.com/spring-boot-security-postgresql-jwt-authentication/
+ * */
 public class AuthTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
     @Autowired

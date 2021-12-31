@@ -9,7 +9,13 @@
         <resources>
             <heap>100</heap>
         </resources>
+    </cache>
 
+    <cache alias="user">
+        <key-type>java.lang.String</key-type>
+        <resources>
+            <heap>100</heap>
+        </resources>
     </cache>
 
     <cache alias="eventsId">

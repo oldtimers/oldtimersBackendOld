@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("custom")
 public class MyConfigurationProperties {
+    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$)(?!logout$).*$";
     private String defaultLanguage = "en";
     private String resourceLocation = "photos";
     private String jwtSecret = "secret";
     private Long jwtExpiration = 60000L;
     private Long jwtRefreshExpiration = 86400000L;
     private String realUrl = "http://localhost:8080/";
-    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$)(?!logout$).*$";
 
     public String getDefaultLanguage() {
         return defaultLanguage;

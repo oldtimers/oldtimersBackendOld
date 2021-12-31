@@ -1,0 +1,89 @@
+<html lang="en" xmlns:sec="http://www.thymeleaf.org" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header class="site-navbar" role="banner" th:fragment="myNavbar (links)">
+    <div class="nav-container">
+        <div class="row align-items-center">
+            <div class="col-3">
+                <h1 class="site-logo"><a class="text-white" th:href="@{/}">Brand</a></h1>
+            </div>
+            <div class="col-9">
+                <nav class="site-navigation position-relative text-right" role="navigation">
+                    <ul class="site-menu js-clone-nav mr-auto">
+                        <th:block sec:authorize="isAuthenticated()">
+                            <li th:if="${#lists.contains(links,'create')}">
+                                <a th:href="@{/rally/create}">
+                                    <span>Create rally</span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'edit') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
+                                <a th:href="@{/__${url}__/edit}">
+                                    <span th:text="#{event.edit}"></span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'advanced') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
+                                <a th:href="@{/__${url}__/edit/advanced}">
+                                    <span th:text="#{event.edit.advanced}"></span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'privileges') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_OWNER'')')}">
+                                <a th:href="@{/__${url}__/edit/privileges}">
+                                    <span th:text="#{user.privileges}"></span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'crews') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
+                                <a th:href="@{/__${url}__/edit/crews}">
+                                    <span th:text="#{crews}"></span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'competitions') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
+                                <a th:href="@{/__${url}__/edit/competition}">
+                                    <span th:text="#{competitions}"></span>
+                                </a>
+                            </li>
+                            <li th:if="${#lists.contains(links,'categories') and
+                            #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
+                                <a th:href="@{/__${url}__/edit/categories}">
+                                    <span th:text="#{categories}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/logout}">
+                                    <span th:text="#{logout}"></span>
+                                </a>
+                            </li>
+                        </th:block>
+                        <th:block sec:authorize="isAnonymous()">
+                            <li>
+                                <a th:href="@{/login}">
+                                    <span th:text="#{login}"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{/register}">
+                                    <span th:text="#{register.button}"></span>
+                                </a>
+                            </li>
+                        </th:block>
+                        <li>
+                            <div class="dropdown">
+                                <button class="btn-primary" th:text="#{language}"></button>
+                                <div class="dropdown-content">
+                                    <!--/*@thymesVar id="l" type="pl.pazurkiewicz.oldtimers_rally.model.Language"*/-->
+                                    <a th:each="l : ${languages}" th:href="'?lang='+${l.code}" th:text="${l.code}"></a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+</header>
+</body>
+

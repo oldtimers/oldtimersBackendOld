@@ -11,9 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
@@ -21,6 +23,7 @@ import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/advanced")
@@ -31,14 +34,16 @@ public class AdvancedEditEventController {
     private final EventRepository eventRepository;
     private final CacheManager cacheManager;
     private final FileUploadService fileUploadService;
+    private final LanguageRepository languageRepository;
 
 
-    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager, FileUploadService fileUploadService) {
+    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager, FileUploadService fileUploadService, LanguageRepository languageRepository) {
         this.languageService = languageService;
         this.eventService = eventService;
         this.eventRepository = eventRepository;
         this.cacheManager = cacheManager;
         this.fileUploadService = fileUploadService;
+        this.languageRepository = languageRepository;
     }
 
     @GetMapping
@@ -80,7 +85,7 @@ public class AdvancedEditEventController {
     @PostMapping(value = "/mainPhoto")
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String saveMainPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
-        if (!photo.isEmpty()){
+        if (!photo.isEmpty()) {
             Event event = eventRepository.getByUrl(url);
             event.setMainPhoto(fileUploadService.saveMainEventPhoto(event, photo));
             eventRepository.saveAndFlush(event);
@@ -94,7 +99,7 @@ public class AdvancedEditEventController {
     String saveAdditionalPhoto(@PathVariable("url") String url, RedirectAttributes redirectAttributes, @RequestParam("photo") MultipartFile photo) throws IOException {
         if (!photo.isEmpty()) {
             Event event = eventRepository.getByUrl(url);
-            if (event.getPhotos()==null)
+            if (event.getPhotos() == null)
                 event.setPhotos(new LinkedList<>());
             event.getPhotos().add(fileUploadService.saveEventPhoto(event, photo));
             eventRepository.saveAndFlush(event);
@@ -114,5 +119,11 @@ public class AdvancedEditEventController {
         }
         redirectAttributes.addAttribute("url", url);
         return "redirect:/{url}/edit/advanced";
+    }
+
+
+    @ModelAttribute("languages")
+    List<Language> languages() {
+        return languageRepository.findAll();
     }
 }

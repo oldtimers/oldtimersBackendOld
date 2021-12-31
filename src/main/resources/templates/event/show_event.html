@@ -4,21 +4,115 @@
 <link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<script crossorigin="anonymous"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script crossorigin="anonymous"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <body>
 <div class="container">
-    <div th:replace="fragments/navbar :: myNavbar (events= 'events')"></div>
-    <div class="col-4">
-        <h3 class="back-button"><a th:href="@{'/'}" class="text-white" th:text="#{back}"></a></h3>
-    </div>
+    <div th:replace="fragments/navbar :: myNavbar (links=${ {'edit'} })"></div>
+    <!-- <div class="col-4">
+         <h3 class="back-button"><a th:href="@{'/'}" class="text-white" th:text="#{back}"></a></h3>
+     </div>-->
     <div class="event-row">
         <div class="description">
             <h2 class="title" th:text="${event.name.getDictionary(#locale)}"></h2>
-            <img th:src="${event.mainPhoto}" class="event-img" alt="rally">
+            <img alt="rally" class="event-img" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
             <div class="text">
                 <span th:text="${event.description.getDictionary(#locale)}"></span>
             </div>
         </div>
     </div>
+
+    <div class="carousel slide pointer-event" data-ride="carousel" id="photos">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active" th:if="${event.photos.size} > 0">
+                <img alt="No photo" class="event-img" th:src="${event.photos[0]}">
+            </div>
+            <div class="carousel-item" th:each="im, index : ${event.photos}" th:unless="${index.first}">
+                <img alt="No photo" class="event-img" th:src="${im}">
+            </div>
+        </div>
+        <a class="carousel-control-prev" data-slide="prev" href="#photos" role="button">
+            <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+            <span class="sr-only"></span>
+        </a>
+        <a class="carousel-control-next" data-slide="next" href="#photos" role="button">
+            <span aria-hidden="true" class="carousel-control-next-icon"></span>
+            <span class="sr-only"></span>
+        </a>
+
+    </div>
+
+
+    <h2 th:text="#{categories}"></h2>
+    <div>
+        <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+        <div th:each="category : ${categories}">
+            <button class="accordion" th:text="${category.name.getDictionary(#locale)}"></button>
+            <div class="panel">
+                <div class="text" style="text-align: center">
+                    <h4 style="width: 100%;" th:text="${category.name.getDictionary(#locale)}"></h4>
+                </div>
+                <p th:text="${category.description.getDictionary(#locale)}"></p>
+                <div th:if="${event.stage} == ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).RESULTS} and not ${category.crewCategories.empty}">
+                    <table class="styled-table">
+                        <thead>
+                        <tr>
+                            <th th:text="#{crewNumber}"></th>
+                            <th th:text="#{ranking.points}"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+                        <tr th:each="crc, info : ${category.crewCategories}">
+                            <td>
+
+                                <a th:href="@{/__${url}__/crew/__${crc.crew.id}__}">
+                                    <span th:text="${crc.crew.number}"></span>
+                                    <span th:text="${crc.crew.car}"></span>
+                                    <span th:text="${crc.crew.yearOfProduction}"></span>
+                                    <span th:text="${crc.crew.driverName}"></span>
+                                </a>
+                            </td>
+                            <td th:text="${crc.crew.id}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 th:text="#{crews}"></h2>
+    <!--/*@thymesVar id="crew" type="pl.pazurkiewicz.oldtimers_rally.model.Crew"*/-->
+    <div th:each="crew : ${crews}">
+        <a class="accordion crews-link" th:href="@{/__${url}__/crew/__${crew.id}__}"
+           th:text="${crew.number} + ' ' + ${crew.car} + ' ' + ${crew.yearOfProduction} + ' ' + ${crew.driverName}"
+           type="button">
+        </a>
+    </div>
 </div>
 </body>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
 </html>

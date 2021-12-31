@@ -18,6 +18,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.QrCode;
 import pl.pazurkiewicz.oldtimers_rally.model.StageEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.QrCodeListWrapper;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.QrCodeRepository;
 
 import javax.imageio.ImageIO;
@@ -34,12 +35,14 @@ public class QrCodeService {
     private final CrewRepository crewRepository;
     private final QrCodeRepository qrCodeRepository;
     private final MyConfigurationProperties configurationProperties;
+    private final EventRepository eventRepository;
 
-    public QrCodeService(CrewService crewService, CrewRepository crewRepository, QrCodeRepository qrCodeRepository, MyConfigurationProperties configurationProperties) {
+    public QrCodeService(CrewService crewService, CrewRepository crewRepository, QrCodeRepository qrCodeRepository, MyConfigurationProperties configurationProperties, EventRepository eventRepository) {
         this.crewService = crewService;
         this.crewRepository = crewRepository;
         this.qrCodeRepository = qrCodeRepository;
         this.configurationProperties = configurationProperties;
+        this.eventRepository = eventRepository;
     }
 
     @Transactional
@@ -109,6 +112,7 @@ public class QrCodeService {
         }
         if (event.getStage() == StageEnum.NEW) {
             event.setStage(StageEnum.NUMBERS);
+            eventRepository.save(event);
         }
         qrCodeRepository.saveAllAndFlush(result);
     }

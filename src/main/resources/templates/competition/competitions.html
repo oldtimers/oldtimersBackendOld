@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header_fragment :: headerFragment (title='__#{title.competitions}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <body>
-<div th:replace="fragments/view_fragments :: showRedirections"></div>
-<div class="card card-bord" th:if="*{competitionList.size()} > 0">
-    <h2 th:text="#{competitions}">Competitions</h2>
-    <div class="card card-bord" th:each="competition, info : *{competitionList}">
-        <a th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}}"
-           th:text="${competition.name.getDictionary(#locale)}"></a>
+<!--<div th:replace="fragments/view_fragments :: showRedirections"></div>-->
+<div class="container">
+    <div class="col-4">
+        <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__/edit}" th:text="#{back}"></a></h3>
     </div>
-</div>
-<div class="card card-bord">
-    <h2 th:text="#{competitions.create}"></h2>
-    <form method="post" th:action="@{/__${url}__/edit/competitions}" th:object="${newCompetition}">
-        <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages', fieldTypes=${ {true,false} })"></table>
-        <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='__#{competition.absencePoints}__')"></div>
-        <label>
-            <p th:text="#{type}"></p>
-            <select id="newSelector" th:field="*{competition.type}">
-                <option th:each="p : *{typeEnums}"
-                        th:text="#{${p.value}}"
-                        th:value="${p.key}">
-                </option>
-            </select>
-        </label>
-        <div id="BestCategory">
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.maxRankingPoints', label='__#{competition.maxRankingPoints}__')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='__#{competition.numberOfSubsets}__')"></div>
+    <div class="" th:if="*{competitionList.size()} > 0">
+        <h2 th:text="#{competitions}">Competitions</h2>
+        <div class="" th:each="competition, info : *{competitionList}">
+            <a class="accordion" th:href="@{'/'+${url}+'/edit/competition/'+${competition.id}}"
+               th:text="${competition.name.getDictionary(#locale)}"
+               type="button"></a>
         </div>
-        <div id="RegularCategory">
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='__#{competition.averageSpeed}__')"></div>
-            <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='__#{competition.distance}__')"></div>
-        </div>
-
-        <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
-    </form>
+    </div>
+    <div class="">
+        <h2 th:text="#{competitions.create}"></h2>
+        <form method="post" th:action="@{/__${url}__/edit/competition}" th:object="${newCompetition}">
+            <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'competition.name', 'competition.description'} }, languages='newCompetition.languages', fieldTypes=${ {true,false} })"></table>
+            <div th:replace="fragments/form_pieces :: number (fieldName='competition.absencePoints', label='__#{competition.absencePoints}__')"></div>
+            <label>
+                <p th:text="#{type}"></p>
+                <select id="newSelector" th:field="*{competition.type}">
+                    <option th:each="p : *{typeEnums}"
+                            th:text="#{${p.value}}"
+                            th:value="${p.key}">
+                    </option>
+                </select>
+            </label>
+            <div id="BestCategory">
+                <div th:replace="fragments/form_pieces :: number (fieldName='competition.maxRankingPoints', label='__#{competition.maxRankingPoints}__')"></div>
+                <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='__#{competition.numberOfSubsets}__')"></div>
+            </div>
+            <div id="RegularCategory">
+                <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='__#{competition.averageSpeed}__')"></div>
+                <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='__#{competition.distance}__')"></div>
+            </div>
+            <div class="button-row">
+                <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 <script>
@@ -50,5 +60,34 @@
     }
 
     window.addEventListener("load", start, false);
+</script>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+<script>
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+        tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight + 52) + "px;" + "width: 300px;");
+        tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    }
 </script>
 </html>

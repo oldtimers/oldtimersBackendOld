@@ -9,9 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
-import pl.pazurkiewicz.oldtimers_rally.model.Category;
-import pl.pazurkiewicz.oldtimers_rally.model.Event;
-import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
@@ -19,6 +17,9 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 
 import javax.validation.Valid;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/{url:" + MyConfigurationProperties.eventRegex + "}/edit/categories")
@@ -98,5 +99,14 @@ public class EditCategoriesController {
     @ModelAttribute("action")
     String getAction(@PathVariable("url") String url) {
         return "/" + url + "/edit";
+    }
+
+
+    @ModelAttribute("languages")
+    List<Language> languages(Event event) {
+        if (event != null) {
+            return event.getEventLanguages().stream().map(EventLanguage::getLanguage).collect(Collectors.toList());
+        }
+        return new LinkedList<>();
     }
 }

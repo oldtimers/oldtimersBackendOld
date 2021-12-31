@@ -6,7 +6,7 @@ import pl.pazurkiewicz.oldtimers_rally.validator.AreYearsValid;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
 @Table(name = "categories")
 @Entity
@@ -34,7 +34,8 @@ public class Category implements DatabaseModel {
     private EventLanguageCode description;
 
     @OneToMany(mappedBy = "category")
-    private Set<CrewCategory> crewCategories;
+    @OrderBy("rankingPoints")
+    private List<CrewCategory> crewCategories;
     @Enumerated(EnumType.STRING)
     @Column(name = "mode", nullable = false, columnDefinition = "enum")
     private CategoryEnum mode;
@@ -53,11 +54,11 @@ public class Category implements DatabaseModel {
         this.setName(EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages()));
     }
 
-    public Set<CrewCategory> getCrewCategories() {
+    public List<CrewCategory> getCrewCategories() {
         return crewCategories;
     }
 
-    public void setCrewCategories(Set<CrewCategory> crewCategories) {
+    public void setCrewCategories(List<CrewCategory> crewCategories) {
         this.crewCategories = crewCategories;
     }
 

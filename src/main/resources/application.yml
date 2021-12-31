@@ -8,7 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+#    show-sql: true
     properties:
       javax:
         persistence:
@@ -36,5 +36,5 @@ spring:
 custom:
   defaultLanguage: pl
   jwtSecret: qwerty123
-  jwtExpiration: 600000
+  jwtExpiration: 6000000
   jwtRefreshExpiration: 86400000

@@ -11,6 +11,10 @@ public interface CompetitionRepository extends JpaRepository<Competition, Intege
     @Query("select c from Competition c left join c.name left join c.description where c.event=:event")
     List<Competition> getByEvent(Event event);
 
+    <T> List<T> getByEvent_Id(Integer eventId, Class<T> type);
+
     @Query("select c from Competition c left join c.name n left join n.dictionaries where c.event=:event and c.id=:competitionId")
     Competition getByEventAndId(Event event, Integer competitionId);
+
+    Competition getByEvent_idAndId(Integer eventId, Integer competitionId);
 }

@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 
-import org.dom4j.DocumentException;
 import org.hibernate.Hibernate;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +30,7 @@ import pl.pazurkiewicz.oldtimers_rally.service.QrCodeService;
 import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -127,8 +127,8 @@ public class EditEventController {
         if (event.getStage() != StageEnum.NEW) {
             calculatorService.countGlobalPoints(event);
             redirectAttributes.addAttribute("url", event.getUrl());
-            event.setStage(StageEnum.RESULTS);
             invalidateEventByUrl(event.getUrl());
+            eventRepository.save(event);
         }
         return "redirect:/{url}/edit";
     }
@@ -136,10 +136,9 @@ public class EditEventController {
     @PostMapping(value = "/qr_codes", produces = MediaType.APPLICATION_PDF_VALUE)
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    ResponseEntity<byte[]> generateNumbersWithQr(Event event, RedirectAttributes redirectAttributes) throws DocumentException, com.lowagie.text.DocumentException, IOException {
+    ResponseEntity<byte[]> generateNumbersWithQr(Event event) throws com.lowagie.text.DocumentException, IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        // Here you have to set the actual filename of your pdf
         String filename = "qr.pdf";
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
@@ -150,5 +149,13 @@ public class EditEventController {
     public void invalidateEventByUrl(String url) {
         cacheManager.getCache("eventsByUrl").evictIfPresent(url);
         cacheManager.getCache("eventsId").evictIfPresent(url);
+    }
+
+    @ModelAttribute("languages")
+    List<Language> languages(Event event) {
+        if (event != null) {
+            return event.getEventLanguages().stream().map(EventLanguage::getLanguage).collect(Collectors.toList());
+        }
+        return new LinkedList<>();
     }
 }

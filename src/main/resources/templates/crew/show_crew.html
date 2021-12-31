@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="#{crew}"></title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{crew}__ : __${crew}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
 <body>
-<p th:text="${crew.description.getDictionary(#locale)}"></p>
+<div class="container">
+    <div class="col-4">
+        <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__/edit}" th:text="#{back}"></a></h3>
+    </div>
+    <h1 th:if="${crew.number} != null" th:text="${crew.number}"></h1>
+    <h3 th:text="${crew.car} + ' ' + ${crew.yearOfProduction} + ' ' + ${crew.driverName}"></h3>
+    <div th:if="${crew.photo!=null}">
+        <img alt="No photo" class="event-img" th:src="${crew.photo}">
+    </div>
+    <p th:text="${crew.description.getDictionary(#locale)}"></p>
+
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th th:text="#{competition}"></th>
+            <th th:text="#{ranking.points}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="crc" type="pl.pazurkiewicz.oldtimers_rally.model.CrewCategory"*/-->
+        <tr th:each="crc : ${crew.categories}">
+            <td th:text="${crc.category.name.getDictionary(#locale)}"></td>
+            <td th:if="${crc.rankingPoints} != null" th:text="${crc.rankingPoints}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -8,13 +8,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
+import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.EventService;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/rally")
@@ -22,10 +25,12 @@ import javax.validation.Valid;
 public class CreateEventController {
     private final LanguageService languageService;
     private final EventService eventService;
+    private final LanguageRepository languageRepository;
 
-    CreateEventController(LanguageService languageService, EventService eventService) {
+    CreateEventController(LanguageService languageService, EventService eventService, LanguageRepository languageRepository) {
         this.languageService = languageService;
         this.eventService = eventService;
+        this.languageRepository = languageRepository;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -62,5 +67,11 @@ public class CreateEventController {
     @ModelAttribute("newEvent")
     EventModel getEvent() {
         return EventModel.generateNewEventWriteModel(languageService);
+    }
+
+
+    @ModelAttribute("languages")
+    List<Language> languages() {
+        return languageRepository.findAll();
     }
 }

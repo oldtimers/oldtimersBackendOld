@@ -6,18 +6,19 @@
 <link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
 <body>
 <div class="container">
-    <div th:replace="fragments/navbar :: myNavbar (events= 'events')"></div>
+    <div th:replace="fragments/navbar :: myNavbar (links=${ {'create'} })"></div>
+    <h1 class="title" style="color: red" th:if="${occurred404}" th:text="#{occurred404}"></h1>
     <h1 sec:authorize="isAuthenticated()" class="title" th:text="#{welcomeMessage.login}"></h1>
     <h1 sec:authorize="isAnonymous()" class="title" th:text="#{welcomeMessage.logout}"></h1>
 
     <div th:each="event : ${events}">
         <div class="card">
             <!--/*@thymesVar id="event" type="pl.pazurkiewicz.oldtimers_rally.model.Event"*/-->
-            <img th:src="${event.mainPhoto}" class="card-img-top" alt="rally">
+            <img alt="rally" class="card-img-top" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
             <div class="card-body">
                 <h5 class="card-title" th:text="${event.name.getDictionary(#locale)}"></h5>
                 <p class="card-text" th:text="${event.description.getDictionary(#locale)}"></p>
-                <a class="btn-primary" th:href="@{__${event.url}__}" th:text="#{checkRally}"></a>
+                <a class="btn-primary" th:href="@{/__${event.url}__}" th:text="#{checkRally}"></a>
             </div>
         </div>
     </div>

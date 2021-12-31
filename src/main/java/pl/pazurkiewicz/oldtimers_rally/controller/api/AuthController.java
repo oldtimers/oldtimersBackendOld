@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,19 +43,19 @@ public class AuthController {
     RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    JwtResponse authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String jwt = jwtUtils.generateJwtToken(userDetails);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUser().getId());
-        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getUsername()));
+        return new JwtResponse(jwt, refreshToken.getToken(), userDetails.getUsername());
     }
 
     @PostMapping("/refresh")
     @Transactional
-    ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+    JwtResponse refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -65,7 +64,7 @@ public class AuthController {
                 .map(RefreshToken::getUser)
                 .map(user -> {
                     String token = jwtUtils.generateTokenFromLogin(user.getLogin());
-                    return ResponseEntity.ok(new JwtResponse(token, requestRefreshToken, user.getLogin()));
+                    return new JwtResponse(token, requestRefreshToken, user.getLogin());
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
@@ -79,9 +78,9 @@ public class AuthController {
 
     @GetMapping("/logout")
     @PreAuthorize("isAuthenticated()")
-    ResponseEntity<?> logoutUser(@AuthenticationPrincipal UserDetailsImpl principal) {
+    MessageResponse logoutUser(@AuthenticationPrincipal UserDetailsImpl principal) {
         refreshTokenService.deleteByUserId(principal.getUser().getId());
-        return ResponseEntity.ok(new MessageResponse("Log out successful!"));
+        return new MessageResponse("Log out successful!");
     }
 
 }

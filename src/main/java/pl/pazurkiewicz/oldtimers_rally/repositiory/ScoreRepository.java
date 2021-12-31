@@ -9,5 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ScoreRepository extends JpaRepository<Score, Integer> {
-    List<Score> getByCompetitionAndCrew_InOrderByResult(Competition competition, Set<Crew> crews);
+    List<Score> getByCompetitionAndResultNotNullAndCrew_InOrderByResult(Competition competition, Set<Crew> crews);
+
+    Score getByCompetitionAndCrew(Competition competition, Crew crew);
 }

@@ -56,6 +56,8 @@ public class Crew implements DatabaseModel {
     private List<CrewCategory> categories = new ArrayList<>();
     @OneToMany(mappedBy = "crew")
     private Set<QrCode> qrCodes = new HashSet<>();
+    @OneToMany(mappedBy = "crew")
+    private Set<Score> scores = new HashSet<>();
 
     public Crew() {
     }
@@ -63,6 +65,14 @@ public class Crew implements DatabaseModel {
     public Crew(Event event) {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+    }
+
+    public Set<Score> getScores() {
+        return scores;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
     }
 
     public Set<QrCode> getQrCodes() {
@@ -207,6 +217,6 @@ public class Crew implements DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("%s%s, %s - %d",((number == null) ? "" : number+", "),driverName,car,yearOfProduction);
+        return String.format("%s%s, %s - %d", ((number == null) ? "" : number + ", "), driverName, car, yearOfProduction);
     }
 }
