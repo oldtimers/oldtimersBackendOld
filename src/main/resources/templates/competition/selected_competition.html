@@ -68,7 +68,8 @@
                             </label>
                         </td>
                         <td>
-                            <button class="btn btn-primary" name="remove" th:text="#{delete}" type="submit"></button>
+                            <button class="btn btn-primary" name="delete" th:text="#{delete}" th:value="${info.index}"
+                                    type="submit"></button>
                         </td>
                     </tr>
                 </table>
@@ -78,6 +79,8 @@
             </div>
 
             <div class="button-row">
+                <button class="btn btn-primary" name="deleteFull" th:text="#{delete.competition}"
+                        type="submit"></button>
                 <div th:replace="fragments/form_pieces :: submitButton (title='__#{save}__')"></div>
             </div>
         </form>

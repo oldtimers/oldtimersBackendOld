@@ -90,10 +90,19 @@ public class EditCompetitionController {
 
     @PostMapping(value = "/competition/{competitionId}", params = "delete")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String removeSelectedField(Event event, @PathVariable("competitionId") Integer competitionId, @ModelAttribute("competitionModel") CompetitionModel competitionModel, @RequestParam(value = "delete") Integer deleteId) {
+    String removeSelectedField(Event event, @PathVariable("competitionId") Integer competitionId, @ModelAttribute("competitionModel") CompetitionModel competitionModel, BindingResult bindingResult, @RequestParam(value = "delete") Integer deleteId) {
         checkAccess(competitionId, competitionModel);
         competitionModel.removeField(deleteId);
         return "competition/selected_competition";
+    }
+
+    @PostMapping(value = "/competition/{competitionId}", params = "deleteFull")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String removeCompetition(Event event, @PathVariable("competitionId") Integer competitionId, @ModelAttribute("competitionModel") CompetitionModel competitionModel, RedirectAttributes redirectAttributes) {
+        checkAccess(competitionId, competitionModel);
+        competitionService.removeCompetition(competitionId);
+        redirectAttributes.addAttribute("url", event.getUrl());
+        return "redirect:/{url}/edit/competition";
     }
 
     @PostMapping("/competition/{competitionId}")

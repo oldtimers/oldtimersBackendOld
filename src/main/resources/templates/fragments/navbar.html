@@ -12,7 +12,7 @@
                         <th:block sec:authorize="isAuthenticated()">
                             <li th:if="${#lists.contains(links,'create')}">
                                 <a th:href="@{/rally/create}">
-                                    <span>Create rally</span>
+                                    <span th:text="#{event.create}"></span>
                                 </a>
                             </li>
                             <li th:if="${#lists.contains(links,'edit') and

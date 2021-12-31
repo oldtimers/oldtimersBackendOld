@@ -32,4 +32,9 @@ public class CompetitionService {
         }
         return competitionRepository.saveAndFlush(competition);
     }
+
+    @Transactional
+    public void removeCompetition(Integer competitionId) {
+        competitionRepository.deleteById(competitionId);
+    }
 }
