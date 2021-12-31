@@ -31,9 +31,7 @@ public class AuthenticationSuccessHandlerImpl extends SavedRequestAwareAuthentic
         if (session != null) {
             String redirectUrl = (String) session.getAttribute("url_prior_login");
             if (redirectUrl != null) {
-                // we do not forget to clean this attribute from session
                 session.removeAttribute("url_prior_login");
-                // then we redirect
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             } else {
                 super.onAuthenticationSuccess(request, response, authentication);
