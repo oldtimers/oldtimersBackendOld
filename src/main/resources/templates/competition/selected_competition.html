@@ -31,8 +31,8 @@
             </div>
             <div id="RegularCategory"
                  th:if="*{type}==${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
-                <div th:replace="fragments/form_pieces :: number (fieldName='averageSpeed', label='__#{competition.averageSpeed}__')"></div>
-                <div th:replace="fragments/form_pieces :: number (fieldName='distance', label='__#{competition.distance}__')"></div>
+                <div th:replace="fragments/form_pieces :: float (fieldName='averageSpeed', label='__#{competition.averageSpeed}__')"></div>
+                <div th:replace="fragments/form_pieces :: float (fieldName='distance', label='__#{competition.distance}__')"></div>
             </div>
             <div id="functionCode"
                  th:unless="*{type}==${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">

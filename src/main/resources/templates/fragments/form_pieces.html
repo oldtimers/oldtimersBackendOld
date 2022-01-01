@@ -46,6 +46,19 @@
 
 </div>
 
+<div th:fragment="float (fieldName, label)">
+    <div class="m-3">
+
+        <div class="col-6">
+            <label class="col-3 col-form-label" th:text="${label}"></label>
+            <input class="form-control" step="0.01" th:field="*{__${fieldName}__}" type="number"/>
+        </div>
+        <div class="error-info">
+            <span class="text-danger" th:each="err : ${#fields.errors(fieldName)}" th:text="${err}"></span>
+        </div>
+    </div>
+
+</div>
 
 <div th:fragment="password (fieldName, label)">
     <div class="m-3">

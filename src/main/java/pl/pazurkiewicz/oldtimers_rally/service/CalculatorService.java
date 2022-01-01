@@ -77,10 +77,13 @@ public class CalculatorService {
                 case REGULAR_DRIVE:
                 case BEST_MIN:
                     calculateCompetitionForBestMin(crewsValue, scores, competition);
+                    break;
                 case BEST_MAX:
                     calculateCompetitionForBestMax(crewsValue, scores, competition);
+                    break;
                 case COUNTED:
                     calculateCompetitionForCounted(crewsValue, scores);
+                    break;
             }
             for (Crew crew : crews) {
                 if (!crewsWithScore.contains(crew)) {
@@ -121,7 +124,7 @@ public class CalculatorService {
             int i = 0;
             if (isMax) {
                 for (Score score : scores) {
-                    while (score.getResult() > jumps.get(i)) {
+                    while (i < subsets && score.getResult() > jumps.get(i)) {
                         i++;
                     }
                     crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));

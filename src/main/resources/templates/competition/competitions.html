@@ -37,8 +37,8 @@
                 <div th:replace="fragments/form_pieces :: number (fieldName='competition.numberOfSubsets', label='__#{competition.numberOfSubsets}__')"></div>
             </div>
             <div id="RegularCategory">
-                <div th:replace="fragments/form_pieces :: number (fieldName='competition.averageSpeed', label='__#{competition.averageSpeed}__')"></div>
-                <div th:replace="fragments/form_pieces :: number (fieldName='competition.distance', label='__#{competition.distance}__')"></div>
+                <div th:replace="fragments/form_pieces :: float (fieldName='competition.averageSpeed', label='__#{competition.averageSpeed}__')"></div>
+                <div th:replace="fragments/form_pieces :: float (fieldName='competition.distance', label='__#{competition.distance}__')"></div>
             </div>
             <div class="button-row">
                 <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
