@@ -1,0 +1,49 @@
+.form-group {
+    display: unset;
+}
+
+.col-6 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.btn-primary {
+    background-color: #6c757d;
+    border: unset;
+}
+
+.form-control {
+    background-color: black !important;
+    color: #e9ecef !important;
+}
+
+.alert-error {
+    color: red;
+}
+
+.alert-success {
+    color: green;
+}
+
+.col-6.error-info {
+    display: grid;
+}
+
+table {
+    margin: auto;
+    width: 75% !important;
+    text-align: center;
+}
+
+th, td {
+    color: #e9ecef;;
+}
+
+.button-row {
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+    margin: 20px auto;
+}

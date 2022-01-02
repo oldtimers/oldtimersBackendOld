@@ -1,0 +1,31 @@
+.title {
+    width: 100%;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.card {
+    width: 80%;
+    margin: 20px auto
+}
+
+.card-text, .card-title {
+    color: black;
+}
+
+.card-img-top {
+    padding: 30px;
+}
+
+.btn-primary {
+    padding: 5px 20px;
+    display: inline-block;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+    border-radius: 30px;
+    background-color: #6c757d;
+    border: unset;
+    color: #e9ecef;
+    text-decoration: none;
+}

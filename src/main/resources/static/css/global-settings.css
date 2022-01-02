@@ -1,0 +1,48 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background: url(../assets/background.jpg) no-repeat fixed center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    opacity: 0.9;
+    color: #e9ecef;
+}
+
+th, tr, p {
+    color: #e9ecef;
+}
+
+.container {
+    width: 70%;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.8);
+    min-height: 100%;
+    padding: 30px;
+}
+
+.btn-primary {
+    padding: 5px 20px;
+    display: inline-block;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+    border-radius: 30px;
+    background-color: #6c757d;
+    border: unset;
+    color: #e9ecef;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: black;
+    border-color: black;
+}
+
+h3.back-button {
+    font-style: italic;
+    text-decoration: unset;
+}
