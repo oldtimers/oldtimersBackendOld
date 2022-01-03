@@ -67,10 +67,7 @@
                             <td>
 
                                 <a th:href="@{/__${url}__/crew/__${crc.crew.id}__}">
-                                    <span th:text="${crc.crew.number}"></span>
-                                    <span th:text="${crc.crew.car}"></span>
-                                    <span th:text="${crc.crew.yearOfProduction}"></span>
-                                    <span th:text="${crc.crew.driverName}"></span>
+                                    <span th:if="crc.crew.num" th:text="${crc.crew}"></span>
                                 </a>
                             </td>
                             <td th:text="${crc.rankingPoints}"></td>
@@ -85,7 +82,7 @@
     <!--/*@thymesVar id="crew" type="pl.pazurkiewicz.oldtimers_rally.model.Crew"*/-->
     <div th:each="crew : ${crews}">
         <a class="accordion crews-link" th:href="@{/__${url}__/crew/__${crew.id}__}"
-           th:text="${crew.number} + ' ' + ${crew.car} + ' ' + ${crew.yearOfProduction} + ' ' + ${crew.driverName}"
+           th:text="${crew}"
            type="button">
         </a>
     </div>

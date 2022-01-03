@@ -1,8 +1,8 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Repository
 public interface UserGroupRepository extends JpaRepository<UserGroup, Integer> {
-    @Cacheable("userPrivileges")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     Set<UserGroup> getByUser_Id(@Param("id") Integer id);
 
     @Override

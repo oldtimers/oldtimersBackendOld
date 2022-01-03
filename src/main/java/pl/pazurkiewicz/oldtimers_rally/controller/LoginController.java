@@ -47,6 +47,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
+
         model.addAttribute("user", new UserWriteModel(languageService.generateDefaultLanguageSelector()));
         return "signup_form";
     }
@@ -64,7 +65,7 @@ public class LoginController {
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
         model.addAttribute("user", null);
-        return "index";
+        return "redirect:/";
     }
 
     @ModelAttribute("languages")

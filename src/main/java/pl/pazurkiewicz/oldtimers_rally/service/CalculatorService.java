@@ -122,7 +122,7 @@ public class CalculatorService {
                 jumps.add(minScore + ((i + 1) * (maxScore - minScore) / subsets));
             }
             int i = 0;
-            if (isMax) {
+            if (!isMax) {
                 for (Score score : scores) {
                     while (i < subsets && score.getResult() > jumps.get(i)) {
                         i++;

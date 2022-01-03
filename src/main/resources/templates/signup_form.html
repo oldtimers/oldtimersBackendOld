@@ -21,7 +21,12 @@
                 <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedReg', label='__#{acceptedReg}__')"></div>
                 <div th:replace="fragments/form_pieces :: checkbox (fieldName='acceptedRodo', label='__#{acceptedRodo}__')"></div>
                 <div th:replace="fragments/form_pieces :: defaultLanguageSelector (fieldName='languageSelector', label='__#{language.default}__')"></div>
-                <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
+                <div class="button-row">
+                    <div th:replace="fragments/form_pieces :: submitButton (title='__#{create}__')"></div>
+                    <a class="btn btn-primary button" th:href="@{/}">
+                        <span th:text="#{back}"></span>
+                    </a>
+                </div>
             </div>
         </div>
     </form>
