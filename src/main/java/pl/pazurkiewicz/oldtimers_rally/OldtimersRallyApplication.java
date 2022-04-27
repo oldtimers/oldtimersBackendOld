@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,7 @@ import java.util.Locale;
 @SpringBootApplication
 @EnableCaching
 @EnableScheduling
-public class OldtimersRallyApplication implements WebMvcConfigurer {
+public class OldtimersRallyApplication extends SpringBootServletInitializer implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/static/", "classpath:/public/", "classpath"};

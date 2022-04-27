@@ -10,11 +10,13 @@
     </parent>
     <groupId>pl.pazurkiewicz</groupId>
     <artifactId>oldtimers_rally</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1</version>
     <name>oldtimers_rally</name>
+    <packaging>war</packaging>
     <description>Oldtimers rally is a platform for creating rallies of vintage vehicles</description>
     <properties>
         <java.version>11</java.version>
+        <tomcat.version>9.0.62</tomcat.version>
     </properties>
     <repositories>
         <repository>
@@ -133,9 +135,15 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 	<build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -149,19 +157,6 @@
                     <source>11</source>
                     <target>11</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.directory}/libs
-                            </outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
 	</build>
