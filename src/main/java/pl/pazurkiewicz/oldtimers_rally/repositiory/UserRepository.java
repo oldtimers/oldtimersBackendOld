@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> getUserByLogin(String login);
 
     @Query("SELECT u FROM User u JOIN FETCH u.defaultLanguage WHERE u.login=:login")
-    @Cacheable("user")
+//    @Cacheable("user")
     Optional<User> getUserByLoginForLogging(String login);
 
     @Query("UPDATE User u SET u.lastLogin=:lastLogin WHERE u.login =:login")

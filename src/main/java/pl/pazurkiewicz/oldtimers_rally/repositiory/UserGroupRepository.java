@@ -23,7 +23,7 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, Integer> {
     Set<UserGroup> getByUser_Id(@Param("id") Integer id);
 
     @Override
-    @CacheEvict(value = "userPrivileges", key = "#entity.user.id")
+//    @CacheEvict(value = "userPrivileges", key = "#entity.user.id")
     <S extends UserGroup> @NotNull S saveAndFlush(@NotNull S entity);
 
     @Query("from UserGroup g join fetch g.user  where g.event = :event and g.selectedGroup <> '" + UserGroupEnum.Constants.OWNER_VALUE + "'")

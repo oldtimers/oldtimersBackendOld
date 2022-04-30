@@ -127,7 +127,7 @@ public class EditEventController {
         if (event.getStage() != StageEnum.NEW) {
             calculatorService.countGlobalPoints(event);
             redirectAttributes.addAttribute("url", event.getUrl());
-            invalidateEventByUrl(event.getUrl());
+            //invalidateEventByUrl(event.getUrl());
             eventRepository.save(event);
         }
         return "redirect:/{url}/edit";

@@ -11,7 +11,7 @@ public interface LanguageRepository extends JpaRepository<Language, Integer> {
 
     @Override
     @NotNull
-    @Cacheable("languages")
+//    @Cacheable("languages")
     Language getById(@NotNull Integer integer);
 
     Language getLanguageByCode(String code);

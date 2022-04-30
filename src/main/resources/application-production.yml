@@ -1,0 +1,25 @@
+server:
+  error:
+    include-binding-errors: always
+    include-exception: true
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/oldtimers_rally
+    hikari:
+      username: oldtimers_rally_spring
+      password: asdszxc!dSzx
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jooq:
+    sql-dialect: mysql
+
+  jpa:
+    database: mysql
+custom:
+  defaultLanguage: pl
+  jwtSecret: asdgfasdlbkjha123asdas!123sad&234ASDzxc
+  jwtExpiration: 600
+  jwtRefreshExpiration: 864000
+  real-url: https://www.oldtimersweb.com/
+  resource-location: photos
