@@ -12,7 +12,7 @@
     <artifactId>oldtimers_rally</artifactId>
     <version>1</version>
     <name>oldtimers_rally</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>Oldtimers rally is a platform for creating rallies of vintage vehicles</description>
     <properties>
         <java.version>11</java.version>
@@ -138,7 +138,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+<!--            <scope>provided</scope>-->
         </dependency>
     </dependencies>
 

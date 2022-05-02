@@ -11,8 +11,8 @@ import java.util.Set;
         @Index(name = "event_languages_event_id_language_id_uindex", columnList = "event_id, language_id", unique = true)
 })
 @Entity
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@Cacheable
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EventLanguage implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

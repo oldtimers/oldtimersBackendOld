@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 @Table(name = "event_language_codes")
 @Entity
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@Cacheable
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EventLanguageCode implements DatabaseModel {
     private final static Logger logger = LoggerFactory.getLogger(EventLanguageCode.class);
 
@@ -85,8 +85,8 @@ public class EventLanguageCode implements DatabaseModel {
     }
 
     private String getAnyDictionary() {
-        logger.error("Invalid configuration for code: " + this.id);
         if (dictionaries.isEmpty()) {
+            logger.error("Invalid configuration for code: " + this.id);
             return "No dictionary!!!";
         } else {
             return dictionaries.get(0).getValue();

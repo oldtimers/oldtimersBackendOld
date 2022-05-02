@@ -92,9 +92,9 @@ public class OldtimersRallyApplication extends SpringBootServletInitializer impl
         Path uploadDir = Paths.get(dirName);
         String uploadPath = uploadDir.toFile().getAbsolutePath();
 
-        if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
+        if (uploadPath.startsWith("/")) uploadPath = uploadPath.replaceFirst("/", "");
 
-        registry.addResourceHandler("/" + "photos" + "/**").addResourceLocations("file:/" + uploadPath + "/");
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/" + uploadPath + "/");
     }
 
     @Override

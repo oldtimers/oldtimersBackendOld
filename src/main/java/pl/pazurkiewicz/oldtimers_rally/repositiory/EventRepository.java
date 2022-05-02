@@ -15,11 +15,11 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     Boolean existsByUrlAndUrlNot(String url, String oldUrl);
 
     //    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @Cacheable(value = "eventsId", key = "#url", unless = "#result == null")
+//    @Cacheable(value = "eventsId", key = "#url", unless = "#result == null")
     @Query("select e.id from Event e where e.url = :url")
     Integer getIdByUrl(@Param("url") String url);
 
-    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
+//    @Cacheable(value = "eventsByUrl", key = "#url", unless = "#result == null")
     @Query("select distinct e from Event e " +
             "left join fetch e.name n  " +
             "left join fetch e.description " +

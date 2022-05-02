@@ -8,8 +8,8 @@ import javax.persistence.*;
         @Index(name = "languages_code_uindex", columnList = "code", unique = true)
 })
 @Entity
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+//@Cacheable
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Language implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
