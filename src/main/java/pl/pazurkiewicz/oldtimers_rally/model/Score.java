@@ -104,7 +104,7 @@ public class Score implements DatabaseModel {
         this.additional1 = additional1;
     }
 
-    public Boolean getInvalidResult() {
+    public Boolean isInvalidResult() {
         return invalidResult;
     }
 

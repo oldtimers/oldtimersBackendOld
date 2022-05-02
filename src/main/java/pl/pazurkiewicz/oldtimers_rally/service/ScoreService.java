@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.api.request.RegScoreRequest;
@@ -25,6 +26,8 @@ public class ScoreService {
     CrewRepository crewRepository;
     @Autowired
     ScoreRepository scoreRepository;
+    @Autowired
+    MyConfigurationProperties configurationProperties;
 
     public void addRegScore(RegScoreRequest scoreRequest, Integer eventId) throws InvalidScore {
         Competition competition = competitionRepository.getByEvent_idAndId(eventId, scoreRequest.getCompetitionId());
@@ -55,14 +58,21 @@ public class ScoreService {
         Competition competition = competitionRepository.getByEvent_idAndId(eventId, scoreRequest.getCompetitionId());
         Crew crew = crewRepository.getById(scoreRequest.getCrewId());
         if (competition != null && competition.getType() != CompetitionTypeEnum.REGULAR_DRIVE) {
-            Score score = scoreRepository.getByCompetitionAndCrew(competition, crew);
+            Score score;
+            if (configurationProperties.getDuplicateScores()) {
+                score = null;
+            } else {
+                score = scoreRepository.getByCompetitionAndCrew(competition, crew);
+            }
             if (score == null) {
                 score = new Score();
                 score.setCrew(crew);
                 score.setCompetition(competition);
             }
             assignScoreRequestToFields(score, competition, scoreRequest);
-            CalculatorService.calculateScoreResult(score, competition);
+            if (!score.isInvalidResult()) {
+                CalculatorService.calculateScoreResult(score, competition);
+            }
             scoreRepository.save(score);
         } else {
             throw new EntityNotFoundException("Competition does not exist");
@@ -72,6 +82,10 @@ public class ScoreService {
 
     private void assignScoreRequestToFields(Score score, Competition competition, ScoreRequest scoreRequest) throws InvalidScore {
         List<CompetitionField> fields = competition.getFields();
+        score.setInvalidResult(scoreRequest.getInvalidResult());
+        if (score.isInvalidResult()) {
+            return;
+        }
         for (CompetitionField field : fields) {
             switch (field.getOrder()) {
                 case 0:

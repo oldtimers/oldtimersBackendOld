@@ -13,6 +13,15 @@ public class MyConfigurationProperties {
     private Long jwtExpiration = 60000L;
     private Long jwtRefreshExpiration = 86400000L;
     private String realUrl = "http://localhost:8080/";
+    private Boolean duplicateScores = false;
+
+    public Boolean getDuplicateScores() {
+        return duplicateScores;
+    }
+
+    public void setDuplicateScores(Boolean duplicateScores) {
+        this.duplicateScores = duplicateScores;
+    }
 
     public String getDefaultLanguage() {
         return defaultLanguage;

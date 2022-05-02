@@ -20,6 +20,8 @@ public class ScoreRequest {
     @NotNull
     private Integer crewId;
 
+    private Boolean invalidResult=false;
+
     public ScoreRequest() {
     }
 
@@ -77,5 +79,13 @@ public class ScoreRequest {
 
     public void setCrewId(Integer crewId) {
         this.crewId = crewId;
+    }
+
+    public Boolean getInvalidResult() {
+        return invalidResult;
+    }
+
+    public void setInvalidResult(Boolean invalidResult) {
+        this.invalidResult = invalidResult;
     }
 }
