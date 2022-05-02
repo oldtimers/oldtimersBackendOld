@@ -13,12 +13,12 @@
     </div>
     <div class="col-4" style="display: flex; width: 100%; justify-content: end;">
         <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
-            <form method="post" th:action="@{/__${url}__/edit/count}">
+            <form method="post" th:action="@{/__${url}__/edit/count}" onsubmit="setFormSubmitting()">
                 <button class="btn btn-primary" th:text="#{calculate.points}" type="submit"></button>
             </form>
         </div>
         <div>
-            <form method="post" th:action="@{/__${url}__/edit/qr_codes}">
+            <form method="post" th:action="@{/__${url}__/edit/qr_codes}" onsubmit="setFormSubmitting()">
                 <button class="btn btn-primary" th:text="#{generateQR}" type="submit"></button>
             </form>
         </div>
@@ -29,7 +29,7 @@
             <button class="accordion" th:text="${crewModel.crew}"></button>
             <div class="panel">
                 <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
-                      th:object="${crewsModel.crews[__${info.index}__]}">
+                      th:object="${crewsModel.crews[__${info.index}__]}" onsubmit="setFormSubmitting()"`>
                     <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'crew.description'} }, languages='crewsModel.languages', fieldTypes=${ {false} })"></table>
                     <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='__#{crew.car}__')"></div>
                     <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='__#{crew.yearOfProduction}__')"></div>
@@ -86,6 +86,25 @@
         this.style.height = "auto";
         this.style.height = (this.scrollHeight) + "px";
     }
+</script>
+
+<script>
+    var formSubmitting = false;
+    var setFormSubmitting = function() { formSubmitting = true; };
+
+    window.onload = function() {
+        window.addEventListener("beforeunload", function (e) {
+            if (formSubmitting) {
+                return undefined;
+            }
+
+            var confirmationMessage = 'It looks like you have been editing something. '
+                + 'If you leave before saving, your changes will be lost.';
+
+            (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+        });
+    };
 </script>
 
 </html>

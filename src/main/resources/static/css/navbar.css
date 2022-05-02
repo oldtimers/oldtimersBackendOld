@@ -36,7 +36,7 @@
     position: relative !important;
 }
 
-.site-navbar .site-navigation .site-menu {
+.site-navbar .site-menu {
     margin-bottom: 0;
 }
 
@@ -44,11 +44,11 @@
     margin-right: auto !important;
 }
 
-.site-navbar .site-navigation .site-menu > li {
+.site-navbar .site-menu > li {
     display: inline-block;
 }
 
-.site-navbar .site-navigation .site-menu > li > a {
+.site-navbar .site-menu > li > a {
     padding: 10px 0px;
     color: #fff;
     font-size: 16px;
@@ -61,8 +61,17 @@
     width: 100%;
 }
 
+.site-navbar .site-logo a{
+    text-decoration: unset;
+}
 
-.site-navbar .site-navigation .site-menu > li > a > span {
+.site-navbar h1{
+    font-size: 20px;
+    text-align: end;
+}
+
+
+.site-navbar .site-menu > li > a > span {
     padding: 5px 20px;
     display: inline-block;
     -webkit-transition: .3s all ease;
@@ -74,7 +83,7 @@
     color: #e9ecef;
 }
 
-.site-navbar .site-navigation .site-menu > li > a > span:hover {
+.site-navbar .site-menu > li > a > span:hover {
     background-color: black;
 }
 
@@ -118,4 +127,90 @@
 
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+#hamburger-input{
+    display: none;
+}
+
+#hamburger-menu {
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    left: 20vw;
+    width: 50px;
+    height: 50px;
+    display: inline;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(
+            to bottom,
+            white, white 20%,
+            hsla(0, 0%, 0%, 0) 20%, hsla(0, 0%, 0%, 0) 40%,
+            white 40%, white 60%,
+            hsla(0, 0%, 0%, 0) 60%, hsla(0, 0%, 0%, 0) 80%,
+            white 80%, white 100%
+    );
+}
+
+#hamburger-menu #sidebar-menu {
+    visibilty: hidden;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 200px;
+    height: 100%;
+    background-color: black;
+    transition: 0.3s;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+#hamburger-menu h3 {
+    color: white;
+    font-size: 2.2rem;
+}
+
+#hamburger-menu ul {
+    padding-left: 0;
+}
+
+#hamburger-menu li {
+    list-style-type: none;
+    line-height: 2rem;
+    margin: 10px;
+}
+
+#hamburger-menu a {
+    color: black;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+#hamburger-menu a:hover {
+    text-decoration: underline;
+}
+
+#hamburger-input:checked + #hamburger-menu #sidebar-menu {
+    visibility: visible;
+    left: 0;
+}
+#hamburger-input:checked ~ .overlay{
+    visibility: visible;
+    opacity: 0.4;
+}
+#hamburger-input:checked ~ .hamburger{
+    background: black;
+}
+@media (max-width: 1200px) {
+    #hamburger-menu{
+        left: 14vw;
+    }
+}
+
+@media (max-width: 800px) {
+    #hamburger-menu{
+        left: 20px;
+    }
 }

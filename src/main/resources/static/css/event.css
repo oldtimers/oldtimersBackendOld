@@ -3,6 +3,14 @@
     text-align: center;
     margin: 20px auto;
 }
+.title{
+    text-transform: uppercase;
+}
+
+.title:before,
+.title:after {
+    content: '"';
+}
 
 img.event-img {
     width: 50%;
@@ -77,4 +85,10 @@ img.event-img {
     text-align: left;
     background-color: #6c757d;
     color: white;
+}
+@media (max-width: 800px) {
+    img.event-img,
+    .text{
+        width: 90%;
+    }
 }

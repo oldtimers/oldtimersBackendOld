@@ -5,7 +5,7 @@
 <link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
 <script th:src="@{/static/js/bootstrap.4.3.1.min.js}"></script>
-<body>
+<body style="--background: url(../assets/background.jpg)">
 <div class="container">
     <div th:replace="fragments/navbar :: myNavbar (links=${ {'edit'} })"></div>
     <!-- <div class="col-4">
@@ -42,7 +42,35 @@
 
     </div>
 
+    <h2 th:text="#{results}"></h2>
+    <div>
+        <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+        <div th:each="category : ${categories}">
+            <div th:if="${event.stage} == ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).RESULTS} and not ${category.crewCategories.empty}">
+                <h4 style="width: 100%;" th:text="${category.name.getDictionary(#locale)}"></h4>
+                <table class="styled-table">
+                    <thead>
+                    <tr>
+                        <th th:text="#{crewNumber}"></th>
+                        <th th:text="#{ranking.points}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+                    <tr th:each="crc, info : ${category.crewCategories}">
+                        <td>
+                            <a th:href="@{/__${url}__/crew/__${crc.crew.id}__}">
+                                <span th:if="crc.crew.num" th:text="${crc.crew}"></span>
+                            </a>
+                        </td>
+                        <td th:text="${crc.rankingPoints}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
+        </div>
+    </div>
     <h2 th:text="#{categories}"></h2>
     <div>
         <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
@@ -53,28 +81,7 @@
                     <h4 style="width: 100%;" th:text="${category.name.getDictionary(#locale)}"></h4>
                 </div>
                 <p th:text="${category.description.getDictionary(#locale)}"></p>
-                <div th:if="${event.stage} == ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).RESULTS} and not ${category.crewCategories.empty}">
-                    <table class="styled-table">
-                        <thead>
-                        <tr>
-                            <th th:text="#{crewNumber}"></th>
-                            <th th:text="#{ranking.points}"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
-                        <tr th:each="crc, info : ${category.crewCategories}">
-                            <td>
 
-                                <a th:href="@{/__${url}__/crew/__${crc.crew.id}__}">
-                                    <span th:if="crc.crew.num" th:text="${crc.crew}"></span>
-                                </a>
-                            </td>
-                            <td th:text="${crc.rankingPoints}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>

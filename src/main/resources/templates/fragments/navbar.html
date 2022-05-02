@@ -2,12 +2,11 @@
 <body>
 <header class="site-navbar" role="banner" th:fragment="myNavbar (links)">
     <div class="nav-container">
-        <div class="row align-items-center">
-            <div class="col-3">
-                <h1 class="site-logo"><a class="text-white" th:href="@{/}">Brand</a></h1>
-            </div>
-            <div class="col-9">
-                <nav class="site-navigation position-relative text-right" role="navigation">
+        <div class="row align-items-center" style="justify-content: end">
+            <input type="checkbox" id="hamburger-input" class="burger-shower" />
+            <label id="hamburger-menu" class="hamburger" for="hamburger-input">
+                <nav id="sidebar-menu">
+                    <h3>Menu</h3>
                     <ul class="site-menu js-clone-nav mr-auto">
                         <th:block sec:authorize="isAuthenticated()">
                             <li th:if="${#lists.contains(links,'create')}">
@@ -80,6 +79,12 @@
                         </li>
                     </ul>
                 </nav>
+            </label>
+
+            <div class="col-9">
+                <h1 class="site-logo"><a class="text-white" th:href="@{/}">
+                    OLDTIMERSWEB.COM
+                </a></h1>
             </div>
         </div>
     </div>
