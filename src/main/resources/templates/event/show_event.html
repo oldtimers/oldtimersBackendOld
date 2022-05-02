@@ -5,7 +5,8 @@
 <link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
 <script th:src="@{/static/js/bootstrap.4.3.1.min.js}"></script>
-<body style="--background: url(../assets/background.jpg)">
+<body th:style="'background:url(' + ${event.mainPhoto} + ');'">
+
 <div class="container">
     <div th:replace="fragments/navbar :: myNavbar (links=${ {'edit'} })"></div>
     <!-- <div class="col-4">

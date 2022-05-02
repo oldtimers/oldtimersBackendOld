@@ -39,3 +39,4 @@ custom:
   jwtSecret: qwerty123
   jwtExpiration: 6000000
   jwtRefreshExpiration: 86400000
+  duplicateScores: true
