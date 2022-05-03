@@ -57,6 +57,17 @@ public class Crew implements DatabaseModel {
     @JoinColumn(name = "qr_code")
     private QrCode qrCode;
 
+    @Column(name = "present", nullable = false)
+    private Boolean present = false;
+
+    public Boolean getPresent() {
+        return present;
+    }
+
+    public void setPresent(Boolean present) {
+        this.present = present;
+    }
+
     public QrCode getQrCode() {
         return qrCode;
     }

@@ -12,8 +12,11 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
+import pl.pazurkiewicz.oldtimers_rally.exception.InvalidNumberOfCrews;
+import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.QrCode;
+import pl.pazurkiewicz.oldtimers_rally.model.StageEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.QrCodeListWrapper;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
@@ -119,28 +122,22 @@ public class QrCodeService {
         return new String(Base64.getEncoder().encode(out.toByteArray()));
     }
 
-//    @Transactional
-//    public void assignAllUsersToQrCode(Event event) {
-//        Set<Crew> crews = crewRepository.getAllByEventAndQrIsNull(event);
-//        Set<QrCode> qrCodes = qrCodeRepository.getByEventAndCrewIsNull(event);
-//        Set<QrCode> result = new HashSet<>();
-//        for (Crew crew : crews) {
-//            QrCode qrCode;
-//            if (qrCodes.isEmpty()) {
-//                qrCode = generateNewQrCode(event);
-//            } else {
-//                qrCode = qrCodes.stream().findAny().get();
-//                qrCodes.remove(qrCode);
-//            }
-//            qrCode.setCrew(crew);
-//            result.add(qrCode);
-//        }
-//        if (event.getStage() == StageEnum.NEW) {
-//            event.setStage(StageEnum.NUMBERS);
-//            eventRepository.save(event);
-//        }
-//        qrCodeRepository.saveAllAndFlush(result);
-//    }
+    @Transactional
+    public void assignUsersToQrCode(Event event) throws InvalidNumberOfCrews {
+        List<QrCode> emptyQrCodes = qrCodeRepository.getByEventAndCrewIsNullOrderByNumberAsc(event);
+        List<Crew> crewsToFill = crewRepository.getSortedEmptyCrews(event);
+        if (crewsToFill.size() > emptyQrCodes.size()) {
+            throw new InvalidNumberOfCrews(String.format("Empty QR: %d, it is required: %d", emptyQrCodes.size(), crewsToFill.size()));
+        }
+        int iQr = 0;
+        for (Crew crew : crewsToFill) {
+            crew.setQrCode(emptyQrCodes.get(iQr++));
+        }
+        if (event.getStage() == StageEnum.PRESENTS) {
+            event.setStage(StageEnum.NUMBERS);
+            eventRepository.save(event);
+        }
+    }
 
 
     private QrCode generateNewQrCode(Event event, int number) {

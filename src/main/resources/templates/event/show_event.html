@@ -58,7 +58,7 @@
                     </thead>
                     <tbody>
                     <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
-                    <tr th:each="crc, info : ${category.crewCategories}">
+                    <tr th:each="crc, info : ${category.crewCategories}" th:if="${crc.crew.present}">
                         <td>
                             <a th:href="@{/__${url}__/crew/__${crc.crew.id}__}">
                                 <span th:if="crc.crew.num" th:text="${crc.crew}"></span>

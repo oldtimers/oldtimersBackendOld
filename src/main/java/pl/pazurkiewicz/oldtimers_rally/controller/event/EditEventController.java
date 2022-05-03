@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
+import pl.pazurkiewicz.oldtimers_rally.exception.InvalidNumberOfCrews;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
@@ -118,15 +119,34 @@ public class EditEventController {
         return showEditPage(event, model);
     }
 
+    @PostMapping(params = "present")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    String savePresent(@ModelAttribute("event") Event event, @ModelAttribute("crewsModel") CrewsModel crewsModel, Model model) {
+        crewService.saveCrewsModelOnlyPresent(crewsModel);
+        return showEditPage(event, model);
+    }
+
 
     @PostMapping("/count")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
     String countPoints(Event event, RedirectAttributes redirectAttributes) throws InvalidScore {
-        if (event.getStage() != StageEnum.NEW) {
+        if (event.getStage() != StageEnum.NEW && event.getStage() != StageEnum.PRESENTS) {
             calculatorService.countGlobalPoints(event);
             redirectAttributes.addAttribute("url", event.getUrl());
             //invalidateEventByUrl(event.getUrl());
+            eventRepository.save(event);
+        }
+        return "redirect:/{url}/edit";
+    }
+
+    @PostMapping("/generate_numbers")
+    @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
+    @Transactional
+    String generateNumbers(Event event, RedirectAttributes redirectAttributes) throws InvalidNumberOfCrews {
+        if (event.getStage() != StageEnum.NEW) {
+            qrCodeService.assignUsersToQrCode(event);
+            redirectAttributes.addAttribute("url", event.getUrl());
             eventRepository.save(event);
         }
         return "redirect:/{url}/edit";

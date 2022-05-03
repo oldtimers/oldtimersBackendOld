@@ -52,7 +52,7 @@ public class EventController {
         if (languages.stream().map(Language::getCode).noneMatch(s -> s.equals(locale.getLanguage()))) {
             localeResolver.setLocale(request, response, new Locale(event.getDefaultLanguage().getLanguage().getCode()));
         }
-        model.addAttribute("crews", crewRepository.getAllByEvent_UrlOrderByQrCode_NumberAscYearOfProductionAsc(url));
+        model.addAttribute("crews", crewRepository.getAllByEvent_UrlAndPresentIsTrueOrderByQrCode_NumberAscYearOfProductionAsc(url));
         model.addAttribute("competitions", competitionRepository.getByEvent(event));
         model.addAttribute("categories", categoryRepository.findByEvent_IdOrderById(event.getId()));
         return "event/show_event";

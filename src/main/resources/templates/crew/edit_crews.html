@@ -41,6 +41,7 @@
                     <div th:replace="fragments/form_pieces :: number (fieldName='crews[__${info.index}__].crew.phone', label='__#{phone}__')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedReg', label='__#{acceptedReg}__')"></div>
                     <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.acceptedRodo', label='__#{acceptedRodo}__')"></div>
+                    <div th:replace="fragments/form_pieces :: checkbox (fieldName='crews[__${info.index}__].crew.present', label='__#{present}__')"></div>
                     <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='crews[__${info.index}__].categoryTable')"></div>
                     <div class="button-row">
                         <button class="btn btn-primary row-link links" name="delete" th:value="${info.index}"
@@ -59,6 +60,7 @@
             <div th:replace="fragments/form_pieces :: number (fieldName='newCrew.crew.phone', label='__#{phone}__')"></div>
             <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedReg', label='__#{acceptedReg}__')"></div>
             <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.acceptedRodo', label='__#{acceptedRodo}__')"></div>
+            <div th:replace="fragments/form_pieces :: checkbox (fieldName='newCrew.crew.present', label='__#{present}__')"></div>
             <div th:replace="fragments/form_pieces :: categoryTableFragment (fieldName='newCrew.categoryTable')"></div>
             <div class="button-row">
                 <button class="btn btn-primary row-link links" name="add"

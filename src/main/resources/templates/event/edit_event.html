@@ -12,16 +12,48 @@
         <h3 class="back-button"><a th:href="@{'/'+${url}}" class="text-white" th:text="#{back}"></a></h3>
     </div>
     <div class="col-4" style="display: flex; width: 100%; justify-content: end;">
-        <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
+        <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW} and ${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).PRESENTS}">
             <form method="post" th:action="@{/__${url}__/edit/count}" class="alertChanges">
                 <button class="btn btn-primary bypassChanges" th:text="#{calculate.points}" type="submit"></button>
             </form>
         </div>
         <div>
-            <form method="post" th:action="@{/__${url}__/edit/qr_codes}" class="alertChanges">
+            <form class="alertChanges" method="post" th:action="@{/__${url}__/edit/generate_numbers}"
+                  th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW}">
+                <button class="btn btn-primary bypassChanges" th:text="#{generateNumbers}" type="submit"></button>
+            </form>
+        </div>
+        <div>
+            <form class="alertChanges" method="post" th:action="@{/__${url}__/edit/generate_numbers}">
                 <button class="btn btn-primary bypassChanges" th:text="#{generateQR}" type="submit"></button>
             </form>
         </div>
+    </div>
+    <div>
+        <form method="post" th:action="@{/__${url}__/edit}" th:if="${crewsModel.crews.size()} > 0"
+              th:object="${crewsModel}">
+            <table>
+                <thead>
+                <tr>
+                    <th th:text="#{crew}"></th>
+                    <th th:text="#{present}"></th>
+                    <!--                <th th:text="#{photo}"></th>-->
+                </tr>
+                </thead>
+                <tr th:each="crewLine, info : *{crews}">
+                    <td th:text="${crewLine.crew}"></td>
+                    <td>
+                        <input class="checkbox-inline" th:field="*{crews[__${info.index}__].crew.present}"
+                               type="checkbox">
+                    </td>
+                </tr>
+            </table>
+            <div class="button-row">
+                <button class="btn btn-primary row-link links"
+                        name="present" th:text="#{save}" type="submit">
+                </button>
+            </div>
+        </form>
     </div>
     <div th:if="*{crewsModel.crews.size()} > 0">
         <h2 th:text="#{crews}"></h2>
@@ -29,7 +61,7 @@
             <button class="accordion" th:text="${crewModel.crew}"></button>
             <div class="panel">
                 <form enctype="multipart/form-data" method="post" th:action="@{/__${url}__/edit}"
-                      th:object="${crewsModel.crews[__${info.index}__]}" class="alertChanges"`>
+                      ` class="alertChanges" th:object="${crewsModel.crews[__${info.index}__]}">
                     <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'crew.description'} }, languages='crewsModel.languages', fieldTypes=${ {false} })"></table>
                     <div th:replace="fragments/form_pieces :: classic (fieldName='crew.car', label='__#{crew.car}__')"></div>
                     <div th:replace="fragments/form_pieces :: number (fieldName='crew.yearOfProduction', label='__#{crew.yearOfProduction}__')"></div>
@@ -48,7 +80,8 @@
                         </label>
                     </div>
                     <div class="button-row">
-                        <button class="btn btn-primary bypassChanges" name="crew" th:text="#{save}" th:value="${info.index}"
+                        <button class="btn btn-primary bypassChanges" name="crew" th:text="#{save}"
+                                th:value="${info.index}"
                                 type="submit"></button>
                     </div>
                 </form>

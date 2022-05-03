@@ -22,6 +22,7 @@
                         <div th:replace="fragments/form_pieces :: classic (fieldName='url', label='__#{event.url}__')"></div>
                         <div th:replace="fragments/form_pieces :: possibleLanguage (fieldName='possibleLanguageSelector')"></div>
                         <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='editEvent.languages', fieldTypes=${ {true,false} })"></table>
+                        <div th:replace="fragments/form_pieces :: number (fieldName='maxCrewNumber', label='__#{maxCrewNumber}__')"></div>
                     </div>
                     <div th:case="false">
                         <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.description}__'} },fieldNames=${ {'description'} }, languages='editEvent.languages', fieldTypes=${ {false} })"></table>

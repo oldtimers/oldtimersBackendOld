@@ -81,15 +81,19 @@ public class CalculatorService {
         event.setStage(StageEnum.RESULTS);
     }
 
-    public void calculateGlobalPointsForCategory(List<Competition> competitions, Category category) {
-        Set<Crew> crews = category.getCrewCategories().stream().map(CrewCategory::getCrew).collect(Collectors.toSet());
+    @Transactional
+    protected void calculateGlobalPointsForCategory(List<Competition> competitions, Category category) {
+        Set<Crew> crews = category.getCrewCategories().stream()
+                .peek(crewCategory -> crewCategory.setRankingPoints(null))
+                .map(CrewCategory::getCrew)
+                .filter(crew -> crew.getQrCode() != null && crew.getPresent()).collect(Collectors.toSet());
         HashMap<Crew, Double> crewsValue = new HashMap<>();
         crews.forEach(c -> crewsValue.put(c, 0.0));
         for (Competition competition : competitions) {
             List<Score> validScores = scoreRepository.getValidScoresForCompetition(competition, crews);
             List<Score> invalidScores = scoreRepository.getInvalidScoresForCompetition(competition, crews);
-            Set<Crew> crewsWithScore = Stream.concat(validScores.stream(),invalidScores.stream()).map(Score::getCrew).collect(Collectors.toSet());
-            calculateInvalidScores(crewsValue,invalidScores,competition);
+            Set<Crew> crewsWithScore = Stream.concat(validScores.stream(), invalidScores.stream()).map(Score::getCrew).collect(Collectors.toSet());
+            calculateInvalidScores(crewsValue, invalidScores, competition);
             switch (competition.getType()) {
                 case REGULAR_DRIVE:
                 case BEST_MIN:
@@ -114,8 +118,8 @@ public class CalculatorService {
         crewCategoryRepository.saveAllAndFlush(category.getCrewCategories());
     }
 
-    private void calculateInvalidScores(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition){
-        for (Score score : scores){
+    private void calculateInvalidScores(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
+        for (Score score : scores) {
             crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + competition.getMaxRankingPoints());
         }
     }

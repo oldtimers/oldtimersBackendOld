@@ -36,6 +36,7 @@ public class Category implements DatabaseModel {
     @OneToMany(mappedBy = "category")
     @OrderBy("rankingPoints")
     private List<CrewCategory> crewCategories;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "mode", nullable = false, columnDefinition = "enum")
     private CategoryEnum mode;

@@ -10,7 +10,7 @@
 <div class="container">
     <div class="col crew-number">
         <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__}" th:text="#{back}"></a></h3>
-        <h1 th:if="${crew.number} != null" th:text="#{crew} + ': ' + ${crew.number}"></h1>
+        <h1 th:if="${crew.qrCode} != null" th:text="#{crew} + ': ' + ${crew.qrCode.number}"></h1>
     </div>
     <div class="col crew-title">
         <h3 th:text="${crew.car} + ' ' + ${crew.yearOfProduction}"></h3>

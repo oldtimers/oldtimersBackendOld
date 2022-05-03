@@ -39,7 +39,7 @@ public class BasicController {
         if (qr != null) {
             qr = '%' + qr;
             Optional<Crew> crewQr = crewRepository.findByQrLike(qr);
-            if (crewQr.isPresent()) {
+            if (crewQr.isPresent() && crewQr.get().getPresent()) {
                 Crew crew = crewQr.get();
                 redirectAttributes.addAttribute("url", crew.getEvent().getUrl());
                 redirectAttributes.addAttribute("crewId", crew.getId());

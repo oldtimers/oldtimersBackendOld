@@ -39,10 +39,6 @@ public class CrewCategory implements DatabaseModel {
         this.rankingPoints = rankingPoints;
     }
 
-    public void setRankingPoints(Float rankingPoints) {
-        this.rankingPoints = rankingPoints.doubleValue();
-    }
-
     public Category getCategory() {
         return category;
     }

@@ -35,6 +35,13 @@ public class CrewService {
         crewRepository.saveAndFlush(crewModel.getCrewToSave());
     }
 
+    @Transactional
+    public void saveCrewsModelOnlyPresent(CrewsModel crews) {
+        for (CrewModel crewModel : crews.getCrews()) {
+            crewRepository.updatePresentByCrewId(crewModel.getId(), crewModel.getCrew().getPresent());
+        }
+    }
+
     //    returns added CrewCategory
     public List<CrewCategory> assignCrewToYearCategory(Crew crew) {
         return crew.assignToCategories(categoryRepository.getByEvent_IdAndModeYear(crew.getEvent().getId()));

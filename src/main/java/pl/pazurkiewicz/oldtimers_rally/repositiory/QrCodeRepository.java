@@ -14,6 +14,9 @@ public interface QrCodeRepository extends JpaRepository<QrCode, Integer> {
 
     List<QrCode> getByEventOrderByNumberAsc(Event event);
 
+    List<QrCode> getByEventAndCrewIsNullOrderByNumberAsc(Event event);
+
+
     @Query("select q from QrCode q where q.qr like :qr")
     Optional<QrCode> findByQrLike(String qr);
 }
