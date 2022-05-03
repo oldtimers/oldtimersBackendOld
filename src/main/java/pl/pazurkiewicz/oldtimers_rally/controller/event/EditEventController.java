@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
+import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
@@ -73,9 +74,7 @@ public class EditEventController {
 
 
     CrewsModel getCrews(Event event) {
-        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl()).stream().peek(crew -> {
-            crew.getDescription().prepareForLoad(event.getEventLanguages());
-        }).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
+        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl()).stream().peek(crew -> crew.getDescription().prepareForLoad(event.getEventLanguages())).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
     }
 
     @ModelAttribute("competitions")
@@ -123,7 +122,7 @@ public class EditEventController {
     @PostMapping("/count")
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    String countPoints(Event event, RedirectAttributes redirectAttributes) {
+    String countPoints(Event event, RedirectAttributes redirectAttributes) throws InvalidScore {
         if (event.getStage() != StageEnum.NEW) {
             calculatorService.countGlobalPoints(event);
             redirectAttributes.addAttribute("url", event.getUrl());
@@ -146,10 +145,10 @@ public class EditEventController {
         return response;
     }
 
-    public void invalidateEventByUrl(String url) {
-        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
-        cacheManager.getCache("eventsId").evictIfPresent(url);
-    }
+//    public void invalidateEventByUrl(String url) {
+//        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
+//        cacheManager.getCache("eventsId").evictIfPresent(url);
+//    }
 
     @ModelAttribute("languages")
     List<Language> languages(Event event) {
