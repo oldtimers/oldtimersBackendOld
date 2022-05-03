@@ -45,6 +45,8 @@ th, tr, p {
 h3.back-button {
     font-style: italic;
     text-decoration: unset;
+    position: relative;
+    top: 28px;
 }
 
 @media (max-width: 1200px) {
@@ -58,4 +60,8 @@ h3.back-button {
         width: 100%;
         max-width: unset;
     }
+}
+
+.col{
+    width: 100%;
 }

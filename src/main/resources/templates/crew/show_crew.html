@@ -5,17 +5,24 @@
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/crew.css}"/>
 <body>
 <div class="container">
-    <div class="col-4">
+    <div class="col crew-number">
         <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__}" th:text="#{back}"></a></h3>
         <h1 th:if="${crew.number} != null" th:text="#{crew} + ': ' + ${crew.number}"></h1>
     </div>
-    <div class="col-4 crew-title">
-        <h3 th:text="${crew.car} + ' ' + ${crew.yearOfProduction} + ' ' + ${crew.driverName}"></h3>
+    <div class="col crew-title">
+        <h3 th:text="${crew.car} + ' ' + ${crew.yearOfProduction}"></h3>
     </div>
     <div th:if="${crew.photo!=null}">
         <img alt="No photo" class="event-img" th:src="${crew.photo}">
+    </div>
+    <div th:if="${crew.photo==null}">
+        <img alt="No photo" class="event-img" th:src="@{/static/assets/logo.svg}" style="filter: brightness(0) invert(1);">
+    </div>
+    <div class="col crew-title">
+        <h3 th:text="${crew.driverName}"></h3>
     </div>
     <p th:text="${crew.description.getDictionary(#locale)}"></p>
 
