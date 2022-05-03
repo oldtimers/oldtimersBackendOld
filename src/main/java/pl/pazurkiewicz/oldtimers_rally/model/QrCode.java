@@ -19,8 +19,10 @@ public class QrCode implements DatabaseModel {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    @ManyToOne
-    @JoinColumn(name = "crew_id")
+    @Column(name = "number", nullable = false)
+    private Integer number;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "qrCode")
     private Crew crew;
 
     public Crew getCrew() {
@@ -29,6 +31,14 @@ public class QrCode implements DatabaseModel {
 
     public void setCrew(Crew crew) {
         this.crew = crew;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Event getEvent() {

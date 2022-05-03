@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Table(name = "crews", indexes = {
-        @Index(name = "crews_event_id_number_uindex", columnList = "event_id, number", unique = true)
-})
+@Table(name = "crews")
 @Entity
 public class Crew implements DatabaseModel {
     @Id
@@ -23,8 +21,6 @@ public class Crew implements DatabaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
-    @Column(name = "number")
-    private Integer number;
     @Column(name = "car", nullable = false, length = 64)
     @NotBlank
     private String car;
@@ -55,9 +51,20 @@ public class Crew implements DatabaseModel {
     @OneToMany(mappedBy = "crew", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CrewCategory> categories = new ArrayList<>();
     @OneToMany(mappedBy = "crew")
-    private Set<QrCode> qrCodes = new HashSet<>();
-    @OneToMany(mappedBy = "crew")
     private Set<Score> scores = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "qr_code")
+    private QrCode qrCode;
+
+    public QrCode getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(QrCode qrCode) {
+        this.qrCode = qrCode;
+    }
+
 
     public Crew() {
     }
@@ -73,14 +80,6 @@ public class Crew implements DatabaseModel {
 
     public void setScores(Set<Score> scores) {
         this.scores = scores;
-    }
-
-    public Set<QrCode> getQrCodes() {
-        return qrCodes;
-    }
-
-    public void setQrCodes(Set<QrCode> qrCodes) {
-        this.qrCodes = qrCodes;
     }
 
     public Boolean getAcceptedRodo() {
@@ -147,14 +146,6 @@ public class Crew implements DatabaseModel {
         this.car = car;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public Event getEvent() {
         return event;
     }
@@ -217,6 +208,6 @@ public class Crew implements DatabaseModel {
 
     @Override
     public String toString() {
-        return String.format("%s%s, %s - %d", ((number == null) ? "" : number + ", "), driverName, car, yearOfProduction);
+        return String.format("%s%s, %s - %d", ((qrCode == null) ? "" : qrCode.getNumber() + ", "), driverName, car, yearOfProduction);
     }
 }

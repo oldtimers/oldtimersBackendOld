@@ -1,7 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
-import pl.pazurkiewicz.oldtimers_rally.model.Crew;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,16 +31,16 @@ public class QrCodeListWrapper {
     }
 
     public static class QrCodePiece {
-        private final Crew crew;
+        private final Integer number;
         private final String base64;
 
-        public QrCodePiece(Crew crew, String base64) {
-            this.crew = crew;
+        public QrCodePiece(Integer number, String base64) {
+            this.number = number;
             this.base64 = base64;
         }
 
-        public Crew getCrew() {
-            return crew;
+        public Integer getNumber() {
+            return number;
         }
 
         public String getBase64() {

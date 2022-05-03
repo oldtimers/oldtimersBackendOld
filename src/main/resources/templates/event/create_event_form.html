@@ -17,6 +17,7 @@
                 <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'name', 'description'} }, languages='newEvent.languages' , fieldTypes=${ {true,false} })"></table>
                 <div th:replace="fragments/form_pieces :: datetimeField (fieldName='startDate', label='__#{startDate}__')"></div>
                 <div th:replace="fragments/form_pieces :: datetimeField (fieldName='endDate', label='__#{endDate}__')"></div>
+                <div th:replace="fragments/form_pieces :: number (fieldName='maxCrewNumber', label='__#{maxCrewNumber}__')"></div>
                 <div th:replace="fragments/form_pieces :: requiredDescription"></div>
                 <div class="button-row">
                     <div th:replace="fragments/form_pieces :: reloadButton (title='__#{reload}__')"></div>

@@ -12,10 +12,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
-import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.QrCode;
-import pl.pazurkiewicz.oldtimers_rally.model.StageEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.QrCodeListWrapper;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
@@ -26,7 +24,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Base64;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)
@@ -46,15 +46,37 @@ public class QrCodeService {
     }
 
     @Transactional
-    public byte[] generateFullQrUserList(Event event) throws com.lowagie.text.DocumentException, IOException {
-        crewService.assignAllCrewsToNumber(event);
-        assignAllUsersToQrCode(event);
-        return generatePDF(event);
+    public byte[] generateQrList(Event event) throws com.lowagie.text.DocumentException, IOException {
+//        crewService.assignAllCrewsToNumber(event);
+        List<QrCode> qrs = generateMissingQr(event);
+
+//        assignAllUsersToQrCode(event);
+        return generatePDF(event, qrs);
     }
 
-    private byte[] generatePDF(Event event) throws IOException, com.lowagie.text.DocumentException {
+    @Transactional
+    protected List<QrCode> generateMissingQr(Event event) {
+        int max = event.getMaxCrewNumber() + 1;
+        List<QrCode> eventsQr = qrCodeRepository.getByEventOrderByNumberAsc(event);
+        List<QrCode> results = new LinkedList<>();
+        int li = 0; // list iterator
+        int i = 1; // current number
+        while (i < max) {
+            int n = eventsQr.size() > li ? eventsQr.get(li).getNumber() : Integer.MAX_VALUE;
+            while (i < Integer.min(max, n)) {
+                results.add(qrCodeRepository.save(generateNewQrCode(event, i++)));
+            }
+            if (n < max) {
+                results.add(eventsQr.get(li++));
+                i = n + 1;
+            }
+        }
+        return results;
+    }
+
+    private byte[] generatePDF(Event event, List<QrCode> qrs) throws IOException, com.lowagie.text.DocumentException {
         ITextRenderer renderer = new ITextRenderer();
-        String x = parseThymeleafTemplate(event);
+        String x = parseThymeleafTemplate(event, qrs);
         renderer.setDocumentFromString(x);
         renderer.layout();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -62,22 +84,25 @@ public class QrCodeService {
         return outputStream.toByteArray();
     }
 
-    private String parseThymeleafTemplate(Event event) throws IOException {
+    private String parseThymeleafTemplate(Event event, List<QrCode> qrs) throws IOException {
         TemplateEngine templateEngine = new SpringTemplateEngine();
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateEngine.setTemplateResolver(templateResolver);
         Context context = new Context();
-        QrCodeListWrapper qrCodes = generateQrCodeWrapper(event);
+        QrCodeListWrapper qrCodes = generateQrCodeWrapper(event, qrs);
         context.setVariable("wrapper", qrCodes);
         return templateEngine.process("templates/qr/template.html", context);
     }
 
-    private QrCodeListWrapper generateQrCodeWrapper(Event event) throws IOException {
+    private QrCodeListWrapper generateQrCodeWrapper(Event event, List<QrCode> qrs) throws IOException {
         List<QrCodeListWrapper.QrCodePiece> qrCodePieces = new LinkedList<>();
-        List<Crew> crews = crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl());
-        for (Crew crew : crews) {
-            qrCodePieces.add(new QrCodeListWrapper.QrCodePiece(crew, generateQrBase64(crew.getQrCodes().stream().findAny().get().getQr())));
+//        List<Crew> crews = crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl());
+        if (qrs == null) {
+            qrs = qrCodeRepository.getByEventOrderByNumberAsc(event);
+        }
+        for (QrCode qr : qrs) {
+            qrCodePieces.add(new QrCodeListWrapper.QrCodePiece(qr.getNumber(), generateQrBase64(qr.getQr())));
         }
         return new QrCodeListWrapper(qrCodePieces);
     }
@@ -94,34 +119,35 @@ public class QrCodeService {
         return new String(Base64.getEncoder().encode(out.toByteArray()));
     }
 
-    @Transactional
-    public void assignAllUsersToQrCode(Event event) {
-        Set<Crew> crews = crewRepository.getAllByEventAndQrIsNull(event);
-        Set<QrCode> qrCodes = qrCodeRepository.getByEventAndCrewIsNull(event);
-        Set<QrCode> result = new HashSet<>();
-        for (Crew crew : crews) {
-            QrCode qrCode;
-            if (qrCodes.isEmpty()) {
-                qrCode = generateNewQrCode(event);
-            } else {
-                qrCode = qrCodes.stream().findAny().get();
-                qrCodes.remove(qrCode);
-            }
-            qrCode.setCrew(crew);
-            result.add(qrCode);
-        }
-        if (event.getStage() == StageEnum.NEW) {
-            event.setStage(StageEnum.NUMBERS);
-            eventRepository.save(event);
-        }
-        qrCodeRepository.saveAllAndFlush(result);
-    }
+//    @Transactional
+//    public void assignAllUsersToQrCode(Event event) {
+//        Set<Crew> crews = crewRepository.getAllByEventAndQrIsNull(event);
+//        Set<QrCode> qrCodes = qrCodeRepository.getByEventAndCrewIsNull(event);
+//        Set<QrCode> result = new HashSet<>();
+//        for (Crew crew : crews) {
+//            QrCode qrCode;
+//            if (qrCodes.isEmpty()) {
+//                qrCode = generateNewQrCode(event);
+//            } else {
+//                qrCode = qrCodes.stream().findAny().get();
+//                qrCodes.remove(qrCode);
+//            }
+//            qrCode.setCrew(crew);
+//            result.add(qrCode);
+//        }
+//        if (event.getStage() == StageEnum.NEW) {
+//            event.setStage(StageEnum.NUMBERS);
+//            eventRepository.save(event);
+//        }
+//        qrCodeRepository.saveAllAndFlush(result);
+//    }
 
 
-    public QrCode generateNewQrCode(Event event) {
+    private QrCode generateNewQrCode(Event event, int number) {
         QrCode qrCode = new QrCode();
         qrCode.setEvent(event);
         qrCode.setQr(String.format("%s?qr=%s", configurationProperties.getRealUrl(), RandomString.make(40)));
+        qrCode.setNumber(number);
         return qrCode;
     }
 

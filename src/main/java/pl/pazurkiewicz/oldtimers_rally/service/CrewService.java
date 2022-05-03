@@ -14,8 +14,6 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,19 +44,19 @@ public class CrewService {
         assignCrewToYearCategory(crew.getCrew()).forEach(c -> crew.getCategoryTable().add(new CategoryPiece(c.getCategory(), null)));
     }
 
-    @Transactional
-    public void assignAllCrewsToNumber(Event event) {
-        List<Crew> crews = crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl());
-        Set<Integer> usedNumbers = crews.stream().map(Crew::getNumber).filter(Objects::nonNull).collect(Collectors.toSet());
-        int number = 1;
-        for (Crew crew : crews) {
-            if (crew.getNumber() == null) {
-                while (usedNumbers.contains(number)) {
-                    number++;
-                }
-                crew.setNumber(number);
-                number++;
-            }
-        }
-    }
+//    @Transactional
+//    public void assignAllCrewsToNumber(Event event) {
+//        List<Crew> crews = crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl());
+//        Set<Integer> usedNumbers = crews.stream().map(Crew::getNumber).filter(Objects::nonNull).collect(Collectors.toSet());
+//        int number = 1;
+//        for (Crew crew : crews) {
+//            if (crew.getNumber() == null) {
+//                while (usedNumbers.contains(number)) {
+//                    number++;
+//                }
+//                crew.setNumber(number);
+//                number++;
+//            }
+//        }
+//    }
 }

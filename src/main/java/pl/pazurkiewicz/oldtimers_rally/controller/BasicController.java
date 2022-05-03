@@ -12,10 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
-import pl.pazurkiewicz.oldtimers_rally.model.QrCode;
+import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.QrCodeRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import java.util.List;
@@ -26,22 +25,22 @@ import java.util.Optional;
 public class BasicController {
     private final EventRepository eventRepository;
     private final LanguageRepository languageRepository;
-    private final QrCodeRepository qrCodeRepository;
+    private final CrewRepository crewRepository;
 
 
-    public BasicController(EventRepository eventRepository, LanguageRepository languageRepository, QrCodeRepository qrCodeRepository) {
+    public BasicController(EventRepository eventRepository, LanguageRepository languageRepository, CrewRepository crewRepository) {
         this.eventRepository = eventRepository;
         this.languageRepository = languageRepository;
-        this.qrCodeRepository = qrCodeRepository;
+        this.crewRepository = crewRepository;
     }
 
     @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
     String getIndex(@RequestParam(name = "qr", required = false) String qr, RedirectAttributes redirectAttributes, Model model, @AuthenticationPrincipal UserDetailsImpl principal, @RequestParam(name = "404", defaultValue = "false", required = false) boolean occurred404) {
         if (qr != null) {
             qr = '%' + qr;
-            Optional<QrCode> qrCode = qrCodeRepository.findByQrLike(qr);
-            if (qrCode.isPresent()) {
-                Crew crew = qrCode.get().getCrew();
+            Optional<Crew> crewQr = crewRepository.findByQrLike(qr);
+            if (crewQr.isPresent()) {
+                Crew crew = crewQr.get();
                 redirectAttributes.addAttribute("url", crew.getEvent().getUrl());
                 redirectAttributes.addAttribute("crewId", crew.getId());
                 return "redirect:/{url}/crew/{crewId}";

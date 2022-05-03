@@ -74,7 +74,7 @@ public class EditEventController {
 
 
     CrewsModel getCrews(Event event) {
-        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByNumberAscYearOfProductionAsc(event.getUrl()).stream().peek(crew -> crew.getDescription().prepareForLoad(event.getEventLanguages())).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
+        return new CrewsModel(crewRepository.getAllByEvent_UrlOrderByQrCode_NumberAscYearOfProductionAsc(event.getUrl()).stream().peek(crew -> crew.getDescription().prepareForLoad(event.getEventLanguages())).collect(Collectors.toList()), categoryRepository.findByEvent_IdOrderById(event.getId()), event);
     }
 
     @ModelAttribute("competitions")
@@ -135,13 +135,13 @@ public class EditEventController {
     @PostMapping(value = "/qr_codes", produces = MediaType.APPLICATION_PDF_VALUE)
     @PreAuthorize("hasPermission(#event,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     @Transactional
-    ResponseEntity<byte[]> generateNumbersWithQr(Event event) throws com.lowagie.text.DocumentException, IOException {
+    ResponseEntity<byte[]> generateQrCodes(Event event) throws com.lowagie.text.DocumentException, IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        String filename = "qr.pdf";
+        String filename = String.format("qr_%s.pdf", event.getUrl());
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<>(qrCodeService.generateFullQrUserList(event), headers, HttpStatus.OK);
+        ResponseEntity<byte[]> response = new ResponseEntity<>(qrCodeService.generateQrList(event), headers, HttpStatus.OK);
         return response;
     }
 

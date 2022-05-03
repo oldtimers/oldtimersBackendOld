@@ -76,7 +76,7 @@ public class BasicApiController {
     @PostMapping("/event/{id}/crew")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
     ResponseEntity<?> getCrewByQr(@RequestBody @Valid QrRequest qr, @PathVariable Integer id) {
-        Optional<CrewInfo> crew = crewRepository.findByQrCodesContains(qr.getQr(), id, CrewInfo.class);
+        Optional<CrewInfo> crew = crewRepository.findByQrAndEventId(qr.getQr(), id, CrewInfo.class);
         if (crew.isPresent()) {
             return ResponseEntity.ok(crew.get());
         } else {

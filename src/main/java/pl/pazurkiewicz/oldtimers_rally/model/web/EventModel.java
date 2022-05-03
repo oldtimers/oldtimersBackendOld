@@ -11,6 +11,7 @@ import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlAvailable;
 import pl.pazurkiewicz.oldtimers_rally.validator.IsUrlPossible;
 
 import javax.validation.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.Retention;
@@ -63,6 +64,9 @@ public class EventModel {
     @NotBlank(message = "{notBlank}")
     @IsUrlPossible
     private String url;
+    @NotNull
+    @Min(1)
+    private Integer maxCrewNumber = 20;
 
     private List<EventLanguage> languages;
 
@@ -87,7 +91,16 @@ public class EventModel {
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
         this.url = event.getUrl();
+        this.maxCrewNumber = event.getMaxCrewNumber();
         reload();
+    }
+
+    public Integer getMaxCrewNumber() {
+        return maxCrewNumber;
+    }
+
+    public void setMaxCrewNumber(Integer maxCrewNumber) {
+        this.maxCrewNumber = maxCrewNumber;
     }
 
     public static EventModel generateNewEventWriteModel(LanguageService languageService) {
@@ -191,6 +204,7 @@ public class EventModel {
         event.setStartDate(startDate);
         event.setEndDate(endDate);
         event.setEventLanguages(possibleLanguageSelector.getEventLanguages(defaultLanguageSelector));
+        event.setMaxCrewNumber(maxCrewNumber);
         return event;
     }
 }

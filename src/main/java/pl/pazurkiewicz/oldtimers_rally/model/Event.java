@@ -1,12 +1,11 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidEventConfiguration;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +23,8 @@ public class Event implements DatabaseModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     private List<EventLanguage> eventLanguages = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -55,6 +54,17 @@ public class Event implements DatabaseModel {
     @Enumerated(EnumType.STRING)
     @Column(name = "stage", nullable = false, columnDefinition = "enum")
     private StageEnum stage = StageEnum.NEW;
+
+    @Column(name = "max_crew_number", nullable = false)
+    private Integer maxCrewNumber = 20;
+
+    public Integer getMaxCrewNumber() {
+        return maxCrewNumber;
+    }
+
+    public void setMaxCrewNumber(Integer maxCrewNumber) {
+        this.maxCrewNumber = maxCrewNumber;
+    }
 
     public StageEnum getStage() {
         return stage;
@@ -137,7 +147,7 @@ public class Event implements DatabaseModel {
     }
 
     public EventLanguage getDefaultLanguage() {
-        return eventLanguages.stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
+        return getEventLanguages().stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
     }
 
 }
