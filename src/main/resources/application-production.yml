@@ -18,8 +18,8 @@ spring:
 custom:
   defaultLanguage: pl
   jwtSecret: asdgfasdlbkjha123asdas!123sad&234ASDzxc
-  jwtExpiration: 600
-  jwtRefreshExpiration: 864000
+  jwtExpiration: 600000
+  jwtRefreshExpiration: 864000000
   real-url: https://www.oldtimersweb.com/
   resource-location: photos
 logging:
