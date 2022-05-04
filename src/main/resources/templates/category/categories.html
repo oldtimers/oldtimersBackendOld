@@ -20,7 +20,7 @@
                         <div class="" th:each="category, info : ${categories.otherCategories}">
                             <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
                             <button class="accordion"
-                                    th:text="${category.name.getDictionary(event.getDefaultLanguage().language.code)}"
+                                    th:text="${category.name.getDictionary(#locale)}"
                                     type="button"></button>
                             <div class="panel">
                                 <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'otherCategories[__${info.index}__].name', 'otherCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>
@@ -38,7 +38,7 @@
                         <div class="" th:each="category, info : ${categories.yearCategories}">
                             <!--/*@thymesVar id="category" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
                             <button class="accordion"
-                                    th:text="${category.name.getDictionary(event.getDefaultLanguage().language.code)}"
+                                    th:text="${category.name.getDictionary(#locale)}"
                                     type="button"></button>
                             <div class="panel">
                                 <table th:replace="fragments/form_pieces :: dictionaryFragment (labels=${ {'__#{label.language}__','__#{label.name}__','__#{label.description}__'} },fieldNames=${ {'yearCategories[__${info.index}__].name', 'yearCategories[__${info.index}__].description'} }, languages='categories.languages', fieldTypes=${ {true,false} })"></table>

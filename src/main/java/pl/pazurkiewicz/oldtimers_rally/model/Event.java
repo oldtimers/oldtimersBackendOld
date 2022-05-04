@@ -1,11 +1,12 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.*;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidEventConfiguration;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +25,12 @@ public class Event implements DatabaseModel {
     private Integer id;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    @LazyCollection(LazyCollectionOption.FALSE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<EventLanguage> eventLanguages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event")
+    @Where(clause = "is_default = true")
+    private List<EventLanguage> defaultLanguage;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "name_id")
@@ -146,8 +151,21 @@ public class Event implements DatabaseModel {
         this.id = id;
     }
 
+//    public EventLanguage getDefaultLanguage() {
+//        return getEventLanguages().stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
+//    }
+
+
     public EventLanguage getDefaultLanguage() {
-        return getEventLanguages().stream().filter(EventLanguage::getIsDefault).findAny().orElseThrow(() -> new InvalidEventConfiguration("Event does not contain default language"));
+        if (defaultLanguage.isEmpty()) {
+            throw new InvalidEventConfiguration("Event does not contain default language");
+        } else if (defaultLanguage.size() > 1) {
+            throw new InvalidEventConfiguration("Event contains multiple default languages");
+        }
+        return defaultLanguage.get(0);
     }
 
+    public void setDefaultLanguage(List<EventLanguage> defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
 }
