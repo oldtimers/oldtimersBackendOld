@@ -47,6 +47,7 @@ h3.back-button {
     text-decoration: unset;
     position: relative;
     top: 28px;
+    margin-bottom: 40px;
 }
 
 @media (max-width: 1200px) {

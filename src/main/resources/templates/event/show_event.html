@@ -48,7 +48,7 @@
         <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
         <div th:each="category : ${categories}">
             <div th:if="${event.stage} == ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).RESULTS} and not ${category.crewCategories.empty}">
-                <h4 style="width: 100%;" th:text="${category.name.getDictionary(#locale)}"></h4>
+                <h4 class="styled-table-title" th:text="${category.name.getDictionary(#locale)}"></h4>
                 <table class="styled-table">
                     <thead>
                     <tr>
@@ -79,7 +79,7 @@
             <button class="accordion" th:text="${category.name.getDictionary(#locale)}"></button>
             <div class="panel">
                 <div class="text" style="text-align: center">
-                    <h4 style="width: 100%;" th:text="${category.name.getDictionary(#locale)}"></h4>
+                    <h4 class="styled-table-title" th:text="${category.name.getDictionary(#locale)}"></h4>
                 </div>
                 <p th:text="${category.description.getDictionary(#locale)}"></p>
 

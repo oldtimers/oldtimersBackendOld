@@ -11,7 +11,7 @@
     <div class="col-4">
         <h3 class="back-button"><a th:href="@{'/'+${url}}" class="text-white" th:text="#{back}"></a></h3>
     </div>
-    <div class="col-4" style="display: flex; width: 100%; justify-content: end;">
+    <div class="col-4" style="display: flex; width: 100%; justify-content: end; margin-top: 45px; margin-bottom: 15px;">
         <div th:if="${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).NEW} and ${event.stage} != ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).PRESENTS}">
             <form method="post" th:action="@{/__${url}__/edit/count}" class="alertChanges">
                 <button class="btn btn-primary bypassChanges" th:text="#{calculate.points}" type="submit"></button>
@@ -30,21 +30,21 @@
         </div>
     </div>
     <div>
-        <form method="post" th:action="@{/__${url}__/edit}" th:if="${crewsModel.crews.size()} > 0"
+        <form class="attendanceList" method="post" th:action="@{/__${url}__/edit}" th:if="${crewsModel.crews.size()} > 0"
               th:object="${crewsModel}">
-            <table>
+            <label for="attendanceListTable"><h2 th:text="#{attendanceList}"></h2></label>
+            <table id="attendanceListTable" class="styled-table">
                 <thead>
                 <tr>
                     <th th:text="#{crew}"></th>
                     <th th:text="#{present}"></th>
-                    <!--                <th th:text="#{photo}"></th>-->
                 </tr>
                 </thead>
                 <tr th:each="crewLine, info : *{crews}">
-                    <td th:text="${crewLine.crew}"></td>
+                    <td th:if="!*{crews[__${info.index}__].crew.present}" th:text="${crewLine.crew}" th:style="'color: red'"></td>
+                    <td th:if="*{crews[__${info.index}__].crew.present}" th:text="${crewLine.crew}"></td>
                     <td>
-                        <input class="checkbox-inline" th:field="*{crews[__${info.index}__].crew.present}"
-                               type="checkbox">
+                        <input class="checkbox-inline" th:field="*{crews[__${info.index}__].crew.present}" type="checkbox">
                     </td>
                 </tr>
             </table>

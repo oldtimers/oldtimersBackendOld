@@ -13,7 +13,7 @@
         <h1 th:if="${crew.qrCode} != null" th:text="#{crew} + ': ' + ${crew.qrCode.number}"></h1>
     </div>
     <div class="col crew-title">
-        <h3 th:text="${crew.car} + ' ' + ${crew.yearOfProduction}"></h3>
+        <h2 class="title" th:text="${crew.car} + ' ' + ${crew.yearOfProduction}"></h2>
     </div>
     <div th:if="${crew.photo!=null}">
         <img alt="No photo" class="event-img" th:src="${crew.photo}">
@@ -21,11 +21,13 @@
     <div th:if="${crew.photo==null}">
         <img alt="No photo" class="event-img" th:src="@{/static/assets/logo.svg}" style="filter: brightness(0) invert(1);">
     </div>
-    <div class="col crew-title">
-        <h3 th:text="${crew.driverName}"></h3>
+    <div class="crew-description">
+        <p th:text="${crew.description.getDictionary(#locale)}"></p>
     </div>
-    <p th:text="${crew.description.getDictionary(#locale)}"></p>
-
+    <div class="col crew-title">
+        <h2 class="title" th:text="${crew.driverName}"></h2>
+    </div>
+    <h4 class="styled-table-title" th:text="#{results.categories}"></h4>
     <table class="styled-table">
         <thead>
         <tr>
@@ -41,6 +43,24 @@
         </tr>
         </tbody>
     </table>
+
+    <h4 class="styled-table-title" th:text="#{results.competitions}"></h4>
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th th:text="#{competition}"></th>
+            <th th:text="#{calculate.points}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="crc" type="pl.pazurkiewicz.oldtimers_rally.model.Score"*/-->
+        <tr th:each="crc : ${crew.scores}">
+            <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
+            <td th:if="${crc.result} != null" th:text="${crc.result}"></td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 </body>
 </html>

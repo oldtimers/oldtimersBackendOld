@@ -53,9 +53,13 @@ img.event-img {
 .styled-table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    width: 75% !important;
+    margin: 20px auto;
+}
+
+.styled-table-title{
+    width: 75% !important;
+    margin: auto;
 }
 
 .styled-table td, .styled-table th {
@@ -90,5 +94,11 @@ img.event-img {
     img.event-img,
     .text{
         width: 90%;
+    }
+    img.event-img{
+        height: auto;
+    }
+    .styled-table, .styled-table-title{
+        width: 100% !important;
     }
 }

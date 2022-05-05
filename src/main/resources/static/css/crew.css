@@ -9,3 +9,12 @@
     align-items: center;
     justify-content: space-between;
 }
+.crew-description{
+    width: 75%;
+    margin: auto;
+}
+@media (max-width: 800px) {
+    .crew-description{
+        width: 100%;
+    }
+}
