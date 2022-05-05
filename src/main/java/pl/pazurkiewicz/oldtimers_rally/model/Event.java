@@ -156,13 +156,17 @@ public class Event implements DatabaseModel {
 //    }
 
 
-    public EventLanguage getDefaultLanguage() {
-        if (defaultLanguage.isEmpty()) {
+    public List<EventLanguage> getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public EventLanguage getSingleDefaultLanguage() {
+        if (getDefaultLanguage().isEmpty()) {
             throw new InvalidEventConfiguration("Event does not contain default language");
-        } else if (defaultLanguage.size() > 1) {
+        } else if (getDefaultLanguage().size() > 1) {
             throw new InvalidEventConfiguration("Event contains multiple default languages");
         }
-        return defaultLanguage.get(0);
+        return getDefaultLanguage().get(0);
     }
 
     public void setDefaultLanguage(List<EventLanguage> defaultLanguage) {

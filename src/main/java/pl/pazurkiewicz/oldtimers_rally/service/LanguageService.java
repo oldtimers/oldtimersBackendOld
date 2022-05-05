@@ -32,6 +32,6 @@ public class LanguageService {
     }
 
     public DefaultLanguageSelector generateDefaultLanguageSelectorByEvent(Event event) {
-        return new DefaultLanguageSelector(languageRepository.findAll(), event.getDefaultLanguage().getLanguage());
+        return new DefaultLanguageSelector(languageRepository.findAll(), event.getSingleDefaultLanguage().getLanguage());
     }
 }

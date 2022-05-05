@@ -45,12 +45,12 @@ public class EventController {
     }
 
     @GetMapping
-    String getSelectedEvent(Model model, @PathVariable("url") String url, Locale locale, Event event, @ModelAttribute("languages") List<Language> languages, HttpServletRequest request, HttpServletResponse response) {
+    String getSelectedEvent(Model model, @PathVariable("url") String url, Locale locale, @ModelAttribute("event") Event event, @ModelAttribute("languages") List<Language> languages, HttpServletRequest request, HttpServletResponse response) {
         if (event == null) {
             throw new ResourceNotFoundException();
         }
         if (languages.stream().map(Language::getCode).noneMatch(s -> s.equals(locale.getLanguage()))) {
-            localeResolver.setLocale(request, response, new Locale(event.getDefaultLanguage().getLanguage().getCode()));
+            localeResolver.setLocale(request, response, new Locale(event.getSingleDefaultLanguage().getLanguage().getCode()));
         }
         model.addAttribute("crews", crewRepository.getAllByEvent_UrlAndPresentIsTrueOrderByQrCode_NumberAscYearOfProductionAsc(url));
         model.addAttribute("competitions", competitionRepository.getByEvent(event));
@@ -66,7 +66,7 @@ public class EventController {
             throw new ResourceNotFoundException();
         } else {
             if (languages.stream().map(Language::getCode).noneMatch(s -> s.equals(locale.getLanguage()))) {
-                localeResolver.setLocale(request, response, new Locale(event.getDefaultLanguage().getLanguage().getCode()));
+                localeResolver.setLocale(request, response, new Locale(event.getSingleDefaultLanguage().getLanguage().getCode()));
             }
             model.addAttribute("crew", crew.get());
         }
