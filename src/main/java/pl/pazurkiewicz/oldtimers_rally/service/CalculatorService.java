@@ -52,6 +52,7 @@ public class CalculatorService {
             argument.setArgumentValue(score.getValue(i));
             arguments[i] = argument;
         }
+//        TODO check if it works
         Expression expression = new Expression(competition.getFunctionCode(), arguments);
         double result = expression.calculate();
         if (Double.isNaN(result)) {

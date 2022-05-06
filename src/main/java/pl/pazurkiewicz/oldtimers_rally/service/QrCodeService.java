@@ -74,6 +74,10 @@ public class QrCodeService {
                 i = n + 1;
             }
         }
+        if (event.getStage() == StageEnum.NEW) {
+            event.setStage(StageEnum.PRESENTS);
+        }
+        eventRepository.save(event);
         return results;
     }
 
@@ -125,7 +129,7 @@ public class QrCodeService {
     @Transactional
     public void assignUsersToQrCode(Event event) throws InvalidNumberOfCrews {
         List<QrCode> emptyQrCodes = qrCodeRepository.getByEventAndCrewIsNullOrderByNumberAsc(event);
-        List<Crew> crewsToFill = crewRepository.getSortedEmptyCrews(event);
+        List<Crew> crewsToFill = crewRepository.getSortedPresentEmptyCrews(event);
         if (crewsToFill.size() > emptyQrCodes.size()) {
             throw new InvalidNumberOfCrews(String.format("Empty QR: %d, it is required: %d", emptyQrCodes.size(), crewsToFill.size()));
         }

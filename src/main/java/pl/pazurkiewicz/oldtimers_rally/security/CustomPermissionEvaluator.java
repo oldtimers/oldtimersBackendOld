@@ -60,6 +60,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         Integer eventId;
         if (targetDomainObject instanceof Event) {
             eventId = ((Event) targetDomainObject).getId();
+        } else if (targetDomainObject instanceof String) {
+            eventId = eventRepository.getIdByUrl((String) targetDomainObject);
         } else {
             logger.error("Unknown object instance, impossible to check permissions");
             return false;
