@@ -29,7 +29,7 @@ public class ScoreService {
     @Autowired
     MyConfigurationProperties configurationProperties;
 
-    public void addRegScore(RegScoreRequest scoreRequest, Integer eventId) throws InvalidScore {
+    public void addRegScore(RegScoreRequest scoreRequest, Integer eventId, User user) throws InvalidScore {
         Competition competition = competitionRepository.getByEvent_idAndId(eventId, scoreRequest.getCompetitionId());
         Crew crew = crewRepository.getById(scoreRequest.getCrewId());
         if (competition != null && competition.getType() == CompetitionTypeEnum.REGULAR_DRIVE) {
@@ -48,13 +48,14 @@ public class ScoreService {
                 score.setAdditional2(scoreRequest.getTime());
                 calculateAverage(score, competition);
             }
+            score.setAuthor(user);
             scoreRepository.save(score);
         } else {
             throw new EntityNotFoundException("Competition does not exist");
         }
     }
 
-    public void addScore(ScoreRequest scoreRequest, Integer eventId) throws InvalidScore {
+    public void addScore(ScoreRequest scoreRequest, Integer eventId, User user) throws InvalidScore {
         Competition competition = competitionRepository.getByEvent_idAndId(eventId, scoreRequest.getCompetitionId());
         Crew crew = crewRepository.getById(scoreRequest.getCrewId());
         if (competition != null && competition.getType() != CompetitionTypeEnum.REGULAR_DRIVE) {
@@ -73,6 +74,7 @@ public class ScoreService {
             if (!score.isInvalidResult()) {
                 CalculatorService.calculateScoreResult(score, competition);
             }
+            score.setAuthor(user);
             scoreRepository.save(score);
         } else {
             throw new EntityNotFoundException("Competition does not exist");

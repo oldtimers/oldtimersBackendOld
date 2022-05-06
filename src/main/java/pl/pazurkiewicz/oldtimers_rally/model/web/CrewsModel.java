@@ -31,7 +31,15 @@ public class CrewsModel implements ListWebModel<CrewModel> {
         this.possibleCategories = possibleCategories;
         this.event = event;
         this.crews = crews.stream().map(c -> new CrewModel(c, languages, possibleCategories)).collect(Collectors.toList());
-        this.newCrew = new CrewModel(new Crew(event), languages, possibleCategories);
+        this.newCrew = new CrewModel(generateNewCrew(event), languages, possibleCategories);
+    }
+
+    private Crew generateNewCrew(Event event) {
+        Crew crew = new Crew(event);
+        crew.setAcceptedReg(true);
+        crew.setAcceptedRodo(true);
+        crew.setPhone("123465798");
+        return crew;
     }
 
     public List<EventLanguage> getLanguages() {
@@ -52,7 +60,7 @@ public class CrewsModel implements ListWebModel<CrewModel> {
 
     public void acceptNewCrew() {
         crews.add(newCrew);
-        newCrew = new CrewModel(new Crew(event), languages, possibleCategories);
+        newCrew = new CrewModel(generateNewCrew(event), languages, possibleCategories);
     }
 
     public CrewModel getNewCrew() {

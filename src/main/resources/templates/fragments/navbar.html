@@ -9,11 +9,11 @@
                     <h3>Menu</h3>
                     <ul class="site-menu js-clone-nav mr-auto">
                         <th:block sec:authorize="isAuthenticated()">
-                            <li th:if="${#lists.contains(links,'create')}">
-                                <a th:href="@{/rally/create}">
-                                    <span th:text="#{event.create}"></span>
-                                </a>
-                            </li>
+                            <!--                            <li th:if="${#lists.contains(links,'create')}">TODO only admin-->
+                            <!--                                <a th:href="@{/rally/create}">-->
+                            <!--                                    <span th:text="#{event.create}"></span>-->
+                            <!--                                </a>-->
+                            <!--                            </li>-->
                             <li th:if="${#lists.contains(links,'edit') and
                             #authorization.expression('hasPermission(#vars.url,''Event'',''ROLE_ORGANIZER'')')}">
                                 <a th:href="@{/__${url}__/edit}">

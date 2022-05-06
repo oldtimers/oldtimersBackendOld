@@ -40,6 +40,18 @@ public class Score implements DatabaseModel {
     @Column(name = "result")
     private Double result;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     public Double getValue(Integer integer) {
         switch (integer) {
             case 0:
