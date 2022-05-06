@@ -27,6 +27,8 @@ public interface CompetitionInfo {
 
     List<CompetitionFieldInfo> getFields();
 
+    Boolean getPossibleInvalid();
+
 
     interface CompetitionFieldInfo {
         Integer getId();

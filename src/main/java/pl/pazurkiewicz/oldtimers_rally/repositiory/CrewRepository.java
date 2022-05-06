@@ -52,6 +52,6 @@ public interface CrewRepository extends JpaRepository<Crew, Integer> {
     @Transactional
     void updatePresentByCrewId(Integer id, Boolean present);
 
-    @Query("select c from Crew c where c.event=:event and c.qrCode is null order by c.yearOfProduction asc , c.id asc")
-    List<Crew> getSortedEmptyCrews(Event event);
+    @Query("select c from Crew c where c.event=:event and c.qrCode is null and c.present = true order by c.yearOfProduction asc , c.id asc")
+    List<Crew> getSortedPresentEmptyCrews(Event event);
 }

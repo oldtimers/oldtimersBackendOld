@@ -82,7 +82,7 @@ public class ScoreService {
 
     private void assignScoreRequestToFields(Score score, Competition competition, ScoreRequest scoreRequest) throws InvalidScore {
         List<CompetitionField> fields = competition.getFields();
-        score.setInvalidResult(scoreRequest.getInvalidResult());
+        score.setInvalidResult(competition.getPossibleInvalid() && scoreRequest.getInvalidResult());
         if (score.isInvalidResult()) {
             return;
         }

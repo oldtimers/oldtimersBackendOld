@@ -67,6 +67,9 @@ public class Competition implements DatabaseModel {
     @NotBlank(groups = {BestCategory.class, CountedCategory.class})
     private String functionCode = "0";
 
+    @Column(name = "possible_invalid", nullable = false)
+    private Boolean possibleInvalid = false;
+
     public Competition() {
     }
 
@@ -74,6 +77,14 @@ public class Competition implements DatabaseModel {
         this.event = event;
         this.description = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
         this.name = EventLanguageCode.generateNewEventLanguageCode(event.getEventLanguages());
+    }
+
+    public Boolean getPossibleInvalid() {
+        return possibleInvalid;
+    }
+
+    public void setPossibleInvalid(Boolean possibleInvalid) {
+        this.possibleInvalid = possibleInvalid;
     }
 
     public String getFunctionCode() {

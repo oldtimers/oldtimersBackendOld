@@ -1,7 +1,6 @@
 package pl.pazurkiewicz.oldtimers_rally.controller.event;
 
 import org.hibernate.Hibernate;
-import org.springframework.cache.CacheManager;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,16 +31,14 @@ public class AdvancedEditEventController {
     private final LanguageService languageService;
     private final EventService eventService;
     private final EventRepository eventRepository;
-    private final CacheManager cacheManager;
     private final FileUploadService fileUploadService;
     private final LanguageRepository languageRepository;
 
 
-    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, CacheManager cacheManager, FileUploadService fileUploadService, LanguageRepository languageRepository) {
+    public AdvancedEditEventController(EventRepository eventRepository, LanguageService languageService, EventService eventService, FileUploadService fileUploadService, LanguageRepository languageRepository) {
         this.languageService = languageService;
         this.eventService = eventService;
         this.eventRepository = eventRepository;
-        this.cacheManager = cacheManager;
         this.fileUploadService = fileUploadService;
         this.languageRepository = languageRepository;
     }
@@ -58,7 +55,7 @@ public class AdvancedEditEventController {
 
     @PostMapping(params = "reload")
     @PreAuthorize("hasPermission(#url,'Event','" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
-    String reloadEvent(@ModelAttribute("editEvent") @Valid EventModel event, BindingResult bindingResult, @PathVariable("url") String url) {
+    String reloadEvent(@ModelAttribute("editEvent") @Valid EventModel event, @PathVariable("url") String url) {
 //        Reload is done during object validation
         return "event/edit_advanced_event";
     }
@@ -78,8 +75,8 @@ public class AdvancedEditEventController {
     }
 
     public void invalidateEventByUrl(String url) {
-        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
-        cacheManager.getCache("eventsId").evictIfPresent(url);
+//        cacheManager.getCache("eventsByUrl").evictIfPresent(url);
+//        cacheManager.getCache("eventsId").evictIfPresent(url);
     }
 
     @PostMapping(value = "/mainPhoto")
@@ -123,7 +120,7 @@ public class AdvancedEditEventController {
 
 
     @ModelAttribute("languages")
-    List<Language> languages() {
-        return languageRepository.findAll();
+    List<Language> languages(@PathVariable("url") String url) {
+        return languageRepository.getLanguagesByUrl(url);
     }
 }
