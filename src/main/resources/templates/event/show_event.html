@@ -19,6 +19,9 @@
             <div class="text">
                 <span th:text="${event.description.getDictionary(#locale)}"></span>
             </div>
+            <iframe height="480"
+                    src="https://www.google.com/maps/d/u/0/embed?mid=1lh5QZXpOyOerWxenpxDYLPw7N8GbiHDz&ehbc=2E312F"
+                    style="width: 100%; margin:auto" width="640"></iframe>
         </div>
     </div>
 
@@ -43,7 +46,8 @@
 
     </div>
 
-    <h2 th:text="#{results}"></h2>
+    <h2 th:if="${event.stage} == ${T(pl.pazurkiewicz.oldtimers_rally.model.StageEnum).RESULTS}"
+        th:text="#{results}"></h2>
     <div>
         <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
         <div th:each="category : ${categories}">

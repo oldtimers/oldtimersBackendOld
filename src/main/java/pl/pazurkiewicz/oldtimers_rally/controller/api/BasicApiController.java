@@ -86,9 +86,9 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/score/reg")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addRegScore(@PathVariable Integer id, @RequestBody @Valid RegScoreRequest scoreRequest) {
+    ResponseEntity<?> addRegScore(@PathVariable Integer id, @RequestBody @Valid RegScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
-            scoreService.addRegScore(scoreRequest, id);
+            scoreService.addRegScore(scoreRequest, id, principal.getUser());
         } catch (InvalidScore e) {
             return ResponseEntity.badRequest().build();
         }
@@ -110,9 +110,9 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/score")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addScore(@PathVariable Integer id, @RequestBody @Valid ScoreRequest scoreRequest) {
+    ResponseEntity<?> addScore(@PathVariable Integer id, @RequestBody @Valid ScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
-            scoreService.addScore(scoreRequest, id);
+            scoreService.addScore(scoreRequest, id, principal.getUser());
         } catch (InvalidScore e) {
             return ResponseEntity.badRequest().build();
         }

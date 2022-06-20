@@ -43,7 +43,7 @@ public class OldtimersRallyApplication extends SpringBootServletInitializer impl
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
 
-        localeResolver.setDefaultLocale(new Locale("en"));
+        localeResolver.setDefaultLocale(new Locale(configurationProperties.getDefaultLanguage()));
         return localeResolver;
     }
 
@@ -68,7 +68,7 @@ public class OldtimersRallyApplication extends SpringBootServletInitializer impl
 
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setDefaultLocale(new Locale("en"));
+        messageSource.setDefaultLocale(new Locale(configurationProperties.getDefaultLanguage()));
         return messageSource;
     }
 
