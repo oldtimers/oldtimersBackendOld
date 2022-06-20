@@ -23,6 +23,17 @@ public class CrewCategory implements DatabaseModel {
     @Column(name = "ranking_points")
     private Double rankingPoints;
 
+    @Column(name = "year_multiplier")
+    private Double yearMultiplier;
+
+    public Double getYearMultiplier() {
+        return yearMultiplier;
+    }
+
+    public void setYearMultiplier(Double yearMultiplier) {
+        this.yearMultiplier = yearMultiplier;
+    }
+
     public CrewCategory() {
     }
 

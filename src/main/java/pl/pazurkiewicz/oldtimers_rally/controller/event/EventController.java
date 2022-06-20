@@ -52,6 +52,8 @@ public class EventController {
         model.addAttribute("crews", crewRepository.getAllByEvent_UrlAndPresentIsTrueOrderByQrCode_NumberAscYearOfProductionAsc(url));
         model.addAttribute("competitions", competitionRepository.getByEvent(event));
         model.addAttribute("categories", categoryRepository.findByEvent_IdOrderById(event.getId()));
+        if (event.getCustomMainHtml() != null)
+            return event.getCustomMainHtml();
         return "event/show_event";
     }
 
@@ -67,6 +69,8 @@ public class EventController {
             }
             model.addAttribute("crew", crew.get());
         }
+        if (event.getCustomCrewHtml() != null)
+            return event.getCustomCrewHtml();
         return "crew/show_crew";
     }
 

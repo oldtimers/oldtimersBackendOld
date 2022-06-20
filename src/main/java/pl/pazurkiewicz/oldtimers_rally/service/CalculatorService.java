@@ -15,10 +15,7 @@ import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewCategoryRepository;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.ScoreRepository;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,12 +71,35 @@ public class CalculatorService {
             throw new InvalidScore("Duplicate scores, impossible to generate results - see logs");
         }
         List<Competition> competitions = competitionRepository.getByEvent(event);
-        List<Category> categories = categoryRepository.getByEvent(event);
+        Set<Category> categories = categoryRepository.getByEvent(event);
 
         for (Category category : categories) {
             calculateGlobalPointsForCategory(competitions, category);
         }
         event.setStage(StageEnum.RESULTS);
+    }
+
+
+    @Transactional
+    public void evaluateYearMultiplier(Category category) {
+        if (category.getYearMultiplierFunction() != null) {
+            List<CrewCategory> crewCategories = category.getCrewCategories();
+            if (crewCategories != null) {
+                Optional<Integer> min = crewCategories.stream().map(CrewCategory::getCrew).filter(Crew::getPresent).map(Crew::getYearOfProduction).min(Integer::compareTo);
+                Optional<Integer> max = crewCategories.stream().map(CrewCategory::getCrew).filter(Crew::getPresent).map(Crew::getYearOfProduction).max(Integer::compareTo);
+                if (max.isPresent() && min.isPresent()) {
+                    Argument y = new Argument("y");
+                    Argument[] arguments = {new Argument("x", min.get()),
+                            y,
+                            new Argument("z", max.get())};
+                    Expression expression = new Expression(category.getYearMultiplierFunction(), arguments);
+                    crewCategories.forEach(crewCategory -> {
+                        y.setArgumentValue(crewCategory.getCrew().getYearOfProduction());
+                        crewCategory.setYearMultiplier(expression.calculate());
+                    });
+                }
+            }
+        }
     }
 
     @Transactional

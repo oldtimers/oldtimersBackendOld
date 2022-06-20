@@ -1,6 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.repositiory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.CategoryEnum;
@@ -20,5 +21,12 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
         return getByEvent_IdAndMode(eventId, CategoryEnum.year, Category.class);
     }
 
-    List<Category> getByEvent(Event event);
+    @Modifying
+    @Query("delete from Category where id in :ids and event.id = :eventId")
+    void deleteAllByIdsAndEvent_Id(Iterable<Integer> ids, Integer eventId);
+
+    @Query("select c from Category c left join fetch c.crewCategories as cc left join fetch cc.crew where c.event.id = :eventId")
+    Set<Category> getByEvent_Id(Integer eventId);
+
+    Set<Category> getByEvent(Event event);
 }

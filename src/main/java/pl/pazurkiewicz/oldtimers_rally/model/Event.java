@@ -63,6 +63,28 @@ public class Event implements DatabaseModel {
     @Column(name = "max_crew_number", nullable = false)
     private Integer maxCrewNumber = 20;
 
+    @Column(name = "custom_main_html", length = 64)
+    private String customMainHtml;
+
+    @Column(name = "custom_crew_html", length = 64)
+    private String customCrewHtml;
+
+    public String getCustomCrewHtml() {
+        return customCrewHtml;
+    }
+
+    public void setCustomCrewHtml(String customCrewHtml) {
+        this.customCrewHtml = customCrewHtml;
+    }
+
+    public String getCustomMainHtml() {
+        return customMainHtml;
+    }
+
+    public void setCustomMainHtml(String customMainHtml) {
+        this.customMainHtml = customMainHtml;
+    }
+
     public Integer getMaxCrewNumber() {
         return maxCrewNumber;
     }

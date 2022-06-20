@@ -45,6 +45,17 @@ public class Category implements DatabaseModel {
     @Column(name = "max_year")
     private Integer maxYear;
 
+    @Column(name = "year_multiplier_function", length = 300)
+    private String yearMultiplierFunction;
+
+    public String getYearMultiplierFunction() {
+        return yearMultiplierFunction;
+    }
+
+    public void setYearMultiplierFunction(String yearMultiplierFunction) {
+        this.yearMultiplierFunction = yearMultiplierFunction;
+    }
+
     public Category() {
     }
 

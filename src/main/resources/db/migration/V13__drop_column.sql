@@ -1,3 +1,3 @@
-alter table scores
-    drop column is_valid;
+# alter table scores
+#     drop column is_valid;
 

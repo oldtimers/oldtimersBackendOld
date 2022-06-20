@@ -21,15 +21,20 @@ public class CategoriesService {
     CategoryRepository categoryRepository;
     @Autowired
     CrewRepository crewRepository;
+    @Autowired
+    CalculatorService calculatorService;
 
+    @Transactional
     public void saveCategoriesModel(CategoriesModel categories, Integer eventId) {
         categories.preUpdate();
-        categoryRepository.deleteAllById(categories.getDeletedCategories());
+        categoryRepository.deleteAllByIdsAndEvent_Id(categories.getDeletedCategories(), eventId);
         categoryRepository.saveAll(categories.getOtherCategories());
         categoryRepository.saveAll(categories.getYearCategories());
         categories.getYearCategories().forEach(this::assignToCrews);
+        calculateYearMultipliers(eventId);
     }
 
+    @Transactional
     public void assignToCrews(Category category) {
         for (Crew crew : crewRepository.getByEvent(category.getEvent())) {
             Optional<CrewCategory> crewCategory = crew.getCategories().stream().filter(c -> Objects.equals(c.getCategory().getId(), category.getId())).findAny();
@@ -45,5 +50,10 @@ public class CategoriesService {
             }
             crewRepository.save(crew);
         }
+    }
+
+    @Transactional
+    protected void calculateYearMultipliers(Integer eventId) {
+        categoryRepository.getByEvent_Id(eventId).forEach(category -> calculatorService.evaluateYearMultiplier(category));
     }
 }

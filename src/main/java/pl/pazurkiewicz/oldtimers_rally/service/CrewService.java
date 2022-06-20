@@ -24,6 +24,7 @@ public class CrewService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Transactional
     public void saveCrewsModel(CrewsModel crews) {
         crews.preUpdate(categoryRepository.getByEvent_IdAndModeYear(crews.getEvent().getId()));
         crewRepository.deleteAllById(crews.getDeletedCrews());
