@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header_fragment :: headerFragment (title='Welcome page')"></head>
+<head th:replace="fragments/header_fragment :: headerFragment (title='OLDTIMERSWEB.COM')"></head>
 <link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/index.css}"/>
 <link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<meta charset="utf-8">
+<meta name="Description" CONTENT="Platforma webowa, służąca do organizowania międzynarodowych rajdów pojazdów zabytkowych">
+<meta name="author" content="Artur Pazurkiewicz, Wojciech Kałuziński">
+<link rel="shortcut icon" type="image/x-icon" href="assets/logo.svg" />
+<meta name="keywords" content="Oldtimers, Rajd, Zabytek, Rajd pojazdów zabytkowych, oldtimersweb, Samochód, pojazd, wyścigi, konkurencje, jazda na regularność, slalom">
 <body>
 <div class="container">
     <div th:replace="fragments/navbar :: myNavbar (links=${ {'create'} })"></div>
