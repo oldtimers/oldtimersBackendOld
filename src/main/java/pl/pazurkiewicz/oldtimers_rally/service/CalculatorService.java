@@ -104,12 +104,16 @@ public class CalculatorService {
 
     @Transactional
     protected void calculateGlobalPointsForCategory(List<Competition> competitions, Category category) {
-        Set<Crew> crews = category.getCrewCategories().stream()
-                .peek(crewCategory -> crewCategory.setRankingPoints(null))
-                .map(CrewCategory::getCrew)
-                .filter(crew -> crew.getQrCode() != null && crew.getPresent()).collect(Collectors.toSet());
-        HashMap<Crew, Double> crewsValue = new HashMap<>();
-        crews.forEach(c -> crewsValue.put(c, 0.0));
+        Set<CrewCategory> crewCategories = crewCategoryRepository.getCrewCategoriesByCategoryAndPresent(category);
+        Set<Crew> crews = new HashSet<>();
+        Map<Crew, Double> multipliers = new HashMap<>();
+        Map<Crew, Double> crewsValue = new HashMap<>();
+        crewCategories.forEach(cc -> {
+            Crew c = cc.getCrew();
+            crews.add(c);
+            crewsValue.put(c, 0.0);
+            multipliers.put(c, cc.getYearMultiplier());
+        });
         for (Competition competition : competitions) {
             List<Score> validScores = scoreRepository.getValidScoresForCompetition(competition, crews);
             List<Score> invalidScores = scoreRepository.getInvalidScoresForCompetition(competition, crews);
@@ -118,13 +122,13 @@ public class CalculatorService {
             switch (competition.getType()) {
                 case REGULAR_DRIVE:
                 case BEST_MIN:
-                    calculateCompetitionForBestMin(crewsValue, validScores, competition);
+                    calculateCompetitionForBestMin(crewsValue, validScores, competition, multipliers);
                     break;
                 case BEST_MAX:
-                    calculateCompetitionForBestMax(crewsValue, validScores, competition);
+                    calculateCompetitionForBestMax(crewsValue, validScores, competition, multipliers);
                     break;
                 case COUNTED:
-                    calculateCompetitionForCounted(crewsValue, validScores);
+                    calculateCompetitionForCounted(crewsValue, validScores, competition, multipliers);
                     break;
             }
             for (Crew crew : crews) {
@@ -139,27 +143,32 @@ public class CalculatorService {
         crewCategoryRepository.saveAllAndFlush(category.getCrewCategories());
     }
 
-    private void calculateInvalidScores(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
+    private void calculateInvalidScores(Map<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
         for (Score score : scores) {
             crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + competition.getMaxRankingPoints());
         }
     }
 
-    public void calculateCompetitionForBestMin(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
-        calculateCompetitionForBest(crewsValue, scores, competition, false);
+    public void calculateCompetitionForBestMin(Map<Crew, Double> crewsValue, List<Score> scores, Competition competition, Map<Crew, Double> multipliers) {
+        calculateCompetitionForBest(crewsValue, scores, competition, multipliers, false);
     }
 
-    public void calculateCompetitionForBestMax(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition) {
-        calculateCompetitionForBest(crewsValue, scores, competition, true);
+    public void calculateCompetitionForBestMax(Map<Crew, Double> crewsValue, List<Score> scores, Competition competition, Map<Crew, Double> multipliers) {
+        calculateCompetitionForBest(crewsValue, scores, competition, multipliers, true);
     }
 
-    public void calculateCompetitionForCounted(HashMap<Crew, Double> crewsValue, List<Score> scores) {
+    public void calculateCompetitionForCounted(Map<Crew, Double> crewsValue, List<Score> scores, Competition competition, Map<Crew, Double> multipliers) {
         for (Score score : scores) {
-            crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + score.getResult());
+            appendScore(crewsValue, score.getCrew(), score.getResult(), competition, multipliers);
         }
     }
 
-    private void calculateCompetitionForBest(HashMap<Crew, Double> crewsValue, List<Score> scores, Competition competition, boolean isMax) {
+    private void appendScore(Map<Crew, Double> crewsValue, Crew crew, Double score, Competition competition, Map<Crew, Double> multipliers) {
+        int earned = (int) Math.round((multipliers.get(crew) != null ? Math.max(multipliers.get(crew), 0.0) : 1.0) * score);
+        crewsValue.put(crew, crewsValue.get(crew) + Math.min(earned, competition.getType() == CompetitionTypeEnum.COUNTED ? Integer.MAX_VALUE : competition.getMaxRankingPoints()));
+    }
+
+    private void calculateCompetitionForBest(Map<Crew, Double> crewsValue, List<Score> scores, Competition competition, Map<Crew, Double> multipliers, boolean isMax) {
         int subsets = competition.getNumberOfSubsets();
         if (!scores.isEmpty() && subsets > 1) {
             double minScore = scores.get(0).getResult();
@@ -175,7 +184,7 @@ public class CalculatorService {
                     while (i < subsets && score.getResult() > jumps.get(i)) {
                         i++;
                     }
-                    crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + Math.round(pointMove * i));
+                    appendScore(crewsValue, score.getCrew(), pointMove * i, competition, multipliers);
                 }
             } else {
                 int subMover = subsets - 1;
@@ -183,8 +192,7 @@ public class CalculatorService {
                     while (i < subMover && (score.getResult() > jumps.get(i) || minScore == maxScore)) {
                         i++;
                     }
-                    float z = Math.round(pointMove * (subMover - i));
-                    crewsValue.put(score.getCrew(), crewsValue.get(score.getCrew()) + z);
+                    appendScore(crewsValue, score.getCrew(), pointMove * (subMover - i), competition, multipliers);
                 }
             }
         }

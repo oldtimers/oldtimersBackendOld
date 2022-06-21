@@ -53,7 +53,7 @@ public class CategoriesService {
     }
 
     @Transactional
-    protected void calculateYearMultipliers(Integer eventId) {
+    public void calculateYearMultipliers(Integer eventId) {
         categoryRepository.getByEvent_Id(eventId).forEach(category -> calculatorService.evaluateYearMultiplier(category));
     }
 }

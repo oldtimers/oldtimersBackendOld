@@ -23,6 +23,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
 import pl.pazurkiewicz.oldtimers_rally.repositiory.*;
 import pl.pazurkiewicz.oldtimers_rally.service.CalculatorService;
+import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 import pl.pazurkiewicz.oldtimers_rally.service.QrCodeService;
 import pl.pazurkiewicz.oldtimers_rally.utils.FileUploadService;
@@ -47,7 +48,9 @@ public class EditEventController {
 
     private final LanguageRepository languageRepository;
 
-    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadService fileUploadService, CategoryRepository categoryRepository, CrewService crewService, CalculatorService calculatorService, QrCodeService qrCodeService, LanguageRepository languageRepository) {
+    private final CategoriesService categoriesService;
+
+    public EditEventController(EventRepository eventRepository, CrewRepository crewRepository, CompetitionRepository competitionRepository, SmartValidator smartValidator, FileUploadService fileUploadService, CategoryRepository categoryRepository, CrewService crewService, CalculatorService calculatorService, QrCodeService qrCodeService, LanguageRepository languageRepository, CategoriesService categoriesService) {
         this.eventRepository = eventRepository;
         this.crewRepository = crewRepository;
         this.competitionRepository = competitionRepository;
@@ -58,6 +61,7 @@ public class EditEventController {
         this.calculatorService = calculatorService;
         this.qrCodeService = qrCodeService;
         this.languageRepository = languageRepository;
+        this.categoriesService = categoriesService;
     }
 
     @GetMapping
@@ -118,6 +122,7 @@ public class EditEventController {
     @PreAuthorize("hasPermission(#url,'" + UserGroupEnum.Constants.ORGANIZER_VALUE + "')")
     String savePresent(@PathVariable("url") String url, @ModelAttribute("event") Event event, @ModelAttribute("crewsModel") CrewsModel crewsModel, Model model) {
         crewService.saveCrewsModelOnlyPresent(crewsModel);
+        categoriesService.calculateYearMultipliers(event.getId());
         return showEditPage(url, event, model);
     }
 
