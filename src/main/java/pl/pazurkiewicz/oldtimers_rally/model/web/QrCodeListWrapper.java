@@ -1,9 +1,10 @@
 package pl.pazurkiewicz.oldtimers_rally.model.web;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class QrCodeListWrapper {
+public class QrCodeListWrapper implements Serializable {
     private final List<QrCodePiece> pieces;
 
     public QrCodeListWrapper(List<QrCodePiece> pieces) {

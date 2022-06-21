@@ -1,5 +1,7 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
-public interface DatabaseModel {
+import java.io.Serializable;
+
+public interface DatabaseModel extends Serializable {
     Integer getId();
 }

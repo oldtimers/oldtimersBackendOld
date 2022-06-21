@@ -14,6 +14,7 @@ import javax.validation.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.time.LocalDateTime;
@@ -47,7 +48,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Reload
 @IsUrlAvailable(url = "url", old = "event.url")
 @IsEndDateValid(startDate = "startDate", endDate = "endDate")
-public class EventModel {
+public class EventModel implements Serializable {
     private final Event event;
     private final PossibleLanguageSelector possibleLanguageSelector;
     private final DefaultLanguageSelector defaultLanguageSelector;

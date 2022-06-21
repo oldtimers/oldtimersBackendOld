@@ -6,6 +6,7 @@ import pl.pazurkiewicz.oldtimers_rally.validator.FieldsValueMatch;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 
 @FieldsValueMatch(
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
         fieldMatch = "newPasswordConfirmation",
         message = "{passwords.notMatch}"
 )
-public class UserWriteModel {
+public class UserWriteModel implements Serializable {
     @NotBlank
     @Length(min = 3, max = 32)
     private String login;

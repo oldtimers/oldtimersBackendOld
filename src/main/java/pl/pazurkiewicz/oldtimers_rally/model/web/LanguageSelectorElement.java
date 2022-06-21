@@ -4,7 +4,9 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 
-public class LanguageSelectorElement {
+import java.io.Serializable;
+
+public class LanguageSelectorElement implements Serializable {
     private Language language;
     private EventLanguage eventLanguage;
     private Boolean accept;

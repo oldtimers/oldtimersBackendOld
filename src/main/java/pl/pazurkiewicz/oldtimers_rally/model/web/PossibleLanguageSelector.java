@@ -3,11 +3,12 @@ package pl.pazurkiewicz.oldtimers_rally.model.web;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguage;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class PossibleLanguageSelector {
+public class PossibleLanguageSelector implements Serializable {
     private List<LanguageSelectorElement> possibleLanguages;
 
     public PossibleLanguageSelector(DefaultLanguageSelector defaultLanguageSelector, Event event) {

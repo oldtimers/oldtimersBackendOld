@@ -79,13 +79,6 @@ public class CategoriesModel implements ListWebModel<Category> {
         this.newCategory = newCategory;
     }
 
-    public void removeYearCategory(Integer removeId) {
-        removeFromList(removeId, yearCategories, deletedCategories);
-    }
-
-    public void removeDifferentCategory(Integer removeId) {
-        removeFromList(removeId, otherCategories, deletedCategories);
-    }
 
     public void deleteYearCategory(Integer removeId) {
         removeFromList(removeId, yearCategories, deletedCategories);

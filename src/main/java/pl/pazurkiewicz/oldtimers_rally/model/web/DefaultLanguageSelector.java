@@ -2,10 +2,11 @@ package pl.pazurkiewicz.oldtimers_rally.model.web;
 
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class DefaultLanguageSelector {
+public class DefaultLanguageSelector implements Serializable {
     private List<Language> possibleLanguages;
     private Language defaultLanguage;
 
