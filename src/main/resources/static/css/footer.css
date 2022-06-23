@@ -1,0 +1,14 @@
+.footer{
+    height: 100px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    position: sticky;
+    background: black;
+    text-align: center;
+}
+.footer img{
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
