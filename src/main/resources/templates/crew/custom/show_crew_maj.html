@@ -57,7 +57,10 @@
         <!--/*@thymesVar id="crc" type="pl.pazurkiewicz.oldtimers_rally.model.Score"*/-->
         <tr th:each="crc : ${crew.scores}">
             <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
-            <td th:if="${crc.result} != null" th:text="${crc.result}"></td>
+            <td th:if="${crc.result} != null and ${crc.competition.id} == 7" th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}"></td>
+            <td th:if="${crc.result} != null and ${crc.competition.id} == 9" th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"></td>
+            <td th:if="${crc.result} != null and ${crc.competition.id} == 8" th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"></td>
+
         </tr>
         </tbody>
     </table>
