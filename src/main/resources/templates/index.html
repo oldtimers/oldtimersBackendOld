@@ -22,7 +22,7 @@
             <img alt="rally" class="card-img-top" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
             <div class="card-body">
                 <h5 class="card-title" th:text="${event.name.getDictionary(#locale)}"></h5>
-                <p class="card-text" th:text="${event.description.getDictionary(#locale)}"></p>
+
                 <a class="btn-primary" th:href="@{/__${event.url}__}" th:text="#{checkRally}"></a>
             </div>
         </div>
