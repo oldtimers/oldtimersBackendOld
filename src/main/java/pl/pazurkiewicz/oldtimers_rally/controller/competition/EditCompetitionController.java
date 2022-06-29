@@ -14,9 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CompetitionModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CompetitionService;
 
 import javax.validation.Valid;

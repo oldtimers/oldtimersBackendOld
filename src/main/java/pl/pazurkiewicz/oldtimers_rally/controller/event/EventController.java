@@ -12,7 +12,7 @@ import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.*;
+import pl.pazurkiewicz.oldtimers_rally.repository.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

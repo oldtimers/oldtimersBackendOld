@@ -10,8 +10,8 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoryPiece;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

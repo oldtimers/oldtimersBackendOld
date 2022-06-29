@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.web.UserWriteModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.LanguageService;
 

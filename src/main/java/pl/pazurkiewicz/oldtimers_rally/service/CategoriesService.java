@@ -8,8 +8,8 @@ import pl.pazurkiewicz.oldtimers_rally.model.Category;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.CrewCategory;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
 
 import java.util.Objects;
 import java.util.Optional;

@@ -16,10 +16,10 @@ import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewModel;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;
 
 import javax.validation.Valid;

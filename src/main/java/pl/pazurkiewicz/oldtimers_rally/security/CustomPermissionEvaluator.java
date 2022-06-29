@@ -10,8 +10,8 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.User;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroup;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserGroupRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserGroupRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import java.io.Serializable;

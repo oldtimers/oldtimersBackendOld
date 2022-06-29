@@ -18,9 +18,9 @@ import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.QrCode;
 import pl.pazurkiewicz.oldtimers_rally.model.StageEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.web.QrCodeListWrapper;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.QrCodeRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.QrCodeRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewCategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.ScoreRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewCategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.ScoreRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;

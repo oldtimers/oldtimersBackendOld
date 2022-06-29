@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.jwt.AuthEntryPointJwt;
 import pl.pazurkiewicz.oldtimers_rally.security.jwt.AuthTokenFilter;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsServiceImpl;

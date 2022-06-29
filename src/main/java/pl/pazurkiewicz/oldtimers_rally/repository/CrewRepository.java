@@ -1,4 +1,4 @@
-package pl.pazurkiewicz.oldtimers_rally.repositiory;
+package pl.pazurkiewicz.oldtimers_rally.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,8 +23,9 @@ public interface CrewRepository extends JpaRepository<Crew, Integer> {
 
     List<Crew> getAllByEvent_UrlOrderByQrCode_NumberAscYearOfProductionAsc(String url);
 
-    @Query("select c from Crew c where c.qrCode is null")
-    Set<Crew> getAllByEventAndQrIsNull(Event event);
+    @Query("select c from Crew c where c.event.id=:eventId and c.qrCode is not null and c.present is true")
+    <T>
+    Set<T> getAllByEventAndCrewIsPresent(Integer eventId, Class<T> type);
 
     @Query("select distinct c from Crew c join fetch c.categories ca where ca.category=:category")
     Set<Crew> getByCategory(Category category);

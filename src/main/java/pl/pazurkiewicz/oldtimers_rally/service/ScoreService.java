@@ -10,9 +10,9 @@ import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.api.request.RegScoreRequest;
 import pl.pazurkiewicz.oldtimers_rally.model.api.request.ReqScoreEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.api.request.ScoreRequest;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.ScoreRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.ScoreRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
