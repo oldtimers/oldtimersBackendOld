@@ -18,7 +18,7 @@
             <h2 class="title" th:text="${event.name.getDictionary(#locale)}"></h2>
             <img alt="rally" class="event-img" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
             <div class="text">
-                <span th:text="${event.description.getDictionary(#locale)}"></span>
+                <span th:utext="${event.description.getDictionary(#locale)}"></span>
             </div>
         </div>
         <iframe src="https://www.google.com/maps/d/u/3/embed?mid=11kIrs9NNWqeGyX5aZMxg56ZoYF_D48A&ehbc=2E312F"
