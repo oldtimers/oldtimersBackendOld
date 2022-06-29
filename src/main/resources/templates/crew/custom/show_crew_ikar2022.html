@@ -59,31 +59,31 @@
             <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
             <th:block th:switch="${crc.competition.id}">
                 <div th:case="10">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}"></td>
                 </div>
                 <div th:case="11">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"></td>
                 </div>
                 <div th:case="12">
-                    <td th:if="${crc.result} != null" th:text="
+                    <td th:text="
                     #{results.left} + ' '  + ${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}
                     + ' ' +
                     #{results.right} + ' ' + ${#numbers.formatDecimal(crc.additional2, 0, 0)} + #{results.cm}"></td>
                 </div>
                 <div th:case="13">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"></td>
                 </div>
                 <div th:case="14">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"></td>
                 </div>
                 <div th:case="15">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"></td>
                 </div>
                 <div th:case="16">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"></td>
                 </div>
                 <div th:case="17">
-                    <td th:if="${crc.result} != null" th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"></td>
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"></td>
                 </div>
             </th:block>
         </tr>
