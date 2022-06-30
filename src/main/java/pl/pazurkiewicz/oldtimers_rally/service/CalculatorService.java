@@ -70,6 +70,13 @@ public class CalculatorService {
             }
             throw new InvalidScore("Duplicate scores, impossible to generate results - see logs");
         }
+        List<Score> invalidScores = scoreRepository.getScoresByCrew_EventAndResultIsNull(event);
+        if (!invalidScores.isEmpty()) {
+            for (Score invalid : invalidScores) {
+                log.error(String.format("Invalid result for competition id: %d, crew id: %d", invalid.getCompetition().getId(), invalid.getCrew().getId()));
+            }
+            throw new InvalidScore("Invalid scores, impossible to generate results - see logs");
+        }
         List<Competition> competitions = competitionRepository.getByEvent(event);
         Set<Category> categories = categoryRepository.getByEvent(event);
 

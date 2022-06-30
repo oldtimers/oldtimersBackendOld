@@ -46,7 +46,9 @@ public class ScoreService {
                 score.setResult(null);
             } else {
                 score.setAdditional2(scoreRequest.getTime());
-                calculateAverage(score, competition);
+                if (score.getAdditional1() != null) {
+                    calculateAverage(score, competition);
+                }
             }
             score.setAuthor(user);
             scoreRepository.save(score);

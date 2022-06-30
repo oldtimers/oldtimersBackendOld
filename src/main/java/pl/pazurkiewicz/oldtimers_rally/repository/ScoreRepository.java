@@ -20,5 +20,7 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
     @Query("select s.competition.id,s.crew.id from Score s where s.competition.event=:event group by s.competition, s.crew having count(s.crew)>1 order by s.competition.id, s.crew.id")
     List<List<Integer>> getDuplicates(Event event);
 
+    List<Score> getScoresByCrew_EventAndResultIsNull(Event event);
+
     Score getByCompetitionAndCrew(Competition competition, Crew crew);
 }
