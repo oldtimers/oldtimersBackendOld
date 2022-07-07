@@ -15,9 +15,9 @@ import pl.pazurkiewicz.oldtimers_rally.model.Language;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CategoriesModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 
 import javax.validation.Valid;

@@ -12,9 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.LanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.LanguageRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import java.util.List;

@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 import javax.servlet.ServletException;

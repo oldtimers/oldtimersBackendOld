@@ -14,15 +14,16 @@ import pl.pazurkiewicz.oldtimers_rally.model.api.request.ScoreRequest;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.CompetitionInfo;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.CrewInfo;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.EventInfo;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import pl.pazurkiewicz.oldtimers_rally.service.ScoreService;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +32,7 @@ public class BasicApiController {
     private final CompetitionRepository competitionRepository;
     private final CrewRepository crewRepository;
     private final ScoreService scoreService;
+
 
     public BasicApiController(EventRepository eventRepository, CompetitionRepository competitionRepository, CrewRepository crewRepository, ScoreService scoreService) {
         this.eventRepository = eventRepository;
@@ -84,11 +86,31 @@ public class BasicApiController {
         }
     }
 
+    @PostMapping("/event/{id}/crews")
+    @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
+    ResponseEntity<?> getCrews(@PathVariable Integer id) {
+        Set<CrewInfo> crews = crewRepository.getAllByEventAndCrewIsPresent(id, CrewInfo.class);
+        return ResponseEntity.ok(crews);
+    }
+
     @PostMapping("/event/{id}/score/reg")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
     ResponseEntity<?> addRegScore(@PathVariable Integer id, @RequestBody @Valid RegScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
             scoreService.addRegScore(scoreRequest, id, principal.getUser());
+        } catch (InvalidScore e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/event/{id}/scores/reg")
+    @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
+    ResponseEntity<?> addRegScores(@PathVariable Integer id, @RequestBody @Valid List<RegScoreRequest> scoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
+        try {
+            for (RegScoreRequest scoreRequest : scoreRequests) {
+                scoreService.addRegScore(scoreRequest, id, principal.getUser());
+            }
         } catch (InvalidScore e) {
             return ResponseEntity.badRequest().build();
         }
@@ -114,6 +136,19 @@ public class BasicApiController {
         try {
             scoreService.addScore(scoreRequest, id, principal.getUser());
         } catch (InvalidScore e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/event/{id}/scores")
+    @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
+    ResponseEntity<?> addScores(@PathVariable Integer id, @RequestBody List<ScoreRequest> scoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
+        try {
+            for (ScoreRequest scoreRequest : scoreRequests) {
+                scoreService.addScore(scoreRequest, id, principal.getUser());
+            }
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

@@ -21,7 +21,7 @@ import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
 import pl.pazurkiewicz.oldtimers_rally.model.comparator.EventLanguageComparator;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CrewsModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.*;
+import pl.pazurkiewicz.oldtimers_rally.repository.*;
 import pl.pazurkiewicz.oldtimers_rally.service.CalculatorService;
 import pl.pazurkiewicz.oldtimers_rally.service.CategoriesService;
 import pl.pazurkiewicz.oldtimers_rally.service.CrewService;

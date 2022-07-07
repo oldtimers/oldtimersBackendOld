@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.Competition;
 import pl.pazurkiewicz.oldtimers_rally.model.web.CompetitionModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS)

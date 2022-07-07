@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.EventLanguageCode;
 import pl.pazurkiewicz.oldtimers_rally.model.web.EventModel;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventLanguageRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.EventRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventLanguageRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.EventRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 
 @Service

@@ -1,15 +1,23 @@
 package pl.pazurkiewicz.oldtimers_rally.model.api.response;
 
+import java.time.LocalDateTime;
+
 public class JwtResponse {
     private String access;
     private String type = "Bearer";
     private String refresh;
     private String username;
 
-    public JwtResponse(String accessToken, String refreshToken, String username) {
+    private Integer userId;
+
+    private LocalDateTime expirationDate;
+
+    public JwtResponse(String accessToken, String refreshToken, String username, Integer userId, LocalDateTime expirationDate) {
         this.access = accessToken;
         this.refresh = refreshToken;
         this.username = username;
+        this.expirationDate = expirationDate;
+        this.userId = userId;
     }
 
     public String getAccess() {
@@ -42,5 +50,21 @@ public class JwtResponse {
 
     public void setRefresh(String refresh) {
         this.refresh = refresh;
+    }
+
+    public LocalDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

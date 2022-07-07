@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.*;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CompetitionRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.CrewCategoryRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.ScoreRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CompetitionRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.CrewCategoryRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.ScoreRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,6 +70,13 @@ public class CalculatorService {
             }
             throw new InvalidScore("Duplicate scores, impossible to generate results - see logs");
         }
+        List<Score> invalidScores = scoreRepository.getScoresByCrew_EventAndResultIsNullAndAdditional1IsNullAndInvalidResultIsFalse(event);
+        if (!invalidScores.isEmpty()) {
+            for (Score invalid : invalidScores) {
+                log.error(String.format("Invalid result for competition id: %d, crew id: %d, id: %d", invalid.getCompetition().getId(), invalid.getCrew().getId(), invalid.getId()));
+            }
+            throw new InvalidScore("Invalid scores, impossible to generate results - see logs");
+        }
         List<Competition> competitions = competitionRepository.getByEvent(event);
         Set<Category> categories = categoryRepository.getByEvent(event);
 
@@ -98,6 +105,11 @@ public class CalculatorService {
                         crewCategory.setYearMultiplier(expression.calculate());
                     });
                 }
+            }
+        } else {
+            List<CrewCategory> crewCategories = category.getCrewCategories();
+            if (crewCategories != null) {
+                crewCategories.forEach(crewCategory -> crewCategory.setYearMultiplier(null));
             }
         }
     }

@@ -6,8 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.exception.TokenRefreshException;
 import pl.pazurkiewicz.oldtimers_rally.model.RefreshToken;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.RefreshTokenRepository;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.RefreshTokenRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;

@@ -17,7 +17,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.api.request.TokenRefreshRequest;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.JwtResponse;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.MessageResponse;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.UserName;
-import pl.pazurkiewicz.oldtimers_rally.repositiory.UserRepository;
+import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.jwt.JwtUtils;
 import pl.pazurkiewicz.oldtimers_rally.security.service.RefreshTokenService;
 import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
@@ -50,7 +50,7 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String jwt = jwtUtils.generateJwtToken(userDetails);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUser().getId());
-        return new JwtResponse(jwt, refreshToken.getToken(), userDetails.getUsername());
+        return new JwtResponse(jwt, refreshToken.getToken(), userDetails.getUsername(), userDetails.getUser().getId(), refreshToken.getExpiryDate());
     }
 
     @PostMapping("/refresh")
@@ -61,10 +61,9 @@ public class AuthController {
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(refreshTokenService::increaseExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
-                    String token = jwtUtils.generateTokenFromLogin(user.getLogin());
-                    return new JwtResponse(token, requestRefreshToken, user.getLogin());
+                .map(t -> {
+                    String token = jwtUtils.generateTokenFromLogin(t.getUser().getLogin());
+                    return new JwtResponse(token, requestRefreshToken, t.getUser().getLogin(), t.getUser().getId(), t.getExpiryDate());
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
