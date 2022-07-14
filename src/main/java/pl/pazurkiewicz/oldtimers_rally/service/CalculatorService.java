@@ -101,8 +101,13 @@ public class CalculatorService {
                             new Argument("z", max.get())};
                     Expression expression = new Expression(category.getYearMultiplierFunction(), arguments);
                     crewCategories.forEach(crewCategory -> {
-                        y.setArgumentValue(crewCategory.getCrew().getYearOfProduction());
-                        crewCategory.setYearMultiplier(expression.calculate());
+                        if (crewCategory.getCrew().getPresent()) {
+                            y.setArgumentValue(crewCategory.getCrew().getYearOfProduction());
+                            var x = expression.calculate();
+                            crewCategory.setYearMultiplier(x);
+                        } else {
+                            crewCategory.setYearMultiplier(null);
+                        }
                     });
                 }
             }
