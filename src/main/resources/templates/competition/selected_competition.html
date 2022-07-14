@@ -38,6 +38,7 @@
                  th:unless="*{type}==${T(pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum).REGULAR_DRIVE}">
                 <div th:replace="fragments/form_pieces :: classic (fieldName='functionCode', label='__#{competition.function}__')"></div>
                 <p th:text="#{competition.type}+' ' + #{${competitionModel.typeEnums.get(competitionModel.competition.type)}}"></p>
+                <div th:replace="fragments/form_pieces :: checkbox (fieldName='possibleInvalid', label='__#{competition.possibleInvalid}__')"></div>
                 <table class="table" id="fieldTable" th:if="*{fields.size()} > 0">
                     <tr class="nodrop nodrag">
                         <td></td>

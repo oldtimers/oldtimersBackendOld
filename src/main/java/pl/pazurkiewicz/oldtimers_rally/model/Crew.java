@@ -37,8 +37,14 @@ public class Crew implements DatabaseModel {
     @Column(name = "driver_name", nullable = false, length = 64)
     @NotBlank
     private String driverName;
-    @Column(name = "phone", nullable = false, length = 16)
-    @NotBlank
+
+    @Column(name = "pilot_name", length = 64)
+    private String pilotName;
+
+    @Column(name = "club_name", length = 128)
+    private String clubName;
+
+    @Column(name = "phone", length = 16)
     private String phone;
     @Column(name = "accepted_reg", nullable = false)
     @NotNull
@@ -76,6 +82,22 @@ public class Crew implements DatabaseModel {
         this.qrCode = qrCode;
     }
 
+
+    public String getPilotName() {
+        return pilotName;
+    }
+
+    public void setPilotName(String pilotName) {
+        this.pilotName = pilotName;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
 
     public Crew() {
     }

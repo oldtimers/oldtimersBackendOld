@@ -1,5 +1,5 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
 public enum CompetitionFieldTypeEnum {
-    FLOAT, INT, BOOLEAN, TIMER
+    FLOAT, INT, BOOLEAN, TIMER, DATETIME
 }

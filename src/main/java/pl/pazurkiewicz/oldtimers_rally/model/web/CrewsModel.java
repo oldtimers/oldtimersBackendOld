@@ -38,7 +38,7 @@ public class CrewsModel implements ListWebModel<CrewModel> {
         Crew crew = new Crew(event);
         crew.setAcceptedReg(true);
         crew.setAcceptedRodo(true);
-        crew.setPhone("123465798");
+//        crew.setPhone("123465798");
         return crew;
     }
 

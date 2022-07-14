@@ -21,6 +21,7 @@ public class CompetitionModel {
         put(CompetitionFieldTypeEnum.FLOAT, "field.float");
         put(CompetitionFieldTypeEnum.INT, "field.int");
         put(CompetitionFieldTypeEnum.TIMER, "field.timer");
+        put(CompetitionFieldTypeEnum.DATETIME, "field.datetime");
     }};
     @Valid
     private final Competition competition;
