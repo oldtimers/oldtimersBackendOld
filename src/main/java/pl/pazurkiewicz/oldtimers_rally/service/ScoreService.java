@@ -128,6 +128,13 @@ public class ScoreService {
                 if (value instanceof Boolean)
                     return (((Boolean) value) ? 1.0 : 0.0);
                 break;
+            case DATETIME:
+                if (value instanceof Integer){
+                    int p = (Integer) value;
+                    if (p>=0 && p<1440){
+                        return p;
+                    }
+                }
         }
         throw new InvalidScore("");
     }

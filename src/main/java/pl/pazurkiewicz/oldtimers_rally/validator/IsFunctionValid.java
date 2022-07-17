@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = IsFunctionValid.IsFunctionValidValidator.class)
 public @interface IsFunctionValid {
-    String message() default "{category.invalidArguments}";
+    String message() default "{category.invalidFunction}";
 
     Class<?>[] groups() default {};
 
@@ -41,7 +41,7 @@ public @interface IsFunctionValid {
                     arguments[i] = new Argument(CalculatorService.variableMapping.get(i));
                 }
                 Expression e = new Expression(value.getFunctionCode(), arguments);
-                if (e.checkSyntax()) {
+                if (e.checkLexSyntax()) {
                     return true;
                 }
             }
