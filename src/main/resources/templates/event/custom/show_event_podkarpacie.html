@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title=${event.name.getDictionary(#locale)})"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/navbar.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/footer.css}"/>
+<script th:src="@{/static/js/bootstrap.4.3.1.min.js}"></script>
+<body th:style="'background:url(' + ${event.mainPhoto} + ') no-repeat fixed center center; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;opacity: 0.9;color: #e9ecef;'">
+
+<div class="container">
+    <div th:replace="fragments/navbar :: myNavbar (links=${ {'edit'} })"></div>
+    <div class="event-row">
+        <div class="description">
+            <h2 class="title" th:text="${event.name.getDictionary(#locale)}"></h2>
+            <img alt="rally" class="event-img" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
+            <div class="text">
+                <span th:utext="${event.description.getDictionary(#locale)}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="carousel slide pointer-event" data-ride="carousel" id="photos" th:if="${event.photos.size} > 0">
+
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img alt="No photo" class="event-img" th:src="${event.photos[0]}">
+            </div>
+            <div class="carousel-item" th:each="im, index : ${event.photos}" th:unless="${index.first}">
+                <img alt="No photo" class="event-img" th:src="${im}">
+            </div>
+        </div>
+        <a class="carousel-control-prev" data-slide="prev" href="#photos" role="button">
+            <span aria-hidden="true" class="carousel-control-prev-icon"></span>
+            <span class="sr-only"></span>
+        </a>
+        <a class="carousel-control-next" data-slide="next" href="#photos" role="button">
+            <span aria-hidden="true" class="carousel-control-next-icon"></span>
+            <span class="sr-only"></span>
+        </a>
+
+    </div>
+
+    <h2 th:text="#{categories}"></h2>
+    <div>
+        <!--/*@thymesVar id="categories" type="pl.pazurkiewicz.oldtimers_rally.model.Category"*/-->
+        <div th:each="category : ${categories}">
+            <button class="accordion" th:text="${category.name.getDictionary(#locale)}"></button>
+            <div class="panel">
+                <div class="text" style="text-align: center">
+                    <h4 class="styled-table-title" th:text="${category.name.getDictionary(#locale)}"></h4>
+                </div>
+                <p th:text="${category.description.getDictionary(#locale)}"></p>
+
+            </div>
+        </div>
+    </div>
+    <h2 th:text="#{crews}"></h2>
+    <!--/*@thymesVar id="crew" type="pl.pazurkiewicz.oldtimers_rally.model.Crew"*/-->
+    <div th:each="crew : ${crews}">
+        <a class="accordion crews-link" th:href="@{/__${url}__/crew/__${crew.id}__}"
+           th:text="${crew}"
+           type="button">
+        </a>
+    </div>
+</div>
+<footer class="footer">
+    <p style="background: black" th:text="#{cookies}"></p>
+</footer>
+</body>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+</html>

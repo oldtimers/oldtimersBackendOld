@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header_fragment :: headerFragment (title='__#{crew}__ : __${crew}__')"></head>
+<link rel="stylesheet" th:href="@{/static/css/global-settings.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/login-register.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/event.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/crew.css}"/>
+<link rel="stylesheet" th:href="@{/static/css/footer.css}"/>
+<body th:style="'background:url(' + ${event.mainPhoto} + ') no-repeat fixed center center; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;opacity: 0.9;color: #e9ecef;'">
+<div class="container">
+    <div class="col crew-number">
+        <h3 class="back-button"><a class="text-white" th:href="@{/__${url}__}" th:text="#{back}"></a></h3>
+        <h1 th:if="${crew.qrCode} != null" th:text="#{crew} + ': ' + ${crew.qrCode.number}"></h1>
+    </div>
+    <div class="col crew-title">
+        <h2 class="title" th:text="${crew.car} + ' ' + ${crew.yearOfProduction}"></h2>
+    </div>
+    <div th:if="${crew.photo!=null}">
+        <img alt="No photo" class="event-img" th:src="${crew.photo}">
+    </div>
+    <div th:if="${crew.photo==null}">
+        <img alt="No photo" class="event-img" th:src="@{/static/assets/logo.svg}" style="filter: brightness(0) invert(1);">
+    </div>
+
+    <div class="col crew-title" style="display: unset; text-align: center">
+        <h2 th:text="'Kierowca: ' + ${crew.driverName}"></h2>
+        <h2 th:text="'Pilot: ' + ${crew.pilotName}"></h2>
+        <h6 class="title" th:text="'Klub: ' + ${crew.clubName}"></h6>
+    </div>
+
+    <div class="crew-description" style="font-style: italic">
+        <p th:text="${crew.description.getDictionary(#locale)}"></p>
+    </div>
+
+    <!--<h4 class="styled-table-title" th:text="#{results.competitions}"></h4>
+    <table class="styled-table">
+        <thead>
+        <tr>
+            <th th:text="#{competition}"></th>
+            <th th:text="#{results}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        &lt;!&ndash;/*@thymesVar id="crc" type="pl.pazurkiewicz.oldtimers_rally.model.Score"*/&ndash;&gt;
+        <tr th:each="crc : ${crew.scores}">
+            <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
+            <th:block th:switch="${crc.competition.id}">
+                <div th:case="10">
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="11">
+                    <td th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="12">
+                    <td th:text="
+                    #{results.left} + ' '  + ${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.cm}
+                    + ' ' +
+                    #{results.right} + ' ' + ${#numbers.formatDecimal(crc.additional2, 0, 0)} + #{results.cm}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="13">
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="14">
+                    <td th:text="${#numbers.formatDecimal(crc.additional3, 0, 2)} + #{results.kmh}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="15">
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="16">
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 0)} + #{results.points}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="17">
+                    <td th:text="${#numbers.formatDecimal(crc.additional1, 0, 2)} + #{results.time}"
+                        th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+                <div th:case="18">
+                    <td th:text="
+                    'INT' + ' '  + ${crc.additional1}
+                    + ' ' +
+                    'FLOAT' + ' ' + ${crc.additional2}
+                    + ' ' +
+                    'Boolean' + ' ' + ${crc.additional3}
+                    + ' ' +
+                    'Timer' + ' ' + ${crc.additional4}" th:unless="${crc.isInvalidResult()}"></td>
+                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
+                </div>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>-->
+
+</div>
+<footer class="footer">
+    <p style="background: black" th:text="#{cookies}"></p>
+</footer>
+</body>
+</html>
+
