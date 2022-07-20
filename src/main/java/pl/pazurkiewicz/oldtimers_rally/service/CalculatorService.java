@@ -30,7 +30,7 @@ public class CalculatorService {
         put(1, "b");
         put(2, "c");
         put(3, "d");
-        put(4, "e");
+        put(4, "f");
     }};
     @Autowired
     private CompetitionRepository competitionRepository;

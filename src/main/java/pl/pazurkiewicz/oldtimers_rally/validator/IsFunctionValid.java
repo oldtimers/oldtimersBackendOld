@@ -41,7 +41,7 @@ public @interface IsFunctionValid {
                     arguments[i] = new Argument(CalculatorService.variableMapping.get(i));
                 }
                 Expression e = new Expression(value.getFunctionCode(), arguments);
-                if (e.checkLexSyntax()) {
+                if (e.checkSyntax()) {
                     return true;
                 }
             }
