@@ -15,7 +15,7 @@
             <h2 class="title" th:text="${event.name.getDictionary(#locale)}"></h2>
             <img alt="rally" class="event-img" th:if="${event.mainPhoto} != null" th:src="${event.mainPhoto}">
             <div class="text">
-                <span th:utext="${event.description.getDictionary(#locale)}"></span>
+                <span style="width: 100%" th:utext="${event.description.getDictionary(#locale)}"></span>
             </div>
         </div>
     </div>

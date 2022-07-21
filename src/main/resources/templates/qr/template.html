@@ -4,12 +4,12 @@
 <div class="row" th:each="p : ${wrapper.special}">
     <!--    width 27%-->
     <!--    width 40%-->
-    <div style="float: left; width: 40%; padding: 8px; border:1px solid black;position: relative" th:each="sp : ${p}"
+    <div style="float: left; width: 25%; padding: 8px; border:1px solid black;position: relative" th:each="sp : ${p}"
          th:if="${sp} != null">
         <div style="width: 100%">
             <div style="display:flex;justify-content: space-between; align-items: center">
-                <H4 style="position: absolute;bottom:2px;left: 4px " th:text="${sp.number}"></H4>
-                <H4 style="position: absolute;bottom:2px;right: 4px ">OLDTIMERSWEB.COM</H4>
+                <H4 style="position: absolute;bottom:2px;left: 4px; font-size: 13px" th:text="${sp.number}"></H4>
+                <H4 style="position: absolute;bottom:2px;right: 4px; font-size: 13px">OLDTIMERSWEB.COM</H4>
             </div>
             <img alt="#" style="width:100%" th:src="'data:image/png;base64,' + ${sp.base64}"/>
         </div>

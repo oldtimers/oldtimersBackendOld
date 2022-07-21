@@ -35,14 +35,13 @@ public class RefreshTokenService {
         RefreshToken refreshToken;
         if (oldToken.isEmpty()) {
             refreshToken = new RefreshToken();
-
+            refreshToken.setToken(UUID.randomUUID().toString());
             refreshToken.setUser(userRepository.getById(userId));
 
         } else {
             refreshToken = oldToken.get();
         }
         refreshToken.setExpiryDate(LocalDateTime.now().plus(refreshTokenDurationMs, ChronoUnit.MILLIS));
-        refreshToken.setToken(UUID.randomUUID().toString());
 
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
