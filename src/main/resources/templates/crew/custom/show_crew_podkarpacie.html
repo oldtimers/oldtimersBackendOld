@@ -46,199 +46,237 @@
         <tbody>
         <!--/*@thymesVar id="crc" type="pl.pazurkiewicz.oldtimers_rally.model.Score"*/-->
         <tr th:each="crc : ${crew.scores}">
-            <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
             <th:block th:switch="${crc.competition.id}">
                 <!--                <div th:case="21">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'rocznik: ' + ${crc.additional1} + ' r'"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="22">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="23">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="24">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="25">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="26">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'punkty karne: ' + ${crc.additional1}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="27">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'punkty karne: ' + ${crc.additional1}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="28">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="29">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="30">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'odległość 1: ' + ${crc.additional1} + ' cm, odległość 2: ' + ${crc.additional2} + 'cm'"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="31"> TODO-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="32">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="33">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'czy dobrze: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="34">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="35">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="36">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="37">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'odległość 1: ' + ${crc.additional1} + ' cm, odległość 2: ' + ${crc.additional2} + 'cm'"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="38">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="39">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="40">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="41">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'punkty karne: ' + ${crc.additional1}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="43">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="44">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="45">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <!--                <div th:case="46">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="49">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="50">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="51">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="52">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="55">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="56">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="57">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="58">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'punkty karne: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="59">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'czy dobrze: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="60">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'godzina przyjazdu: ' + ${crc.additional1}"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="62">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'odległość 1: ' + ${crc.additional1} + ' cm, odległość 2: ' + ${crc.additional2} + 'cm'"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="63">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'odległość: ' + ${crc.additional1} + ' cm'"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <!--                <div th:case="64">-->
+                <!--                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>-->
                 <!--                    <td th:text="'odległość: ' + ${crc.additional1} + ' cm'"-->
                 <!--                        th:unless="${crc.isInvalidResult()}"></td>-->
                 <!--                    <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>-->
                 <!--                </div>-->
                 <div th:case="65">
+                    <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
                     <td th:text="'punkty karne: ' + ${crc.additional1}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
