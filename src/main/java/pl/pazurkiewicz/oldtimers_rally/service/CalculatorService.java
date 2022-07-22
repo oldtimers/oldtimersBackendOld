@@ -43,11 +43,15 @@ public class CalculatorService {
 
     public static void calculateScoreResult(Score score, Competition competition) {
         int j = competition.getFields().size();
-        Argument[] arguments = new Argument[j];
-        for (int i = 0; i < j; i++) {
-            Argument argument = new Argument(CalculatorService.variableMapping.get(i));
-            argument.setArgumentValue(score.getValue(i));
-            arguments[i] = argument;
+        Set<Integer> orders = competition.getFields().stream().map(CompetitionField::getOrder).collect(Collectors.toSet());
+        Argument[] arguments = new Argument[5];
+        for (int i = 0; i < 5; i++) {
+            if (orders.contains(i)) {
+                Argument argument = new Argument(CalculatorService.variableMapping.get(i));
+                argument.setArgumentValue(score.getValue(i));
+                arguments[i] = argument;
+            }
+
         }
 //        TODO check if it works
         Expression expression = new Expression(competition.getFunctionCode(), arguments);

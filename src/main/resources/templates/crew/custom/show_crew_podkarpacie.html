@@ -27,7 +27,8 @@
         <h2 th:text="'Kierowca: ' + ${crew.driverName}"></h2>
         <h2 th:text="'Pilot: ' + ${crew.pilotName}"></h2>
         <h6 class="title" th:text="'Klub: ' + ${crew.clubName}"></h6>
-        <h6 class="title" th:text="'Kategoria: ' + ${crew.categories[0]}"></h6>
+        <h6 class="title" th:each="crc : ${crew.categories}"
+            th:text="'Kategoria: ' + ${crc.category.name.getDictionary(#locale)}"></h6>
     </div>
 
     <div class="crew-description" style="font-style: italic">
