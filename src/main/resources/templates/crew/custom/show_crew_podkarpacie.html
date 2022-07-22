@@ -47,7 +47,7 @@
         <tr th:each="crc : ${crew.scores}">
             <td th:text="${crc.competition.name.getDictionary(#locale)}"></td>
             <th:block th:switch="${crc.competition.id}">
-                <div th:case="21">
+                <!--<div th:case="21">
                     <td th:text="'rocznik: ' + ${crc.additional1} + ' r'"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
@@ -63,7 +63,7 @@
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="24">
-                    <td th:text="'czas: ' + ${crc.additional1} + ' s, zaliczone: ' + ${crc.additional2} + ', liczba błędów: ' + ${crc.additional3}"
+                    <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
@@ -103,7 +103,7 @@
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="32">
-                    <td th:text="'czas: ' + ${crc.additional1} + ' s, zaliczone: ' + ${crc.additional2} + ', liczba błędów: ' + ${crc.additional3}"
+                    <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
@@ -128,7 +128,7 @@
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="37">
-                    <td th:text="'odległość: ' + ${crc.additional1} + ' cm'"
+                    <td th:text="'odległość 1: ' + ${crc.additional1} + ' cm, odległość 2: ' + ${crc.additional2} + 'cm'"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
@@ -163,7 +163,7 @@
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="45">
-                    <td th:text="'czas: ' + ${crc.additional1} + ' s, zaliczone: ' + ${crc.additional2} + ', liczba błędów: ' + ${crc.additional3}"
+                    <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
@@ -188,7 +188,7 @@
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
                 <div th:case="52">
-                    <td th:text="'czas: ' + ${crc.additional1} + ' s, zaliczone: ' + ${crc.additional2} + ', liczba błędów: ' + ${crc.additional3}"
+                    <td th:text="'czas: ' + ${crc.additional1} + ' s, liczba błędów: ' + ${crc.additional3}"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
                 </div>
@@ -236,7 +236,7 @@
                     <td th:text="'odległość: ' + ${crc.additional1} + ' cm'"
                         th:unless="${crc.isInvalidResult()}"></td>
                     <td th:if="${crc.isInvalidResult()}" th:text="#{result.invalid}"></td>
-                </div>
+                </div>-->
             </th:block>
         </tr>
         </tbody>
