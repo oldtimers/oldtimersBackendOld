@@ -147,4 +147,9 @@ public class Score implements DatabaseModel {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    //    TODO
+    public String showDate() {
+        return String.format("%02d:%02d", Math.round(Math.floor(additional1 / 60)), Math.round(additional1 % 60));
+    }
 }

@@ -12,13 +12,16 @@ import pl.pazurkiewicz.oldtimers_rally.MyConfigurationProperties;
 import pl.pazurkiewicz.oldtimers_rally.model.Crew;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 import pl.pazurkiewicz.oldtimers_rally.model.Language;
+import pl.pazurkiewicz.oldtimers_rally.model.Score;
 import pl.pazurkiewicz.oldtimers_rally.repository.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 //^(?!rally$)(?!api$).*$
@@ -67,7 +70,9 @@ public class EventController {
             if (languages.stream().map(Language::getCode).noneMatch(s -> s.equals(locale.getLanguage()))) {
                 localeResolver.setLocale(request, response, new Locale(event.getSingleDefaultLanguage().getLanguage().getCode()));
             }
+            List<Score> scores = crew.get().getScores().stream().sorted(Comparator.comparingInt(o -> o.getCompetition().getId())).collect(Collectors.toList());
             model.addAttribute("crew", crew.get());
+            model.addAttribute("scores", scores);
         }
         if (event.getCustomCrewHtml() != null)
             return event.getCustomCrewHtml();
