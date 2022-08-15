@@ -1,11 +1,15 @@
 package pl.pazurkiewicz.oldtimers_rally.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import pl.pazurkiewicz.oldtimers_rally.model.api.serializer.ScoreSerializer;
+
 import javax.persistence.*;
 
 @Table(name = "scores", indexes = {
         @Index(name = "scores_result_index", columnList = "result")
 })
 @Entity
+@JsonSerialize(using = ScoreSerializer.class)
 public class Score implements DatabaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -44,6 +44,8 @@ public interface CrewRepository extends JpaRepository<Crew, Integer> {
     <T>
     Optional<T> findByQrAndEventId(String qr, Integer eventId, Class<T> type);
 
+    <T> Optional<T> findByEvent_IdAndId(Integer eventId, Integer id, Class<T> type);
+
     @Query("select c from Crew c inner join c.scores as s where s.competition = :competition and s.additional2 is null order by c.qrCode.number")
     <T>
     List<T> getAllStartedForCompetition(Competition competition, Class<T> type);

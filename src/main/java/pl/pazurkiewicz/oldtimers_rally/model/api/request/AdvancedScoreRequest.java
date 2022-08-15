@@ -1,10 +1,11 @@
 package pl.pazurkiewicz.oldtimers_rally.model.api.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import pl.pazurkiewicz.oldtimers_rally.model.api.request2.ScoreRequest;
 
 import javax.validation.constraints.NotNull;
 
-public class ScoreRequest {
+public class AdvancedScoreRequest {
     @JsonProperty("0")
     private Object a;
     @JsonProperty("1")
@@ -20,9 +21,19 @@ public class ScoreRequest {
     @NotNull
     private Integer crewId;
 
-    private Boolean invalidResult=false;
+    private Boolean invalidResult = false;
 
-    public ScoreRequest() {
+    public AdvancedScoreRequest() {
+    }
+
+    public AdvancedScoreRequest(ScoreRequest scoreRequest, Integer competitionId, Integer crewId) {
+        this.a = scoreRequest.getA();
+        this.b = scoreRequest.getB();
+        this.c = scoreRequest.getC();
+        this.d = scoreRequest.getD();
+        this.e = scoreRequest.getE();
+        this.competitionId = competitionId;
+        this.crewId = crewId;
     }
 
     public Object getA() {

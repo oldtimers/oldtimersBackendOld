@@ -1,0 +1,522 @@
+{
+  "info": {
+    "_postman_id": "4e2d2dd4-5105-4fc6-93db-713b99652955",
+    "name": "Oldtimers",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login+",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept-Language",
+            "value": "pl",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"login\",\r\n    \"password\": \"haslo\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/auth/login",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Refresh+",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept-Language",
+            "value": "pl",
+            "type": "default"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"refresh\": \"55ad57d2-19f8-4e96-96a4-057abd3e49a3\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/auth/refresh",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "refresh"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout (disable all users refresh tokens!!!! do not use)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept-Language",
+            "value": "pl",
+            "type": "default"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/auth/logout",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Validate/get user info+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/auth/verify",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "auth",
+            "verify"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All events+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/event",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Selected event+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/event/3",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All crews+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept-Language",
+            "value": "pl",
+            "type": "default"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/event/3/crew",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "crew"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Seleted Crew by QR+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept-Language",
+            "value": "pl",
+            "type": "default"
+          }
+        ],
+        "url": {
+          "raw": "{{base}}/event/3/crew?qr=https://www.oldtimersweb.com/?qr=j9gKVEiYDpMj95i6qnVmiWZHdF7imA9YaDbprT99",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "crew"
+          ],
+          "query": [
+            {
+              "key": "qr",
+              "value": "https://www.oldtimersweb.com/?qr=j9gKVEiYDpMj95i6qnVmiWZHdF7imA9YaDbprT99"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "All competitions+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/event/3/competition",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "competition"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Selected competition+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base}}/event/3/competition/7",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "competition",
+            "7"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add score+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"0\": 15\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/event/3/competition/7/crew/88",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "competition",
+            "7",
+            "crew",
+            "88"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add reg score+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"position\": \"START\",\r\n    \"time\": 1232334123\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/event/3/competition/9/crew/88",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "competition",
+            "9",
+            "crew",
+            "88"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get scores from competition+",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/event/3/competition/9/crew",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "competition",
+            "9",
+            "crew"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add multiple scores+",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearer}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n    {\r\n        \"competitionId\": 7,\r\n        \"crewId\": 88,\r\n        \"0\": 15\r\n    },\r\n    {\r\n        \"competitionId\": 7,\r\n        \"crewId\": 88,\r\n        \"position\": \"START\",\r\n        \"time\": 1232334123\r\n    }\r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base}}/event/3/scores",
+          "host": [
+            "{{base}}"
+          ],
+          "path": [
+            "event",
+            "3",
+            "scores"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base",
+      "value": "http://localhost:8081/api",
+      "type": "default"
+    },
+    {
+      "key": "bearer",
+      "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0NSIsImlhdCI6MTY0NDc2ODQ4OSwiZXhwIjoxNjQ0NzY4NTQ5fQ.rRGANc4Lk0NGLZ8bFnG2gS2I0j8gX5yuxkYEcYReD62opIMJ9PeiFEPOta8De-8_TWf1-X-7Is_FRuM4c5XeJA",
+      "type": "default"
+    }
+  ]
+}

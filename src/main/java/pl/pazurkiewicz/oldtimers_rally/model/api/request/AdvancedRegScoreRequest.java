@@ -1,9 +1,11 @@
 package pl.pazurkiewicz.oldtimers_rally.model.api.request;
 
+import pl.pazurkiewicz.oldtimers_rally.model.api.request2.RegScoreRequest;
+
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-public class RegScoreRequest {
+public class AdvancedRegScoreRequest {
     @NotNull
     @Transient
     private ReqScoreEnum position;
@@ -14,7 +16,14 @@ public class RegScoreRequest {
     @NotNull
     private Double time;
 
-    public RegScoreRequest() {
+    public AdvancedRegScoreRequest() {
+    }
+
+    public AdvancedRegScoreRequest(RegScoreRequest scoreRequest, Integer competitionId, Integer crewId) {
+        this.position = scoreRequest.getPosition();
+        this.time = scoreRequest.getTime();
+        this.competitionId = competitionId;
+        this.crewId = crewId;
     }
 
     public ReqScoreEnum getPosition() {

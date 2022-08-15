@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -36,12 +35,12 @@ public class OldtimersRallyApplication extends SpringBootServletInitializer impl
     @Autowired
     MyConfigurationProperties configurationProperties;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
-                .allowedOriginPatterns("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/api/**")
+//                .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
+//                .allowedOriginPatterns("*");
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(OldtimersRallyApplication.class, args);

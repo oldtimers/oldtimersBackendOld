@@ -10,7 +10,7 @@ import pl.pazurkiewicz.oldtimers_rally.exception.TokenRefreshException;
 import java.util.Date;
 
 @RestControllerAdvice
-public class TokenControllerAdvice {
+public class ControllerAdvice {
 
     @ExceptionHandler(value = TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

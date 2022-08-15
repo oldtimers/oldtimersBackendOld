@@ -8,9 +8,9 @@ import pl.pazurkiewicz.oldtimers_rally.exception.InvalidScore;
 import pl.pazurkiewicz.oldtimers_rally.model.Competition;
 import pl.pazurkiewicz.oldtimers_rally.model.CompetitionTypeEnum;
 import pl.pazurkiewicz.oldtimers_rally.model.UserGroupEnum;
+import pl.pazurkiewicz.oldtimers_rally.model.api.request.AdvancedRegScoreRequest;
+import pl.pazurkiewicz.oldtimers_rally.model.api.request.AdvancedScoreRequest;
 import pl.pazurkiewicz.oldtimers_rally.model.api.request.QrRequest;
-import pl.pazurkiewicz.oldtimers_rally.model.api.request.RegScoreRequest;
-import pl.pazurkiewicz.oldtimers_rally.model.api.request.ScoreRequest;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.CompetitionInfo;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.CrewInfo;
 import pl.pazurkiewicz.oldtimers_rally.model.api.response.EventInfo;
@@ -95,7 +95,7 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/score/reg")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addRegScore(@PathVariable Integer id, @RequestBody @Valid RegScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
+    ResponseEntity<?> addRegScore(@PathVariable Integer id, @RequestBody @Valid AdvancedRegScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
             scoreService.addRegScore(scoreRequest, id, principal.getUser());
         } catch (InvalidScore e) {
@@ -106,9 +106,9 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/scores/reg")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addRegScores(@PathVariable Integer id, @RequestBody @Valid List<RegScoreRequest> scoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
+    ResponseEntity<?> addRegScores(@PathVariable Integer id, @RequestBody @Valid List<AdvancedRegScoreRequest> scoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
-            for (RegScoreRequest scoreRequest : scoreRequests) {
+            for (AdvancedRegScoreRequest scoreRequest : scoreRequests) {
                 scoreService.addRegScore(scoreRequest, id, principal.getUser());
             }
         } catch (InvalidScore e) {
@@ -120,10 +120,10 @@ public class BasicApiController {
     @GetMapping("/event/{id}/competition/{competitionId}/crews")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
     ResponseEntity<?> getCrewsInRegCompetition(@PathVariable("id") Integer id, @PathVariable("competitionId") Integer competitionId) {
-        Competition competition = competitionRepository.getByEvent_idAndId(id, competitionId);
-        if (competition != null) {
-            if (competition.getType() == CompetitionTypeEnum.REGULAR_DRIVE) {
-                List<CrewInfo> crews = crewRepository.getAllStartedForCompetition(competition, CrewInfo.class);
+        Optional<Competition> competition = competitionRepository.getByEvent_idAndId(id, competitionId, Competition.class);
+        if (competition.isPresent()) {
+            if (competition.get().getType() == CompetitionTypeEnum.REGULAR_DRIVE) {
+                List<CrewInfo> crews = crewRepository.getAllStartedForCompetition(competition.get(), CrewInfo.class);
                 return ResponseEntity.ok(crews);
             }
         }
@@ -132,9 +132,9 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/score")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addScore(@PathVariable Integer id, @RequestBody @Valid ScoreRequest scoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
+    ResponseEntity<?> addScore(@PathVariable Integer id, @RequestBody @Valid AdvancedScoreRequest advancedScoreRequest, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
-            scoreService.addScore(scoreRequest, id, principal.getUser());
+            scoreService.addScore(advancedScoreRequest, id, principal.getUser());
         } catch (InvalidScore e) {
             return ResponseEntity.badRequest().build();
         }
@@ -143,10 +143,10 @@ public class BasicApiController {
 
     @PostMapping("/event/{id}/scores")
     @PreAuthorize("hasPermission(#id,'Event','" + UserGroupEnum.Constants.JUDGE_VALUE + "')")
-    ResponseEntity<?> addScores(@PathVariable Integer id, @RequestBody List<ScoreRequest> scoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
+    ResponseEntity<?> addScores(@PathVariable Integer id, @RequestBody List<AdvancedScoreRequest> advancedScoreRequests, @AuthenticationPrincipal UserDetailsImpl principal) {
         try {
-            for (ScoreRequest scoreRequest : scoreRequests) {
-                scoreService.addScore(scoreRequest, id, principal.getUser());
+            for (AdvancedScoreRequest advancedScoreRequest : advancedScoreRequests) {
+                scoreService.addScore(advancedScoreRequest, id, principal.getUser());
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

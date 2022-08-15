@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("custom")
 public class MyConfigurationProperties {
-    public static final String eventRegex = "^(?!rally$)(?!api$)(?!login$)(?!register$)(?!logout$).*$";
+    public static final String eventRegex = "^(?!rally$)(?!api$)(?!api2$)(?!login$)(?!register$)(?!logout$).*$";
     private String defaultLanguage = "en";
     private String resourceLocation = "photos";
     private String jwtSecret = "secret";

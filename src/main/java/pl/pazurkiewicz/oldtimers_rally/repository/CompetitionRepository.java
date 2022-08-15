@@ -6,6 +6,7 @@ import pl.pazurkiewicz.oldtimers_rally.model.Competition;
 import pl.pazurkiewicz.oldtimers_rally.model.Event;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CompetitionRepository extends JpaRepository<Competition, Integer> {
     @Query("select c from Competition c left join c.name left join c.description where c.event=:event")
@@ -19,5 +20,5 @@ public interface CompetitionRepository extends JpaRepository<Competition, Intege
     @Query("select c from Competition c left join c.name n left join n.dictionaries where c.event=:event and c.id=:competitionId")
     Competition getByEventAndId(Event event, Integer competitionId);
 
-    Competition getByEvent_idAndId(Integer eventId, Integer competitionId);
+    <T> Optional<T> getByEvent_idAndId(Integer eventId, Integer competitionId, Class<T> type);
 }

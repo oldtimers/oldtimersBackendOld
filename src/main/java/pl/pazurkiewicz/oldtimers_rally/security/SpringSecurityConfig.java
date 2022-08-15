@@ -81,11 +81,10 @@ public class SpringSecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                    .requestMatcher(new AntPathRequestMatcher("/api/**"))
+                    .requestMatcher(new AntPathRequestMatcher("/api*/**"))
                     .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                    .csrf().disable()
-                    .cors();
+                    .csrf().disable();
             http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         }
     }

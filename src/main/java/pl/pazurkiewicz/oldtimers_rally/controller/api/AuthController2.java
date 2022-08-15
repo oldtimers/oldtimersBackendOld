@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pl.pazurkiewicz.oldtimers_rally.exception.TokenRefreshException;
 import pl.pazurkiewicz.oldtimers_rally.model.RefreshToken;
-import pl.pazurkiewicz.oldtimers_rally.model.api.request2.LoginRequest;
-import pl.pazurkiewicz.oldtimers_rally.model.api.request2.TokenRefreshRequest;
-import pl.pazurkiewicz.oldtimers_rally.model.api.response2.JwtResponse;
-import pl.pazurkiewicz.oldtimers_rally.model.api.response2.MessageResponse;
-import pl.pazurkiewicz.oldtimers_rally.model.api.response2.UserName;
+import pl.pazurkiewicz.oldtimers_rally.model.api.request.LoginRequest;
+import pl.pazurkiewicz.oldtimers_rally.model.api.request.TokenRefreshRequest;
+import pl.pazurkiewicz.oldtimers_rally.model.api.response.JwtResponse;
+import pl.pazurkiewicz.oldtimers_rally.model.api.response.MessageResponse;
+import pl.pazurkiewicz.oldtimers_rally.model.api.response.UserName;
 import pl.pazurkiewicz.oldtimers_rally.repository.UserRepository;
 import pl.pazurkiewicz.oldtimers_rally.security.jwt.JwtUtils;
 import pl.pazurkiewicz.oldtimers_rally.security.service.RefreshTokenService;
@@ -25,8 +25,8 @@ import pl.pazurkiewicz.oldtimers_rally.security.service.UserDetailsImpl;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/api2/auth")
+public class AuthController2 {
     @Autowired
     AuthenticationManager authenticationManager;
 

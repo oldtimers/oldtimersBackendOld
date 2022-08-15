@@ -22,5 +22,7 @@ public interface ScoreRepository extends JpaRepository<Score, Integer> {
 
     List<Score> getScoresByCrew_EventAndResultIsNullAndAdditional1IsNullAndInvalidResultIsFalse(Event event);
 
+    <T> List<T> getScoresByCompetition(Competition competition, Class<T> type);
+
     Score getByCompetitionAndCrew(Competition competition, Crew crew);
 }
